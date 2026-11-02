@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Objection Handling · POD C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b1220;--panel:#142038;--panel2:#1b2a48;--line:#2f4370;--text:#f5f7fb;--muted:#c3cee0;--accent:#ffd166;--g:#4cc9f0;--r:#ffd166;--o:#80ed99;--w:#ff9f5a;--feel:#d0a2ff;--felt:#4cc9f0;--found:#80ed99;--good:#3ddc84;--bad:#ff7b7b}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",system-ui,sans-serif}
+body{display:flex;flex-direction:column;overflow:hidden;font-size:clamp(17px,1.15vw + .55vh,28px);line-height:1.45}
+button,select,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+kbd{font-family:inherit;font-size:.8em;background:#24365c;border:1px solid var(--line);border-radius:5px;padding:0 .35em;margin-left:.3em}
+header.bar{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;padding:.45rem 1rem;background:#070d18;border-bottom:1px solid var(--line);font-size:.62em}
+.brand{font-weight:800;letter-spacing:.04em}
+.brand span{color:var(--muted);font-weight:600;margin-left:.4em}
+.pill{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:.2em .8em;font-weight:700;color:var(--accent)}
+.spacer{flex:1}
+.runclock{display:flex;align-items:center;gap:.6em;font-variant-numeric:tabular-nums;font-weight:800;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:.3em .8em}
+.runclock:hover{border-color:var(--accent)}
+.runclock .of{color:var(--muted);font-weight:600}
+.runclock.over #rcLeft{color:var(--bad)}
+.rc-pace{border-radius:999px;padding:0 .6em;background:#0b1220}
+.rs-row{display:grid;grid-template-columns:5.5em 1fr auto 4em 6.5em;gap:1em;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:.45em .9em;margin:.35em 0;width:100%;text-align:left;cursor:pointer;font-variant-numeric:tabular-nums}
+.rs-row:hover{border-color:var(--accent)}
+.rs-row.now{border-color:var(--accent);background:#2a2614}
+.rs-row.done{opacity:.6}
+.rs-row .ld{font-size:.8em;color:var(--muted)}
+.rs-row .st{font-size:.8em;font-weight:800;text-align:right}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:8px;padding:.3em .7em;font-weight:600}
+.ghost:hover,.ghost.on{border-color:var(--accent);color:var(--accent)}
+.progress{height:6px;background:#111b2e}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--g),var(--o),var(--accent),var(--w));transition:width .3s}
+main.stage{flex:1;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;padding:3.5vh 5vw 4vh;overflow-y:auto;display:none;flex-direction:column}
+.slide.active{display:flex;animation:fadein .35s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.slide .notes{display:none}
+.slide h2{font-size:clamp(28px,2.4vw + 1.2vh,58px);font-weight:800;margin:0 0 .45em;line-height:1.12}
+.slide h3{font-size:1.15em;margin:0 0 .4em}
+.kicker{text-transform:uppercase;letter-spacing:.14em;font-weight:800;color:var(--accent);font-size:.72em;margin-bottom:.5em}
+.mega{font-size:clamp(40px,4.4vw + 1.6vh,100px);font-weight:800;line-height:1.05;margin:0 0 .35em}
+.lead{font-size:1.2em;color:var(--muted);max-width:44ch;margin:0 0 1em}
+.muted{color:var(--muted)}
+.small{font-size:.8em}
+.hl{color:var(--bad)}
+.hl2{color:var(--good)}
+.center{justify-content:center}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:1em 1.2em}
+.grid{display:grid;gap:1rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.task{display:inline-flex;align-self:flex-start;gap:.5em;align-items:center;background:#2a2140;border:1px solid #7a5cc4;color:#eadcff;border-radius:999px;padding:.3em 1em;font-size:.78em;font-weight:700;margin-bottom:.9em}
+.task b{color:#fff;letter-spacing:.08em}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:.45em 1em;font-weight:700}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#1a1300;border-color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.hosts{margin-top:1.4em;font-size:.95em;color:var(--muted)}
+.hosts b{color:var(--text)}
+.keys{margin-top:2em;font-size:.7em;color:var(--muted)}
+.quote{font-size:1.25em;font-weight:700;border-left:6px solid var(--accent);padding:.3em 0 .3em .8em;margin:1em 0 0}
+.opt,.q-opt{position:relative;display:flex;justify-content:space-between;align-items:center;gap:1em;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:.5em .9em;margin:.4em 0;overflow:hidden}
+.opt:hover,.q-opt:hover{border-color:var(--accent)}
+.opt .bar{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#33569a,#2a467f);transition:width .35s;z-index:0}
+.opt .lbl,.opt .cnt{position:relative;z-index:1}
+.opt .cnt{font-weight:800;font-variant-numeric:tabular-nums}
+.poll-meta{font-size:.75em;color:var(--muted);margin-top:.3em;display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap}
+.poll-meta button{background:none;border:none;color:var(--muted);text-decoration:underline;padding:0}
+.q-opt.right{border-color:var(--good);background:#103a28}
+.q-opt.wrong{border-color:var(--bad);background:#3a1717}
+.fb{margin-top:.5em;font-weight:600;min-height:1.4em}
+.fb.good{color:var(--good)}
+.fb.bad{color:var(--bad)}
+.tap{cursor:pointer;user-select:none}
+.tap .ans{display:none;margin-top:.6em}
+.tap.shown .ans{display:block;animation:fadein .3s}
+.tap.shown .hint{display:none}
+.hint{font-size:.72em;color:var(--accent);margin-top:.5em;font-weight:700}
+.say-mean{display:grid;grid-template-columns:1fr 1fr;gap:.8em;align-items:center}
+.say-mean .say{font-weight:700}
+.stage-card{border-top:7px solid var(--c)}
+.stage-card .big{font-size:2.6em;font-weight:800;color:var(--c);line-height:1}
+.stage-card .ex{margin-top:.6em;font-style:italic;color:var(--muted)}
+[data-s=G]{--c:var(--g)}[data-s=R]{--c:var(--r)}[data-s=O]{--c:var(--o)}[data-s=W]{--c:var(--w)}
+[data-s=L]{--c:#7bdff2}[data-s=Ack]{--c:var(--feel)}[data-s=E]{--c:var(--r)}[data-s=Res]{--c:var(--o)}[data-s=Label]{--c:var(--feel)}[data-s=Iso]{--c:var(--r)}[data-s=Ref]{--c:var(--w)}
+[data-s=Feel]{--c:var(--feel)}[data-s=Felt]{--c:var(--felt)}[data-s=Found]{--c:var(--found)}
+.step{opacity:0;visibility:hidden;transform:translateY(8px);transition:all .3s}
+.step.on{opacity:1;visibility:visible;transform:none}
+.line{display:flex;gap:.8em;align-items:flex-start;margin:.35em 0}
+.tag{flex:none;min-width:2.2em;text-align:center;font-weight:800;border-radius:8px;padding:.05em .45em;background:var(--c);color:#0b1220}
+.who{font-weight:800;color:var(--muted);flex:none;width:5.2em}
+.steps-ctrl{margin-top:.8em}
+.match-row{display:grid;grid-template-columns:1fr auto;gap:.8em;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:.45em .9em;margin:.35em 0}
+.match-row .q-opt{width:2.4em;justify-content:center;margin:0 .15em;padding:.3em 0;font-weight:800;display:inline-flex}
+.match-row.done{border-color:var(--c)}
+.match-row.done .q{color:var(--c)}
+.fff-col h3{color:var(--c)}
+.fff-col{border-top:7px solid var(--c)}
+.starter{display:block;color:var(--muted);font-style:italic;margin-top:.3em}
+.chain{display:flex;flex-wrap:wrap;gap:.6em;align-items:center;margin:1em 0}
+.chain .node{background:var(--panel);border:2px solid var(--c,var(--line));border-radius:14px;padding:.6em .9em;font-weight:700;text-align:center}
+.chain .node small{display:block;font-weight:400;color:var(--muted);font-size:.72em}
+.chain .arrow{color:var(--muted);font-size:1.4em}
+.chips{display:flex;flex-wrap:wrap;gap:.5em;margin-bottom:1em}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:.25em .9em;font-weight:700;font-size:.85em}
+.chip.on{background:var(--accent);color:#1a1300;border-color:var(--accent)}
+.obj-card{cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:.4em}
+.obj-card:hover{border-color:var(--accent)}
+.obj-card .cat{font-size:.7em;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--accent)}
+.obj-card .txt{font-weight:700}
+.detail-line{border-left:6px solid var(--c);padding:.2em 0 .2em .7em;margin:.5em 0}
+.detail-line b{color:var(--c)}
+textarea,select{width:100%;background:#0e1830;border:1px solid var(--line);border-radius:10px;padding:.5em .7em}
+textarea{min-height:3.2em;resize:vertical}
+label.fl{display:block;font-weight:800;margin:.5em 0 .2em;color:var(--c)}
+.timer{display:inline-flex;align-items:center;gap:.6em}
+.timer .t{font-size:1.6em;font-weight:800;font-variant-numeric:tabular-nums;min-width:3.2em}
+.timer.done .t{color:var(--bad);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.chat{display:flex;flex-direction:column;gap:.15em;margin-bottom:.7em}
+.msg{max-width:82%;padding:.55em .9em;border-radius:16px}
+.msg b{display:block;font-size:.7em;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.msg.stu{background:#263a5e;align-self:flex-start;border-bottom-left-radius:4px}
+.msg.ssa{background:#1d4a39;align-self:flex-end;border-bottom-right-radius:4px}
+.choice{display:block;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:.55em .9em;margin:.35em 0}
+.choice:hover:not(:disabled){border-color:var(--accent)}
+.choice:disabled{cursor:default;opacity:.55}
+.choice.best{opacity:1;border-color:var(--good);background:#103a28}
+.choice.picked{opacity:1;outline:3px solid var(--accent)}
+.choice .letter{font-weight:800;color:var(--accent);margin-right:.5em}
+.sc-fb{border-radius:12px;padding:.6em .9em;margin:.6em 0;background:#13213d;border:1px solid var(--line)}
+.score{font-weight:800;color:var(--accent)}
+.deal{font-size:1.45em;font-weight:800;min-height:2.6em;display:flex;align-items:center}
+.check label{display:flex;gap:.6em;align-items:center;padding:.3em 0;cursor:pointer}
+.check input{width:1.2em;height:1.2em;accent-color:var(--good)}
+.tf{display:flex;gap:1em;margin-top:1em}
+.tf .btn{font-size:1.3em;padding:.5em 1.6em}
+.lq{font-size:1.45em;font-weight:800;min-height:3em}
+.agenda-row{display:grid;grid-template-columns:4.2em 1fr auto auto;gap:1em;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:.45em .9em;margin:.35em 0;cursor:pointer;text-align:left;width:100%}
+.agenda-row:hover{border-color:var(--accent)}
+.agenda-row.now{border-color:var(--accent);background:#2a2614}
+.agenda-row .at{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:700}
+.agenda-row .nm{font-weight:800}
+.agenda-row .ld{font-size:.78em;color:var(--muted)}
+.agenda-row .mn{font-weight:800;color:var(--accent)}
+footer.ctrl{display:flex;align-items:center;justify-content:center;gap:1.2rem;padding:.5rem;background:#070d18;border-top:1px solid var(--line)}
+footer.ctrl .btn{font-size:.85em;min-width:7em}
+#counter{font-weight:700;font-variant-numeric:tabular-nums;color:var(--muted);font-size:.8em}
+.notes-panel{position:fixed;left:0;right:0;bottom:0;height:40vh;background:#17140a;border-top:4px solid var(--accent);transform:translateY(105%);transition:transform .3s;z-index:40;display:flex;flex-direction:column;font-size:.78em}
+.notes-panel.open{transform:none}
+.np-head{display:flex;flex-wrap:wrap;gap:1em;align-items:center;padding:.5em 1em;border-bottom:1px solid #4a3f1a;font-weight:700;color:var(--accent)}
+.np-head .stat{color:var(--text);font-weight:600}
+#npBody{padding:.6em 1.2em 1.2em;overflow-y:auto}
+#npBody p{margin:.3em 0 .6em}
+#npBody ul{margin:.2em 0 .6em;padding-left:1.2em}
+.handoff{display:inline-block;background:var(--accent);color:#1a1300;font-weight:800;border-radius:8px;padding:.15em .7em;margin:.3em 0}
+.overlay{position:fixed;inset:0;background:rgba(3,7,15,.82);display:none;align-items:center;justify-content:center;z-index:50;padding:3vh 3vw}
+.overlay.open{display:flex}
+.ov-card{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:1.3em 1.6em;width:min(1000px,100%);max-height:90vh;overflow-y:auto}
+.ov-head{display:flex;justify-content:space-between;align-items:center;gap:1em;margin-bottom:.6em}
+.ov-head h2{margin:0;font-size:1.5em}
+.sec-banner{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.96);background:var(--panel);border:2px solid var(--accent);border-radius:22px;padding:1.2em 2.2em;text-align:center;z-index:45;opacity:0;pointer-events:none;transition:all .35s}
+.sec-banner.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.sec-banner .k{color:var(--accent);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.75em}
+.sec-banner .n{font-size:2em;font-weight:800}
+.sec-banner .m{color:var(--muted)}
+@media (max-width:700px){.say-mean{grid-template-columns:1fr}.agenda-row{grid-template-columns:3.5em 1fr auto}.agenda-row .ld{display:none}.who{width:auto}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="brand"><span id="podName">POD C</span> Objection Handling</div>
+  <div class="pill" id="secPill">Welcome</div>
+  <div class="spacer"></div>
+  <button class="ghost" id="timerBtn">Start run sheet<kbd>T</kbd></button>
+  <button class="runclock" data-act="runsheet" title="Open the run sheet (R)"><span class="of">Section</span><span id="rcLeft">04:00 left</span><span id="rcPace" class="rc-pace">Not started</span></button>
+  <button class="ghost" data-act="notes" id="notesBtn">Notes<kbd>N</kbd></button>
+  <button class="ghost" data-act="presenter">Presenter view<kbd>P</kbd></button>
+  <button class="ghost" data-act="full">Full screen<kbd>F</kbd></button>
+</header>
+<div class="progress"><div id="progFill"></div></div>
+
+<main class="stage" id="stage">
+
+<section class="slide center" data-section="welcome" data-mins="1">
+  <div class="kicker">POD C Skills Session</div>
+  <h1 class="mega">From <span class="hl">"Not now"</span><br>to <span class="hl2">"Here's how"</span></h1>
+  <p class="lead">Handling student objections with confidence: a simple backbone and a toolkit you can use on your next call.</p>
+  <div class="hosts">Hosted by <b class="hA"></b> and <b class="hB"></b> · <span id="sessDate"></span></div>
+  <div class="keys">Use the arrow keys or the buttons below to move through the session.</div>
+  <div class="notes">
+    <p><b>Goal of the session:</b> everyone leaves with the LAER backbone, a toolkit (GROW, Feel Felt Found, Labelling, Isolate and clarify, Reframe) and has practised them at least once.</p>
+    <ul><li>Welcome everyone and introduce both hosts.</li><li>Set the tone: chat will be busy, there are no wrong answers, cameras on if you can.</li><li>Ask everyone to open the chat now. We will use it for every activity.</li></ul>
+    <p><b>Before you start:</b> press <b>T</b> (or Start run sheet) so the section countdown and on-time indicator work. Press <b>R</b> any time to see the full run sheet.</p>
+  </div>
+</section>
+
+<section class="slide" data-section="welcome" data-mins="1">
+  <div class="kicker">The plan</div>
+  <h2>Today's session</h2>
+  <div id="agendaSlide"></div>
+  <div class="notes">
+    <p>Walk through the agenda quickly and point out who leads each part. Rows are clickable if you need to jump.</p>
+  </div>
+</section>
+
+<section class="slide" data-section="welcome" data-mins="2">
+  <div class="kicker">Warm-up</div>
+  <h2>Two quick polls</h2>
+  <div class="task"><b>YOUR TURN</b> Type your letter and your number in the chat</div>
+  <div class="grid g2">
+    <div class="card poll">
+      <h3>Which objection do you dread the most?</h3>
+      <button class="opt">A. "I'm too busy, I'll skip next term"</button>
+      <button class="opt">B. "It's too expensive"</button>
+      <button class="opt">C. "I failed, maybe this isn't for me"</button>
+      <button class="opt">D. "I'll just enrol later"</button>
+      <button class="opt">E. "I don't need a call from you"</button>
+    </div>
+    <div class="card poll" data-poll-id="conf">
+      <h3>How confident are you handling objections right now?</h3>
+      <button class="opt" data-value="1">1. Not at all</button>
+      <button class="opt" data-value="2">2. A little</button>
+      <button class="opt" data-value="3">3. Getting there</button>
+      <button class="opt" data-value="4">4. Fairly confident</button>
+      <button class="opt" data-value="5">5. Bring it on</button>
+    </div>
+  </div>
+  <div class="notes">
+    <p><b>Co-host move:</b> <span class="hB"></span> reads the chat aloud, <span class="hA"></span> clicks to tally.</p>
+    <ul><li>Click an option to add a vote. Shift-click or right-click removes one.</li><li>Call out the most dreaded objection: "Good news, we will practise that one today."</li><li>Note the confidence average out loud. We repeat this poll at the end to see the shift.</li></ul>
+    <div class="handoff">Hand-off to <span class="hB"></span> for the mindset section</div>
+  </div>
+</section>
+
+<section class="slide" data-section="mindset" data-mins="1.5">
+  <div class="kicker">Objection mindset</div>
+  <h2>An objection is not a "no"</h2>
+  <div class="task"><b>YOUR TURN</b> Before each reveal: what do you think it means?</div>
+  <div class="grid g3">
+    <div class="card tap" tabindex="0"><h3>It's a signal</h3><div class="hint">Click to reveal</div><div class="ans">The student cares enough to tell you what's in the way. Silence is worse than an objection.</div></div>
+    <div class="card tap" tabindex="0"><h3>It's a question in disguise</h3><div class="hint">Click to reveal</div><div class="ans">"It's too expensive" often means "Help me see it's worth it" or "Help me work out how to pay."</div></div>
+    <div class="card tap" tabindex="0"><h3>It's an invitation</h3><div class="hint">Click to reveal</div><div class="ans">To understand their reality and help them find their own way forward.</div></div>
+  </div>
+  <p class="quote">Our job is not to win the argument. It's to help the student make a well-informed decision they feel good about.</p>
+  <div class="notes">
+    <ul><li>Ask the room what each heading means before clicking. Take one or two chat answers each.</li><li>Land the key message in the quote: we are not pressuring anyone. If a student makes an informed decision to pause, that's still a good call.</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="mindset" data-mins="1.5">
+  <div class="kicker">Objection mindset</div>
+  <h2>What they say vs what they might mean</h2>
+  <div class="task"><b>YOUR TURN</b> Type what you think is really underneath</div>
+  <div class="card tap say-mean" tabindex="0"><div class="say">"I'm too busy right now."</div><div><div class="hint">Click to reveal</div><div class="ans">"I can't see how study fits into my week, and I'm scared of falling behind."</div></div></div>
+  <div class="card tap say-mean" tabindex="0" style="margin-top:.6em"><div class="say">"It's too expensive."</div><div><div class="hint">Click to reveal</div><div class="ans">"I'm not sure it's worth it" or "The timing of the payment is hard."</div></div></div>
+  <div class="card tap say-mean" tabindex="0" style="margin-top:.6em"><div class="say">"Maybe this isn't for me."</div><div><div class="hint">Click to reveal</div><div class="ans">"One bad result has shaken my confidence."</div></div></div>
+  <div class="card tap say-mean" tabindex="0" style="margin-top:.6em"><div class="say">"I'll do it later."</div><div><div class="hint">Click to reveal</div><div class="ans">"I have a worry I haven't said out loud yet."</div></div></div>
+  <div class="notes">
+    <ul><li>Read the left side, pause, take two chat answers, then click.</li><li>Point out: if we respond to the surface words, we miss the real concern. That's what today's toolkit helps us uncover.</li></ul>
+    <p><span class="hB"></span> carries straight on into LAER.</p>
+  </div>
+</section>
+
+<section class="slide" data-section="laer" data-mins="3">
+  <div class="kicker">The backbone</div>
+  <h2>LAER: the shape of every objection</h2>
+  <div class="grid g4">
+    <div class="card stage-card" data-s="L"><div class="big">L</div><h3>Listen</h3><div>Let them finish. Don't plan your answer while they talk.</div><div class="ex">Pause. Note their exact words.</div></div>
+    <div class="card stage-card" data-s="Ack"><div class="big">A</div><h3>Acknowledge</h3><div>Show you heard the concern before you respond to it.</div><div class="ex">"That makes sense, it's a lot to juggle."</div></div>
+    <div class="card stage-card" data-s="E"><div class="big">E</div><h3>Explore</h3><div>Ask questions to find the real concern underneath.</div><div class="ex">"What's making this term feel so full?"</div></div>
+    <div class="card stage-card" data-s="Res"><div class="big">R</div><h3>Respond</h3><div>Only now, answer what you found and agree a next step.</div><div class="ex">"Let's map week one to your weekends."</div></div>
+  </div>
+  <div class="card tap" tabindex="0" style="margin-top:1em"><h3>Where do the other tools fit?</h3><div class="hint">Click to reveal</div><div class="ans"><b style="color:var(--feel)">Acknowledge:</b> Labelling, Feel and Felt. <b style="color:var(--r)">Explore:</b> Isolate and clarify, GROW Goal and Reality. <b style="color:var(--o)">Respond:</b> Found, Reframe, GROW Options and Way forward.</div></div>
+  <div class="notes">
+    <ul><li>LAER is the order. Every other tool today plugs into one of these four steps.</li><li>Ask: "Which step do we rush?" Usually we jump from Listen straight to Respond.</li><li>Click the bottom card to show where the rest of the session fits.</li></ul>
+    <div class="handoff">Hand-off to <span class="hA"></span> for GROW</div>
+  </div>
+</section>
+
+<section class="slide" data-section="grow" data-mins="2">
+  <div class="kicker">Explore and Respond tool: GROW</div>
+  <h2>GROW, applied to objections</h2>
+  <div class="grid g4">
+    <div class="card stage-card" data-s="G"><div class="big">G</div><h3>Goal</h3><div>Reconnect the student to why they started and what they want.</div><div class="ex">"What made you start the program?"</div></div>
+    <div class="card stage-card" data-s="R"><div class="big">R</div><h3>Reality</h3><div>Get the facts behind the objection. Listen more than you talk.</div><div class="ex">"What's making this term feel so full?"</div></div>
+    <div class="card stage-card" data-s="O"><div class="big">O</div><h3>Options</h3><div>Let the student generate possible paths before you suggest any.</div><div class="ex">"What could make this more manageable?"</div></div>
+    <div class="card stage-card" data-s="W"><div class="big">W</div><h3>Way forward</h3><div>Agree one clear next step the student owns, with a check-in.</div><div class="ex">"What's your first step, and when shall we touch base?"</div></div>
+  </div>
+  <p class="quote">GROW turns an objection into a conversation. The student does most of the thinking.</p>
+  <div class="notes">
+    <ul><li>Many of you know GROW from coaching. Today we use it on the phone with students.</li><li>Key shift: we ask, the student answers. Questions do the persuading, not us.</li><li>Ask: "Which stage do we usually skip?" (Answer is usually Reality: we jump straight to Options.)</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="grow" data-mins="1.5">
+  <div class="kicker">GROW in action</div>
+  <h2>"I think I'll skip next term."</h2>
+  <div class="card steps">
+    <div class="line step"><span class="tag" data-s="G">G</span><span class="who">SSA</span><span>Before we decide anything, can I ask when you were hoping to finish the program?</span></div>
+    <div class="line step"><span class="tag" data-s="G" style="visibility:hidden">G</span><span class="who">Student</span><span>End of next year, ideally.</span></div>
+    <div class="line step"><span class="tag" data-s="R">R</span><span class="who">SSA</span><span>And what does your week look like at the moment?</span></div>
+    <div class="line step"><span class="tag" data-s="R" style="visibility:hidden">R</span><span class="who">Student</span><span>Full-time work and two kids. Weekends are my only time.</span></div>
+    <div class="line step"><span class="tag" data-s="O">O</span><span class="who">SSA</span><span>That's a lot. What are a few ways next term could fit around that?</span></div>
+    <div class="line step"><span class="tag" data-s="O" style="visibility:hidden">O</span><span class="who">Student</span><span>Maybe just one unit? Or starting the readings early?</span></div>
+    <div class="line step"><span class="tag" data-s="W">W</span><span class="who">SSA</span><span>Love that. Let's keep you in one unit, and I'll check in after week two. Sound fair?</span></div>
+    <div class="line step"><span class="tag" data-s="W" style="visibility:hidden">W</span><span class="who">Student</span><span>Yeah, that works.</span></div>
+    <div class="row steps-ctrl"><button class="btn primary" data-steps="next">Reveal next line</button><button class="btn" data-steps="reset">Reset</button></div>
+  </div>
+  <div class="notes">
+    <p><b>Co-host move:</b> <span class="hA"></span> reads the SSA lines, <span class="hB"></span> reads the student lines.</p>
+    <ul><li>Press the right arrow (or Reveal) to show each line. Arrows move to the next slide only once all lines are shown.</li><li>After the last line ask: "Who decided on one unit?" The student did. That's why it sticks.</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="grow" data-mins="2.5">
+  <div class="kicker">Practice round</div>
+  <h2>Which stage is this question?</h2>
+  <div class="task"><b>YOUR TURN</b> Type G, R, O or W in the chat</div>
+  <div id="matchGame"></div>
+  <div class="fb" id="matchScore"></div>
+  <div class="notes">
+    <ul><li>Read each question aloud, give the chat five seconds, then click the most popular answer.</li><li>If the room is split, ask one person from each side to explain. Some questions could sit in two stages, and that's fine: what matters is the order.</li></ul>
+    <div class="handoff">Hand-off to <span class="hB"></span> for Feel, Felt, Found</div>
+  </div>
+</section>
+
+<section class="slide" data-section="fff" data-mins="1.5">
+  <div class="kicker">Acknowledge and Respond tool</div>
+  <h2>Feel, Felt, Found</h2>
+  <div class="grid g3">
+    <div class="card fff-col" data-s="Feel"><h3>Feel</h3><div>Acknowledge the emotion. Name it, don't fix it.</div><span class="starter">"That makes complete sense..."</span><span class="starter">"I can hear how frustrating..."</span></div>
+    <div class="card fff-col" data-s="Felt"><h3>Felt</h3><div>Normalise it. They are not the only one.</div><span class="starter">"Lots of students have felt..."</span><span class="starter">"You're not alone in that..."</span></div>
+    <div class="card fff-col" data-s="Found"><h3>Found</h3><div>Share what genuinely helped others.</div><span class="starter">"What they found was..."</span><span class="starter">"What helped others was..."</span></div>
+  </div>
+  <div class="card steps" style="margin-top:1em">
+    <div class="line step"><span class="who">Student</span><span>"I'm thinking about dropping out. I'm so behind."</span></div>
+    <div class="line step"><span class="tag" data-s="Feel">Feel</span><span>"I can hear how stressful being behind feels, especially with everything else going on."</span></div>
+    <div class="line step"><span class="tag" data-s="Felt">Felt</span><span>"A lot of students have felt exactly the same around this point in the term."</span></div>
+    <div class="line step"><span class="tag" data-s="Found">Found</span><span>"What many found was that focusing on just the next assessment, with a simple catch-up plan, made it feel doable again."</span></div>
+    <div class="row steps-ctrl"><button class="btn primary" data-steps="next">Reveal next line</button><button class="btn" data-steps="reset">Reset</button></div>
+  </div>
+  <div class="notes">
+    <p><b>Co-host move:</b> <span class="hA"></span> reads the student line, <span class="hB"></span> gives the response.</p>
+    <ul><li>Emphasise the pause after Feel. Let it land before moving on.</li><li>The Found must be real. If you don't know what helped others, ask a Reality question instead.</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="fff" data-mins="1">
+  <div class="kicker">Feel, Felt, Found</div>
+  <h2>When to use it, and when not to</h2>
+  <div class="grid g2">
+    <div class="card" style="border-top:7px solid var(--good)"><h3 style="color:var(--good)">Use it when</h3><ul>
+      <li>The objection is emotional: overwhelm, confidence, worry about cost</li>
+      <li>The student is venting and needs to feel heard first</li>
+      <li>You want to open the door before moving into GROW</li>
+    </ul></div>
+    <div class="card" style="border-top:7px solid var(--bad)"><h3 style="color:var(--bad)">Avoid it when</h3><ul>
+      <li>The student asked a direct factual question ("When is census?")</li>
+      <li>They've made an informed decision and want to stop</li>
+      <li>It would sound scripted or rushed</li>
+      <li>You'd have to invent a "Found"</li>
+    </ul></div>
+  </div>
+  <div class="card" style="margin-top:1em"><h3>Make it sound like you</h3><div class="muted">Vary the words. Use the student's own language back to them. Never say "I know exactly how you feel".</div></div>
+  <div class="notes">
+    <ul><li>Ask: "Has anyone had FFF backfire?" Take one story.</li><li>Stress the ethics point: a Found is always true and never a promise.</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="fff" data-mins="1">
+  <div class="kicker">Quick check</div>
+  <h2>Which response lands best?</h2>
+  <div class="task"><b>YOUR TURN</b> Vote A, B or C in the chat</div>
+  <div class="grid g2">
+    <div class="card quiz">
+      <h3>Student: "I'm so behind, I don't see the point."</h3>
+      <button class="q-opt" data-ok="1" data-fb="Real Feel, honest Felt, specific Found.">A. "Being behind feels heavy. Lots of students feel that mid-term, and what they found was that a plan for just the next assessment made it doable."</button>
+      <button class="q-opt" data-fb="'I know exactly how you feel' sounds dismissive, and 'push through' isn't a Found.">B. "I know exactly how you feel. Everyone feels like that. Just push through."</button>
+      <button class="q-opt" data-fb="It argues with the feeling, so the student stops listening.">C. "Honestly, you're not that far behind."</button>
+      <div class="fb"></div>
+    </div>
+    <div class="card quiz">
+      <h3>When is Feel, Felt, Found <u>not</u> the best tool?</h3>
+      <button class="q-opt" data-fb="This is exactly when it helps most.">A. The student is upset about a result</button>
+      <button class="q-opt" data-ok="1" data-fb="Just answer the question. FFF here sounds evasive.">B. The student asks for the census date</button>
+      <button class="q-opt" data-fb="A great fit: there's usually a worry underneath.">C. The student is unsure about enrolling next term</button>
+      <div class="fb"></div>
+    </div>
+  </div>
+  <div class="notes"><p>Take the chat majority, click it, read the feedback aloud. If the room picks a wrong answer, click the right one too and discuss.</p></div>
+</section>
+
+<section class="slide" data-section="fff" data-mins="2.5">
+  <div class="kicker">Build your own</div>
+  <h2>Write a Feel, Felt, Found</h2>
+  <div class="task"><b>YOUR TURN</b> Two minutes: write all three lines and paste them in the chat</div>
+  <div class="grid g2">
+    <div class="card">
+      <label class="fl" style="--c:var(--accent)" for="fffSelect">Pick an objection</label>
+      <select id="fffSelect"></select>
+      <p class="quote" id="fffQuote" style="font-size:1.05em"></p>
+      <div class="row" style="margin-top:1em"><div class="timer" data-secs="120"></div></div>
+    </div>
+    <div class="card">
+      <label class="fl" data-s="Feel" for="fff1">Feel</label><textarea id="fff1" placeholder="Acknowledge the emotion..."></textarea>
+      <label class="fl" data-s="Felt" for="fff2">Felt</label><textarea id="fff2" placeholder="Others have felt..."></textarea>
+      <label class="fl" data-s="Found" for="fff3">Found</label><textarea id="fff3" placeholder="What they found was..."></textarea>
+      <div class="row" style="margin-top:.7em"><button class="btn" id="fffShow">Show a model answer</button></div>
+      <div id="fffModel" style="display:none;margin-top:.6em"></div>
+    </div>
+  </div>
+  <div class="notes">
+    <ul><li>Pick the objection the room dreaded most in the opening poll.</li><li>Start the two-minute timer. Everyone writes in the chat.</li><li>Read two or three responses aloud. Optionally type the best one into the boxes to show it on screen, then reveal the model to compare.</li></ul>
+    <div class="handoff">Hand-off to <span class="hA"></span> for the quick tools</div>
+  </div>
+</section>
+
+<section class="slide" data-section="tools" data-mins="2.5">
+  <div class="kicker">Quick tools</div>
+  <h2>Three more tools for your belt</h2>
+  <div class="grid g3">
+    <div class="card fff-col tap" data-s="Label" tabindex="0"><h3>Labelling</h3><div>Name the emotion you hear, then pause and let them talk.</div><span class="starter">"It sounds like..."</span><span class="starter">"It seems like..."</span><div class="hint">Click for an example</div><div class="ans"><b>Student:</b> "I just don't know if I can keep doing this."<br><b>SSA:</b> "It sounds like you're feeling pretty worn out right now." <i>(pause)</i></div></div>
+    <div class="card fff-col tap" data-s="Iso" tabindex="0"><h3>Isolate and clarify</h3><div>Check it's the real, and only, concern before you answer it.</div><span class="starter">"Apart from that, is there anything else?"</span><span class="starter">"If we could sort that out, would you feel okay to continue?"</span><div class="hint">Click for an example</div><div class="ans"><b>Student:</b> "It's the cost."<br><b>SSA:</b> "Apart from the cost, is there anything else making you hesitate?"</div></div>
+    <div class="card fff-col tap" data-s="Ref" tabindex="0"><h3>Reframe</h3><div>Offer a new way to see the concern, without arguing with it.</div><span class="starter">"Another way to look at it..."</span><span class="starter">"What if..."</span><div class="hint">Click for an example</div><div class="ans"><b>Student:</b> "I'm too busy to study."<br><b>SSA:</b> "That's exactly when one unit can work: it keeps your progress moving while life is busy, so you're not starting from scratch later."</div></div>
+  </div>
+  <div class="notes">
+    <ul><li>Read each tool, then click for the example. <span class="hB"></span> can read the student lines.</li><li>Labelling: the pause matters more than the words. Count to three in your head.</li><li>Isolating stops us answering the first objection when the real one is the second.</li><li>A reframe only works after Acknowledge. Too early, it sounds like arguing.</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="tools" data-mins="1.5">
+  <div class="kicker">Quick check</div>
+  <h2>Which tool would you reach for?</h2>
+  <div class="task"><b>YOUR TURN</b> Vote A, B or C in the chat</div>
+  <div class="grid g3">
+    <div class="card quiz">
+      <h3>The student sighs: "Honestly... I'm just exhausted."</h3>
+      <button class="q-opt" data-ok="1" data-fb="Name it: 'It sounds like you're running on empty.' Then pause.">A. Labelling</button>
+      <button class="q-opt" data-fb="Too early. They need to feel heard first.">B. Reframe</button>
+      <button class="q-opt" data-fb="There's only one concern so far. Acknowledge it first.">C. Isolate and clarify</button>
+      <div class="fb"></div>
+    </div>
+    <div class="card quiz">
+      <h3>"It's the money. And the timing. And I'm not sure about the next unit."</h3>
+      <button class="q-opt" data-fb="Which concern would you reframe? Find the main one first.">A. Reframe</button>
+      <button class="q-opt" data-ok="1" data-fb="Three concerns: find the one that matters most. 'Of those, which is the biggest for you?'">B. Isolate and clarify</button>
+      <button class="q-opt" data-fb="Useful later, but first find out which concern is driving the decision.">C. Feel, Felt, Found</button>
+      <div class="fb"></div>
+    </div>
+    <div class="card quiz">
+      <h3>"If I take a break now, I'll have more time to study later."</h3>
+      <button class="q-opt" data-fb="There's no strong emotion to name here. It's a belief to gently test.">A. Labelling</button>
+      <button class="q-opt" data-fb="It's already one clear concern.">B. Isolate and clarify</button>
+      <button class="q-opt" data-ok="1" data-fb="Offer another view: 'A break often makes restarting harder. One unit keeps the door open.'">C. Reframe</button>
+      <div class="fb"></div>
+    </div>
+  </div>
+  <div class="notes"><p>Take the chat majority for each, click it and read the feedback. Some could work with more than one tool. Ask anyone who disagrees to say why.</p></div>
+</section>
+
+<section class="slide" data-section="tools" data-mins="1">
+  <div class="kicker">Putting it together</div>
+  <h2>Your toolkit on one page</h2>
+  <div class="grid g4">
+    <div class="card stage-card" data-s="L"><div class="big">L</div><h3>Listen</h3><div>Silence, note their words</div></div>
+    <div class="card stage-card" data-s="Ack"><div class="big">A</div><h3>Acknowledge</h3><div>Labelling<br>Feel and Felt</div></div>
+    <div class="card stage-card" data-s="E"><div class="big">E</div><h3>Explore</h3><div>Isolate and clarify<br>GROW: Goal, Reality</div></div>
+    <div class="card stage-card" data-s="Res"><div class="big">R</div><h3>Respond</h3><div>Found, Reframe<br>GROW: Options, Way forward</div></div>
+  </div>
+  <p class="lead" style="margin-top:1em">You don't need every tool on every call. Pick what the moment needs, in the LAER order.</p>
+  <div class="notes">
+    <p>Quick bridge slide. This is the one to screenshot. Ask everyone to grab it now.</p>
+    <div class="handoff">Hand-off: both hosts run the library together</div>
+  </div>
+</section>
+
+<section class="slide" data-section="library" data-mins="3">
+  <div class="kicker">Objection library</div>
+  <h2>Common objections, ready to adapt</h2>
+  <div class="task"><b>YOUR TURN</b> Pick a card for us to open</div>
+  <div class="chips" id="libChips"></div>
+  <div class="grid g4" id="libGrid"></div>
+  <div class="notes">
+    <p><b>Co-host move:</b> one host reads the objection as the student, the other gives the response from the card. Swap each card.</p>
+    <ul><li>Ask the room to pick two cards. Each card shows every tool for that objection.</li><li>For each card ask: "Which tool would you use first, and how would you say it in your own words?"</li><li>These cards are the take-away. Remind people the link will be shared.</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="practice" data-mins="3.5">
+  <div class="kicker">Practice arena · Scenario 1</div>
+  <h2>Priya wants to skip next term</h2>
+  <div class="task"><b>YOUR TURN</b> Vote A, B or C in the chat for each step</div>
+  <div class="card scenario" data-scenario="priya"></div>
+  <div class="notes">
+    <p><b>Co-host move:</b> <span class="hB"></span> reads Priya's lines in character, <span class="hA"></span> reads the options and clicks the chat's choice.</p>
+    <ul><li>Read the feedback aloud after each pick. If the room chose poorly, that's a great teaching moment, so lean into it.</li><li>Restart is available at the end if you want to try the best path.</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="practice" data-mins="3.5">
+  <div class="kicker">Practice arena · Scenario 2</div>
+  <h2>Tom failed his first assessment</h2>
+  <div class="task"><b>YOUR TURN</b> Vote A, B or C in the chat for each step</div>
+  <div class="card scenario" data-scenario="tom"></div>
+  <div class="notes">
+    <p><b>Co-host move:</b> swap roles. <span class="hA"></span> plays Tom, <span class="hB"></span> runs the vote.</p>
+    <ul><li>Ask: "Which LAER step and which tool did the best answer use each time?" (Acknowledge with Feel and Felt, Explore with Reality, Respond with Found and a Way forward.)</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="practice" data-mins="4">
+  <div class="kicker">Practice arena · Live role-play</div>
+  <h2>Your turn on the phone</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>The objection</h3>
+      <div class="deal" id="dealText">Click "Deal an objection" to start.</div>
+      <div class="row"><button class="btn primary" id="dealBtn">Deal an objection</button><span class="muted small" id="roundLbl">Round 0</span></div>
+      <div class="row" style="margin-top:1em"><div class="timer" id="rpTimer"></div></div>
+      <p class="muted small">Roles: one SSA (volunteer), one student (host), everyone else observes.</p>
+    </div>
+    <div class="card check">
+      <h3>Observer checklist</h3>
+      <label><input type="checkbox"> Listened without interrupting</label>
+      <label><input type="checkbox"> Acknowledged the feeling (Labelling or Feel, Felt)</label>
+      <label><input type="checkbox"> Isolated the real concern</label>
+      <label><input type="checkbox"> Explored with questions (Goal, Reality)</label>
+      <label><input type="checkbox"> Let the student suggest options</label>
+      <label><input type="checkbox"> Responded with an honest Found or a Reframe</label>
+      <label><input type="checkbox"> Agreed a clear next step</label>
+      <div class="fb" id="checkScore"></div>
+    </div>
+  </div>
+  <div class="notes">
+    <ul><li>Ask for a volunteer to be the SSA. A host plays the student and should be realistic, not impossible.</li><li>Deal an objection and start the 90-second timer.</li><li>Observers call out in chat what they saw; tick the boxes live.</li><li>Run two rounds with different volunteers. Dealing a new objection resets the checklist and timer.</li><li>If breakout rooms are available, you can instead send groups of three for two rounds.</li></ul>
+    <div class="handoff">Hand-off to <span class="hB"></span> for the lightning round</div>
+  </div>
+</section>
+
+<section class="slide" data-section="lightning" data-mins="2">
+  <div class="kicker">Lightning round</div>
+  <h2>True or false?</h2>
+  <div class="task"><b>YOUR TURN</b> Type T or F as fast as you can</div>
+  <div class="card" id="lightning"></div>
+  <div class="notes"><p>Start the round, read each statement, click the chat's majority answer, read the reason in one sentence and move on. Keep the energy high. Two minutes on the clock.</p>
+    <div class="handoff">Hand-off to <span class="hA"></span> to wrap up</div></div>
+</section>
+
+<section class="slide" data-section="wrap" data-mins="1.5">
+  <div class="kicker">Wrap up</div>
+  <h2>What we'll take onto the phones</h2>
+  <div class="grid g2">
+    <div class="card">
+      <ul>
+        <li>An objection is information, not rejection</li>
+        <li><b style="color:#7bdff2">LAER</b> is the order: Listen, Acknowledge, Explore, Respond</li>
+        <li><b style="color:var(--feel)">Labelling, Feel and Felt</b> to acknowledge</li>
+        <li><b style="color:var(--r)">Isolate and GROW</b> to find the real concern</li>
+        <li><b style="color:var(--o)">Found, Reframe and a Way forward</b> to respond</li>
+        <li>Every Found is honest. Every next step is agreed.</li>
+      </ul>
+      <div class="task" style="margin-top:.6em"><b>YOUR TURN</b> In the chat: one thing you'll try on your next call</div>
+    </div>
+    <div class="card poll" data-compare="conf">
+      <h3>How confident are you now?</h3>
+      <button class="opt" data-value="1">1. Not at all</button>
+      <button class="opt" data-value="2">2. A little</button>
+      <button class="opt" data-value="3">3. Getting there</button>
+      <button class="opt" data-value="4">4. Fairly confident</button>
+      <button class="opt" data-value="5">5. Bring it on</button>
+    </div>
+  </div>
+  <div class="notes">
+    <ul><li>Re-run the confidence poll. The start-of-session average shows underneath for comparison.</li><li>Ask for one commitment each in the chat and read a few aloud.</li></ul>
+  </div>
+</section>
+
+<section class="slide center" data-section="wrap" data-mins="0.5">
+  <div class="kicker">Thank you</div>
+  <h1 class="mega">Questions?</h1>
+  <p class="lead">This session and the objection library stay available after today. Pick one objection this week and try a new tool on it.</p>
+  <div class="hosts"><b class="hA"></b> and <b class="hB"></b> · <span id="podName2">POD C</span></div>
+  <div class="notes"><p>Thank everyone. Share the link in the chat. Note any questions you couldn't answer and follow up with the POD.</p></div>
+</section>
+
+</main>
+
+<footer class="ctrl">
+  <button class="btn" id="prevBtn">← Back</button>
+  <span id="counter">1 / 1</span>
+  <button class="btn primary" id="nextBtn">Next →</button>
+</footer>
+
+<aside class="notes-panel" id="notesPanel" aria-label="Facilitator notes">
+  <div class="np-head">Facilitator notes
+    <span class="stat" id="npLead"></span>
+    <span class="stat" id="npSec"></span>
+    <span class="stat" id="npPace"></span>
+    <span class="spacer"></span>
+    <button class="ghost" data-act="notes">Hide<kbd>N</kbd></button>
+  </div>
+  <div id="npBody"></div>
+</aside>
+
+<div class="overlay" id="runOv"><div class="ov-card"><div class="ov-head"><h2>Run sheet</h2><button class="btn" data-act="runsheet">Close</button></div><p class="muted small" id="rsInfo"></p><div id="runList"></div></div></div>
+<div class="overlay" id="objOv"><div class="ov-card"><div class="ov-head"><h2 id="objTitle"></h2><button class="btn" data-close>Close</button></div><div id="objBody"></div></div></div>
+<div class="sec-banner" id="secBanner"></div>
+
+<script>
+const CONFIG = {
+  hostA: "Greg",
+  hostB: "Milly",
+  pod: "POD C",
+  date: "Session date",
+  roleplaySeconds: 90,
+  lightningSeconds: 120
+};
+
+const SECTIONS = [
+  { id: "welcome", name: "Welcome and warm-up", mins: 4, lead: "A" },
+  { id: "mindset", name: "Objection mindset", mins: 3, lead: "B" },
+  { id: "laer", name: "LAER: the backbone", mins: 3, lead: "B" },
+  { id: "grow", name: "GROW for objections", mins: 6, lead: "A" },
+  { id: "fff", name: "Feel, Felt, Found", mins: 6, lead: "B" },
+  { id: "tools", name: "Quick tools", mins: 5, lead: "A" },
+  { id: "library", name: "Objection library", mins: 3, lead: "AB" },
+  { id: "practice", name: "Practice arena", mins: 11, lead: "AB" },
+  { id: "lightning", name: "Lightning round", mins: 2, lead: "B" },
+  { id: "wrap", name: "Wrap up", mins: 2, lead: "A" }
+];
+
+const OBJECTIONS = [
+  { cat: "Time",
+    label: "It sounds like work is taking everything you've got right now.",
+    isolate: "Apart from work, is there anything else making next term feel hard?",
+    reframe: "A busy stretch is when one unit helps most: you keep your progress without taking on too much.",
+    text: "Work is flat out at the moment. I think I'll skip next term and come back later.",
+    under: "Overwhelm and fear of falling behind. Often they haven't seen a realistic plan for fitting study around work.",
+    feel: "That makes complete sense. When work ramps up, study is usually the first thing that feels like it has to give.",
+    felt: "A lot of students working full time have felt exactly the same at this point in the program.",
+    found: "What many found was that mapping out their weekly hours, and using the support available, meant they kept momentum without burning out.",
+    grow: ["If work wasn't a factor, when would you ideally like to finish?", "Roughly how many hours a week can you realistically give study right now?", "What would need to be true for next term to feel manageable?", "Shall we map out the first two weeks of the unit together now?"] },
+  { cat: "Cost",
+    label: "It sounds like the money is really weighing on you.",
+    isolate: "If the payment side could be sorted, would you feel good about continuing?",
+    reframe: "It might help to look at it as an investment in the goal you started with, rather than a cost this term.",
+    text: "Honestly, it's a lot of money and I'm not sure I can justify it right now.",
+    under: "Value is unclear, or there's genuine cash flow pressure. Find out which one it is.",
+    feel: "I appreciate you being upfront about that. It's a big investment and it's right to think it through.",
+    felt: "Plenty of students have felt the same, especially partway through when the finish line feels far away.",
+    found: "What they found helpful was revisiting why they started and checking the payment options before making a call.",
+    grow: ["What was the main reason you started the program?", "Is it the overall cost, or the timing of the payment, that's the pressure?", "Would it help to look at the payment options together?", "If I send the fee details today, can we reconnect on Thursday?"] },
+  { cat: "Confidence",
+    label: "It sounds like that result really knocked your confidence.",
+    isolate: "Is it this one result, or has the whole unit been feeling hard?",
+    reframe: "That feedback is actually a map: it shows exactly what to fix to lift your next mark.",
+    text: "I failed my last assessment. Maybe this just isn't for me.",
+    under: "Disappointment and self-doubt. One result has turned into a story about their ability.",
+    feel: "I can hear how disappointing that was. It's tough to put the work in and not get the mark you wanted.",
+    felt: "Lots of students have felt exactly that after a tough assessment, particularly early in the program.",
+    found: "What they found was that one result rarely decides a unit, and going through the feedback with support made the next one much easier.",
+    grow: ["What result would you be happy with by the end of this unit?", "What did the feedback say, and how much is that assessment worth?", "Who or what could help: your course facilitator, study support, a study plan?", "Can we book a time this week to go through the feedback?"] },
+  { cat: "Delay",
+    label: "It sounds like you don't feel any pressure on timing.",
+    isolate: "Is it just timing, or is something else making you want to wait?",
+    reframe: "Enrolling now keeps your options open: it's easier to adjust a plan than to restart one.",
+    text: "There's no rush. I'll just enrol later.",
+    under: "Low urgency, or a worry they haven't said out loud yet.",
+    feel: "Totally fair, and it's good that you're thinking about timing.",
+    felt: "Others have felt the same, especially when the end date of the program feels a long way off.",
+    found: "What a lot of them found was that a break was harder to come back from than expected, so keeping one unit going kept them on track.",
+    grow: ["When are you hoping to graduate?", "If you pause now, what does that do to your finish date?", "What would make enrolling now feel easier?", "Would you like me to check next term's enrolment with you now?"] },
+  { cat: "Difficulty",
+    label: "It sounds like the outline looks pretty daunting.",
+    isolate: "Is it the content itself, or the time it might take, that worries you?",
+    reframe: "Feeling stretched usually means you're learning exactly what the program is there to teach.",
+    text: "The next unit looks really technical. I don't think I can do it.",
+    under: "Fear of the unknown and imposter feelings.",
+    feel: "That's a really normal reaction when you see a unit outline for the first time.",
+    felt: "Many students without a technical background have felt the same about this unit.",
+    found: "What they found was that the unit builds from the basics week by week, and starting early on the first module made a big difference.",
+    grow: ["What would you like to be able to do by the end of this unit?", "Which part of the outline worries you most?", "What support has helped you in past units?", "Shall we look at week one together so you know exactly what's coming?"] },
+  { cat: "Value",
+    label: "It sounds like you're disappointed with how it's gone so far.",
+    isolate: "Is it the program overall, or one particular unit?",
+    reframe: "Knowing what doesn't fit is useful: it helps us choose the units that do.",
+    text: "The course isn't really what I expected.",
+    under: "A gap between expectations and experience, or one frustrating unit. Find out which.",
+    feel: "Thanks for telling me. It's frustrating when something doesn't match what you signed up for.",
+    felt: "Some students have felt that way at this stage, particularly in the core units.",
+    found: "What they found was that later units connected much more directly to their career goals once they could see the full pathway.",
+    grow: ["What were you hoping to get out of the program when you started?", "Which parts have and haven't matched that so far?", "Which upcoming units connect best to your goal?", "Can I send you the unit list for the rest of your program?"] },
+  { cat: "Third party",
+    label: "It sounds like this is a decision you want to make together.",
+    isolate: "Apart from talking it over with them, is there anything you're unsure about yourself?",
+    reframe: "Bringing them a clear plan can make that conversation much easier.",
+    text: "I need to talk to my partner first.",
+    under: "A genuine joint decision, or a polite way to end the call. Check which, kindly.",
+    feel: "Of course. It makes sense to involve them in a decision like this.",
+    felt: "Lots of students have felt it's important to have their family on board.",
+    found: "What they found useful was having the key details in writing, so that conversation was easy.",
+    grow: ["What do you think your partner will want to know?", "How do you feel about it yourself?", "What information would make that conversation easier?", "I'll email a summary now. When's a good time to touch base after you've talked?"] },
+  { cat: "Contact",
+    label: "It sounds like you've got things under control.",
+    isolate: "Is it the phone call itself, or would you rather not hear from us at all?",
+    reframe: "Think of me as a shortcut: one quick call can save you chasing deadlines later.",
+    text: "I'm fine. I don't really need a call from you.",
+    under: "They see the call as admin or pressure. Show value quickly, or respect the boundary.",
+    feel: "Totally understand, and I appreciate you picking up.",
+    felt: "A lot of students feel the same, especially when things are going well.",
+    found: "What they found was that a two-minute check-in saved them time later, like catching an enrolment deadline early.",
+    grow: ["What's the main thing you want to get done this term?", "Is there anything coming up you haven't had a chance to look at?", "Would email or text suit you better for quick updates?", "I'll send a short note with the key dates. Reach out any time."] }
+];
+
+const MATCH = [
+  { q: "What would you like to have achieved by the end of this term?", a: "G" },
+  { q: "How many hours a week can you actually study right now?", a: "R" },
+  { q: "What has worked for you in past units when things got busy?", a: "O" },
+  { q: "So what's the first step you'll take before Friday?", a: "W" },
+  { q: "What's getting in the way at the moment?", a: "R" },
+  { q: "What's the main reason you started this program?", a: "G" },
+  { q: "If you could design the ideal plan, what would it include?", a: "O" },
+  { q: "When shall we check in to see how it's going?", a: "W" }
+];
+
+const SCENARIOS = {
+  priya: {
+    name: "Priya",
+    opening: "Hi. Look, work has been crazy. I'm thinking I'll just skip next term.",
+    steps: [
+      { choices: [
+        { t: "That's completely understandable, work can take over. Can I ask what's making this term feel so full?", pts: 3, fb: "Acknowledge first, then Explore with a Reality question. Priya feels heard and opens up.", reply: "We're short staffed and I'm doing extra shifts. I just can't see when I'd fit study in." },
+        { t: "If you skip a term you'll fall behind and it'll take longer to graduate.", pts: 1, fb: "True, but it leads with consequences before acknowledging the feeling. It feels like pressure.", reply: "Yeah, I know. But we're short staffed and I'm doing extra shifts. I can't see when I'd fit study in." },
+        { t: "No problem, I'll update your record. Let us know when you're ready to come back.", pts: 0, fb: "Accepts the objection at face value. The real concern never comes out, and Priya may not return.", reply: "Okay... it's just that we're short staffed and I can't see when I'd fit study in." } ] },
+      { choices: [
+        { t: "If we planned it realistically, how many hours a week do you think you could give study?", pts: 3, fb: "A Reality question. Gets concrete facts to build a plan from.", reply: "Hmm. Realistically, maybe six or seven hours, mostly on weekends." },
+        { t: "Lots of students work full time and still manage it. You'll be fine!", pts: 1, fb: "Well meant, but a Found without a Feel lands as 'just try harder'.", reply: "I don't know about that. I guess I'd have six or seven hours on weekends, but that's it." },
+        { t: "Have you thought about just studying at night?", pts: 1, fb: "Jumps to a solution before understanding her reality. Let her generate the options.", reply: "Nights are when I sleep! Weekends maybe, six or seven hours tops." } ] },
+      { choices: [
+        { t: "Six or seven hours is a solid base. Shall we map week one of the unit to your weekends now, and I'll check in after your first assessment?", pts: 3, fb: "A clear Way forward: a specific action, an agreed check-in, and Priya keeps ownership.", reply: "Yeah, that actually sounds doable. Let's do it." },
+        { t: "Great, so you'll enrol then?", pts: 1, fb: "Closes too hard. With no plan, the original worry is still there.", reply: "Um... I guess? I'm still not sure how I'll fit it in." },
+        { t: "Okay, have a think about it and let me know.", pts: 0, fb: "No commitment. The decision is left floating and momentum is lost.", reply: "Sure, I'll think about it." } ] }
+    ],
+    debrief: "Best path follows LAER: Acknowledge, Explore the real concern with Reality questions, then Respond with a plan Priya helped build."
+  },
+  tom: {
+    name: "Tom",
+    opening: "I got 38 on my first assignment. Honestly, I'm thinking of dropping the unit before census.",
+    steps: [
+      { choices: [
+        { t: "I'm sorry, that's a really disappointing result, especially after the effort you put in. A lot of students have felt that way after a first assessment.", pts: 3, fb: "Feel and Felt done naturally. Tom feels heard and less alone.", reply: "Yeah, it really knocked me. I just don't think I'm cut out for this." },
+        { t: "38 isn't great, but you've still got time to pass.", pts: 1, fb: "Accurate but cold. It skips the emotion, so he can't hear the logic yet.", reply: "I guess. I just don't think I'm cut out for this." },
+        { t: "If you drop before census you won't pay for it, so that might be smart.", pts: 0, fb: "Hands him the exit before understanding the situation. Drop decisions should be informed, not encouraged.", reply: "Maybe. I just don't think I'm cut out for this, to be honest." } ] },
+      { choices: [
+        { t: "What did the feedback on the assignment say?", pts: 3, fb: "A Reality question. It moves Tom from a story ('I'm not cut out for this') to facts.", reply: "Mostly my referencing and structure. And it's only worth 20 percent." },
+        { t: "Of course you are! Don't be so hard on yourself.", pts: 1, fb: "Kind, but it argues with his feeling instead of exploring it.", reply: "Thanks, but... the feedback was mostly about referencing and structure. It's only 20 percent." },
+        { t: "Would you rather switch to a different program?", pts: 0, fb: "Jumps to a big option with no information. It may confirm his fear.", reply: "I don't know. The feedback was mostly referencing and structure. It was only worth 20 percent." } ] },
+      { choices: [
+        { t: "That's really useful. Students who've gone through their feedback with study support have found the next assessment much easier. Want me to book that in before your next one?", pts: 3, fb: "An honest Found plus a specific, supported, time-bound Way forward.", reply: "Yeah, okay. That would actually help." },
+        { t: "Okay, so you'll be fine then.", pts: 1, fb: "Minimises the problem. With no plan to fix referencing, the same result could happen again.", reply: "I suppose. I still don't know how to fix the referencing though." },
+        { t: "Up to you. Let me know what you decide before census.", pts: 0, fb: "Leaves him alone with the decision at his lowest point.", reply: "Okay. I'll probably just drop it then." } ] }
+    ],
+    debrief: "Best path follows LAER: Acknowledge with Feel and Felt, Explore with a Reality question, then Respond with an honest Found and an agreed next step."
+  }
+};
+
+const LIGHTNING = [
+  { q: "Feel, Felt, Found should be read word for word as a script.", a: false, why: "Use the structure, not the exact words. Scripted lines sound fake." },
+  { q: "In LAER, you Respond before you Explore.", a: false, why: "Explore first. Responding too early answers the wrong concern." },
+  { q: "Isolating means asking 'Apart from that, is there anything else?' before you respond.", a: true, why: "It makes sure you answer the real concern, not just the first one." },
+  { q: "Reframing means telling the student their concern is wrong.", a: false, why: "A reframe adds a new view. It never argues with how they feel." },
+  { q: "A Found should only include outcomes you can genuinely stand behind.", a: true, why: "Never invent results or make promises." },
+  { q: "Way forward means the SSA decides the next step for the student.", a: false, why: "Agree it together. The student owns the commitment." },
+  { q: "When labelling, you name the emotion and then pause.", a: true, why: "The pause gives the student room to tell you more." },
+  { q: "If a student says 'please stop calling', keep pushing with Feel, Felt, Found.", a: false, why: "Respect the boundary and offer another contact channel." }
+];
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const slides = $$(".slide");
+let cur = 0, running = false, sessSec = 0, secSec = 0, curSec = null, presenter = null, bannerTimer = null, startWall = null;
+const actual = {};
+const TOTAL = SECTIONS.reduce((a, s) => a + s.mins, 0) * 60;
+const clockTime = t => new Date(t).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit" });
+
+const fmt = s => { const a = Math.abs(Math.round(s)); return (s < 0 ? "-" : "") + String(Math.floor(a / 60)).padStart(2, "0") + ":" + String(a % 60).padStart(2, "0"); };
+const leadName = l => l === "A" ? CONFIG.hostA : l === "B" ? CONFIG.hostB : CONFIG.hostA + " and " + CONFIG.hostB;
+const secOf = i => SECTIONS.find(s => s.id === slides[i].dataset.section);
+const plannedStart = id => { let t = 0; for (const s of SECTIONS) { if (s.id === id) break; t += s.mins; } return t * 60; };
+const plannedEnd = id => plannedStart(id) + SECTIONS.find(s => s.id === id).mins * 60;
+const slideTitle = i => { const h = $("h1, h2", slides[i]); return h ? h.textContent.replace(/\s+/g, " ").trim() : "Slide " + (i + 1); };
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function go(n) {
+  n = Math.max(0, Math.min(slides.length - 1, n));
+  slides[cur].classList.remove("active");
+  cur = n;
+  slides[cur].classList.add("active");
+  slides[cur].scrollTop = 0;
+  const sec = secOf(cur);
+  if (sec.id !== curSec) {
+    if (curSec !== null) banner(sec);
+    curSec = sec.id;
+    secSec = 0;
+    markStart();
+  }
+  try { history.replaceState(null, "", "#" + (cur + 1)); } catch (e) {}
+  render();
+}
+
+function next() {
+  const st = $(".steps", slides[cur]);
+  if (st) {
+    const hidden = $$(".step:not(.on)", st);
+    if (hidden.length) { hidden[0].classList.add("on"); return; }
+  }
+  go(cur + 1);
+}
+const prev = () => go(cur - 1);
+
+function banner(sec) {
+  const b = $("#secBanner");
+  const idx = SECTIONS.indexOf(sec) + 1;
+  b.innerHTML = `<div class="k">Part ${idx} of ${SECTIONS.length}</div><div class="n">${sec.name}</div><div class="m">${sec.mins} minutes · led by ${esc(leadName(sec.lead))}</div>`;
+  b.classList.add("show");
+  clearTimeout(bannerTimer);
+  bannerTimer = setTimeout(() => b.classList.remove("show"), 1800);
+}
+
+function markStart() {
+  if (startWall !== null && !actual[curSec]) actual[curSec] = { sess: sessSec, wall: Date.now() };
+}
+
+function pace() {
+  if (!running && sessSec === 0) return { txt: "Not started", col: "var(--muted)" };
+  const end = plannedEnd(curSec), start = plannedStart(curSec);
+  if (sessSec > end) return { txt: fmt(sessSec - end) + " behind plan", col: "var(--bad)" };
+  if (sessSec < start) return { txt: fmt(start - sessSec) + " ahead of plan", col: "var(--o)" };
+  return { txt: "On track", col: "var(--good)" };
+}
+
+function render() {
+  const sec = secOf(cur);
+  $("#secPill").textContent = sec.name;
+  $("#counter").textContent = (cur + 1) + " / " + slides.length;
+  $("#progFill").style.width = ((cur + 1) / slides.length * 100) + "%";
+  $("#prevBtn").disabled = cur === 0;
+  $("#nextBtn").disabled = cur === slides.length - 1;
+  const n = $(".notes", slides[cur]);
+  $("#npBody").innerHTML = `<p class="muted">Slide target: ${slides[cur].dataset.mins} min · Next: ${cur < slides.length - 1 ? esc(slideTitle(cur + 1)) : "End"}</p>` + (n ? n.innerHTML : "");
+  $("#npLead").textContent = "Lead: " + leadName(sec.lead);
+  $$(".agenda-row").forEach(r => r.classList.toggle("now", r.dataset.sec === sec.id));
+  clocks();
+  syncPresenter();
+}
+
+function clocks() {
+  const sec = secOf(cur), left = sec.mins * 60 - secSec, over = left < 0;
+  const leftTxt = over ? fmt(-left) + " over" : fmt(left) + " left";
+  const secTxt = sec.name + ": " + leftTxt;
+  $("#rcLeft").textContent = leftTxt;
+  $(".runclock").classList.toggle("over", over);
+  const p = pace();
+  $("#rcPace").textContent = p.txt;
+  $("#rcPace").style.color = p.col;
+  $("#npSec").textContent = secTxt;
+  $("#npSec").style.color = over ? "var(--bad)" : "";
+  $("#npPace").textContent = p.txt;
+  $("#npPace").style.color = p.col;
+  const btn = running ? "Pause run sheet" : (sessSec ? "Resume run sheet" : "Start run sheet");
+  $("#timerBtn").innerHTML = btn + "<kbd>T</kbd>";
+  if ($("#runOv").classList.contains("open")) drawRunSheet();
+  if (presenter && !presenter.closed) {
+    try {
+      const d = presenter.document;
+      d.getElementById("pvSess").textContent = leftTxt;
+      d.getElementById("pvSess").style.color = over ? "#ff7b7b" : "";
+      d.getElementById("pvSec").textContent = sec.name;
+      d.getElementById("pvPace").textContent = p.txt;
+      d.getElementById("pvPace").style.color = p.col.startsWith("var") ? getComputedStyle(document.documentElement).getPropertyValue(p.col.slice(4, -1)) : p.col;
+      d.getElementById("pvTimer").textContent = btn;
+    } catch (e) {}
+  }
+}
+
+function toggleTimer() {
+  running = !running;
+  if (running && startWall === null) { startWall = Date.now(); markStart(); }
+  clocks();
+}
+
+function drawRunSheet() {
+  const ci = SECTIONS.findIndex(s => s.id === curSec);
+  $("#rsInfo").textContent = startWall
+    ? "Started " + clockTime(startWall) + " · planned finish " + clockTime(startWall + TOTAL * 1000) + " · " + pace().txt
+    : "Press T (or Start run sheet) when you begin. Planned times then show as clock times.";
+  $("#runList").innerHTML = SECTIONS.map((s, i) => {
+    const ps = plannedStart(s.id), a = actual[s.id];
+    const when = startWall ? clockTime(startWall + ps * 1000) : "+" + fmt(ps);
+    let st = i === ci ? "Now" : "";
+    if (a) {
+      const diff = a.sess - ps;
+      st = (i === ci ? "Now · " : "") + (Math.abs(diff) < 30 ? "on time" : fmt(Math.abs(diff)) + (diff > 0 ? " late" : " early"));
+    }
+    const first = slides.findIndex(sl => sl.dataset.section === s.id);
+    const cls = i < ci ? " done" : i === ci ? " now" : "";
+    const col = a && a.sess - ps >= 30 ? "var(--bad)" : a ? "var(--good)" : "var(--accent)";
+    return `<button class="rs-row${cls}" data-go="${first}"><span>${when}</span><span><b>${esc(s.name)}</b></span><span class="ld">${esc(leadName(s.lead))}</span><span>${s.mins} min</span><span class="st" style="color:${col}">${st}</span></button>`;
+  }).join("");
+  $$(".rs-row").forEach(r => r.onclick = () => { go(+r.dataset.go); $("#runOv").classList.remove("open"); });
+}
+setInterval(() => { if (running) { sessSec++; secSec++; } clocks(); }, 1000);
+
+function toggleNotes() {
+  const p = $("#notesPanel");
+  p.classList.toggle("open");
+  $("#notesBtn").classList.toggle("on", p.classList.contains("open"));
+}
+function toggleRunSheet() { const o = $("#runOv"); o.classList.toggle("open"); if (o.classList.contains("open")) drawRunSheet(); }
+function toggleFull() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {});
+  else document.exitFullscreen && document.exitFullscreen();
+}
+
+function openPresenter() {
+  if (presenter && !presenter.closed) { presenter.focus(); return; }
+  presenter = window.open("", "podc_presenter", "width=980,height=760");
+  if (!presenter) { alert("Please allow pop-ups for this page to open the presenter view."); return; }
+  const d = presenter.document;
+  d.open();
+  d.write(`<!DOCTYPE html><html lang="en-AU"><head><meta charset="UTF-8"><title>Presenter view</title><style>
+  body{margin:0;background:#0b1220;color:#f5f7fb;font-family:Inter,"Segoe UI",system-ui,sans-serif;font-size:19px;line-height:1.45}
+  .top{display:flex;flex-wrap:wrap;gap:1em;align-items:center;padding:.7em 1em;background:#070d18;border-bottom:1px solid #2f4370;font-weight:700}
+  .top span{white-space:nowrap}#pvSess{font-size:1.5em;color:#ffd166}
+  .wrap{padding:1em 1.3em}h1{margin:.1em 0;font-size:1.7em}.meta{color:#c3cee0}
+  .notes{background:#17140a;border-left:5px solid #ffd166;border-radius:10px;padding:.6em 1.1em;margin:1em 0}
+  .handoff{display:inline-block;background:#ffd166;color:#1a1300;font-weight:800;border-radius:8px;padding:.15em .7em}
+  button{font:inherit;font-weight:700;background:#1b2a48;color:#f5f7fb;border:1px solid #2f4370;border-radius:10px;padding:.45em 1em;cursor:pointer}
+  button.p{background:#ffd166;color:#1a1300}.nx{color:#c3cee0}</style></head><body>
+  <div class="top"><span id="pvSess"></span><span id="pvSec"></span><span id="pvPace"></span><span style="flex:1"></span>
+  <button id="pvTimer">Start run sheet</button><button id="pvPrev">Back</button><button class="p" id="pvNext">Next</button></div>
+  <div class="wrap"><div class="meta" id="pvMeta"></div><h1 id="pvTitle"></h1><div class="notes" id="pvNotes"></div><div class="nx" id="pvNextT"></div></div></body></html>`);
+  d.close();
+  d.getElementById("pvNext").onclick = next;
+  d.getElementById("pvPrev").onclick = prev;
+  d.getElementById("pvTimer").onclick = toggleTimer;
+  d.addEventListener("keydown", onKey);
+  syncPresenter();
+  clocks();
+}
+
+function syncPresenter() {
+  if (!presenter || presenter.closed) return;
+  try {
+    const d = presenter.document, sec = secOf(cur), n = $(".notes", slides[cur]);
+    d.getElementById("pvMeta").textContent = `Slide ${cur + 1} of ${slides.length} · ${sec.name} · Lead: ${leadName(sec.lead)} · Slide target: ${slides[cur].dataset.mins} min`;
+    d.getElementById("pvTitle").textContent = slideTitle(cur);
+    d.getElementById("pvNotes").innerHTML = n ? n.innerHTML : "<p>No notes for this slide.</p>";
+    d.getElementById("pvNextT").textContent = cur < slides.length - 1 ? "Next slide: " + slideTitle(cur + 1) : "Last slide";
+  } catch (e) {}
+}
+
+function onKey(e) {
+  const t = e.target;
+  if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable)) return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key;
+  if (k === "ArrowRight" || k === "PageDown") { e.preventDefault(); next(); }
+  else if (k === "ArrowLeft" || k === "PageUp") { e.preventDefault(); prev(); }
+  else if (k === "Home") go(0);
+  else if (k === "End") go(slides.length - 1);
+  else if (k === "n" || k === "N") toggleNotes();
+  else if (k === "r" || k === "R") toggleRunSheet();
+  else if (k === "p" || k === "P") openPresenter();
+  else if (k === "f" || k === "F") toggleFull();
+  else if (k === "t" || k === "T") toggleTimer();
+  else if (k === "Escape") $$(".overlay.open").forEach(o => o.classList.remove("open"));
+}
+document.addEventListener("keydown", onKey);
+
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-act]");
+  if (a) {
+    const act = a.dataset.act;
+    if (act === "runsheet") toggleRunSheet();
+    if (act === "notes") toggleNotes();
+    if (act === "presenter") openPresenter();
+    if (act === "full") toggleFull();
+  }
+  if (e.target.closest("[data-close]") || e.target.classList.contains("overlay")) $$(".overlay.open").forEach(o => o.classList.remove("open"));
+  const tap = e.target.closest(".tap");
+  if (tap) tap.classList.toggle("shown");
+  const sb = e.target.closest("[data-steps]");
+  if (sb) {
+    const st = sb.closest(".steps");
+    if (sb.dataset.steps === "reset") $$(".step", st).forEach(s => s.classList.remove("on"));
+    else { const h = $(".step:not(.on)", st); if (h) h.classList.add("on"); }
+  }
+});
+document.addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("tap")) { e.preventDefault(); e.target.classList.toggle("shown"); }
+});
+
+$("#timerBtn").onclick = toggleTimer;
+$("#nextBtn").onclick = next;
+$("#prevBtn").onclick = prev;
+
+function buildAgenda() {
+  let t = 0;
+  const html = SECTIONS.map(s => {
+    const first = slides.findIndex(sl => sl.dataset.section === s.id);
+    const row = `<button class="agenda-row" data-sec="${s.id}" data-go="${first}"><span class="at">${fmt(t * 60)}</span><span class="nm">${s.name}</span><span class="ld">${esc(leadName(s.lead))}</span><span class="mn">${s.mins} min</span></button>`;
+    t += s.mins;
+    return row;
+  }).join("");
+  $("#agendaSlide").innerHTML = html;
+  $$(".agenda-row").forEach(r => r.onclick = () => go(+r.dataset.go));
+}
+
+function setupPolls() {
+  $$(".poll").forEach(p => {
+    $$(".opt", p).forEach(o => {
+      o.dataset.n = 0;
+      o.innerHTML = `<span class="bar"></span><span class="lbl">${o.innerHTML}</span><span class="cnt">0</span>`;
+      o.addEventListener("click", e => vote(o, e.shiftKey ? -1 : 1));
+      o.addEventListener("contextmenu", e => { e.preventDefault(); vote(o, -1); });
+    });
+    const m = document.createElement("div");
+    m.className = "poll-meta";
+    m.innerHTML = `<span class="pm"></span><button type="button">Reset poll</button>`;
+    $("button", m).onclick = () => { $$(".opt", p).forEach(o => o.dataset.n = 0); drawPolls(); };
+    p.appendChild(m);
+  });
+  drawPolls();
+}
+function vote(o, d) { o.dataset.n = Math.max(0, +o.dataset.n + d); drawPolls(); }
+function pollStats(p) {
+  const opts = $$(".opt", p), total = opts.reduce((a, o) => a + +o.dataset.n, 0);
+  const valued = opts.some(o => o.dataset.value);
+  const avg = valued && total ? opts.reduce((a, o) => a + +o.dataset.n * +(o.dataset.value || 0), 0) / total : null;
+  return { opts, total, avg };
+}
+function drawPolls() {
+  $$(".poll").forEach(p => {
+    const { opts, total, avg } = pollStats(p);
+    const max = Math.max(1, ...opts.map(o => +o.dataset.n));
+    opts.forEach(o => { $(".bar", o).style.width = (+o.dataset.n / max * 100) + "%"; $(".cnt", o).textContent = o.dataset.n; });
+    let txt = total + (total === 1 ? " vote" : " votes") + (avg !== null ? " · average " + avg.toFixed(1) : "");
+    if (p.dataset.compare) {
+      const src = $(`.poll[data-poll-id="${p.dataset.compare}"]`), s = src ? pollStats(src) : null;
+      if (s && s.avg !== null) txt += " · start of session " + s.avg.toFixed(1);
+    }
+    $(".pm", p).textContent = txt;
+  });
+}
+
+function setupQuizzes() {
+  $$(".quiz").forEach(q => {
+    $$(".q-opt", q).forEach(b => b.addEventListener("click", () => {
+      const ok = b.dataset.ok === "1";
+      b.classList.add(ok ? "right" : "wrong");
+      const fb = $(".fb", q);
+      if (fb) { fb.textContent = (ok ? "Yes! " : "Not quite. ") + (b.dataset.fb || ""); fb.className = "fb " + (ok ? "good" : "bad"); }
+    }));
+  });
+}
+
+function buildMatch() {
+  const names = { G: "Goal", R: "Reality", O: "Options", W: "Way forward" };
+  const box = $("#matchGame");
+  let firstTry = 0, done = 0;
+  MATCH.forEach((m, i) => {
+    const row = document.createElement("div");
+    row.className = "match-row";
+    row.innerHTML = `<div class="q">${i + 1}. ${esc(m.q)}</div><div>${["G", "R", "O", "W"].map(s => `<button class="q-opt" data-s="${s}" title="${names[s]}">${s}</button>`).join("")}</div>`;
+    let tries = 0;
+    $$(".q-opt", row).forEach(b => b.onclick = () => {
+      if (row.classList.contains("done")) return;
+      tries++;
+      if (b.dataset.s === m.a) {
+        b.classList.add("right");
+        row.classList.add("done");
+        row.dataset.s = m.a;
+        $(".q", row).insertAdjacentHTML("beforeend", ` <b>(${names[m.a]})</b>`);
+        done++;
+        if (tries === 1) firstTry++;
+        $("#matchScore").textContent = `${done} of ${MATCH.length} answered · ${firstTry} right first time`;
+        $("#matchScore").className = "fb good";
+      } else b.classList.add("wrong");
+    });
+    box.appendChild(row);
+  });
+}
+
+function buildFFF() {
+  const sel = $("#fffSelect");
+  sel.innerHTML = OBJECTIONS.map((o, i) => `<option value="${i}">${esc(o.cat)}: ${esc(o.text)}</option>`).join("");
+  const upd = () => {
+    const o = OBJECTIONS[+sel.value];
+    $("#fffQuote").textContent = '"' + o.text + '"';
+    ["#fff1", "#fff2", "#fff3"].forEach(id => $(id).value = "");
+    $("#fffModel").style.display = "none";
+    $("#fffModel").innerHTML = `<div class="detail-line" data-s="Feel"><b>Feel:</b> ${esc(o.feel)}</div><div class="detail-line" data-s="Felt"><b>Felt:</b> ${esc(o.felt)}</div><div class="detail-line" data-s="Found"><b>Found:</b> ${esc(o.found)}</div>`;
+  };
+  sel.onchange = upd;
+  $("#fffShow").onclick = () => { const m = $("#fffModel"); m.style.display = m.style.display === "none" ? "block" : "none"; };
+  upd();
+}
+
+function buildLibrary() {
+  const cats = ["All", ...new Set(OBJECTIONS.map(o => o.cat))];
+  let active = "All";
+  const chips = $("#libChips"), grid = $("#libGrid");
+  const draw = () => {
+    chips.innerHTML = cats.map(c => `<button class="chip${c === active ? " on" : ""}">${esc(c)}</button>`).join("");
+    $$(".chip", chips).forEach(b => b.onclick = () => { active = b.textContent; draw(); });
+    grid.innerHTML = OBJECTIONS.map((o, i) => (active === "All" || o.cat === active) ? `<button class="card obj-card" data-i="${i}"><span class="cat">${esc(o.cat)}</span><span class="txt">"${esc(o.text)}"</span><span class="hint">Open card</span></button>` : "").join("");
+    $$(".obj-card", grid).forEach(c => c.onclick = () => openObjection(+c.dataset.i));
+  };
+  draw();
+}
+function openObjection(i) {
+  const o = OBJECTIONS[i], L = ["G", "R", "O", "W"], N = ["Goal", "Reality", "Options", "Way forward"];
+  $("#objTitle").textContent = '"' + o.text + '"';
+  $("#objBody").innerHTML = `<p class="muted"><b style="color:var(--accent)">Often underneath:</b> ${esc(o.under)}</p>
+    <h3>Quick tools</h3>
+    <div class="detail-line" data-s="Label"><b>Label:</b> ${esc(o.label)}</div>
+    <div class="detail-line" data-s="Iso"><b>Isolate:</b> ${esc(o.isolate)}</div>
+    <div class="detail-line" data-s="Ref"><b>Reframe:</b> ${esc(o.reframe)}</div>
+    <h3 style="margin-top:1em">Feel, Felt, Found</h3>
+    <div class="detail-line" data-s="Feel"><b>Feel:</b> ${esc(o.feel)}</div>
+    <div class="detail-line" data-s="Felt"><b>Felt:</b> ${esc(o.felt)}</div>
+    <div class="detail-line" data-s="Found"><b>Found:</b> ${esc(o.found)}</div>
+    <h3 style="margin-top:1em">GROW questions</h3>
+    ${o.grow.map((q, k) => `<div class="detail-line" data-s="${L[k]}"><b>${N[k]}:</b> ${esc(q)}</div>`).join("")}`;
+  $("#objOv").classList.add("open");
+}
+
+function runScenario(el) {
+  const sc = SCENARIOS[el.dataset.scenario];
+  let step, score, log;
+  const max = sc.steps.length * 3;
+  const reset = () => { step = 0; score = 0; log = [{ who: "stu", t: sc.opening }]; draw(); };
+  const chat = () => `<div class="chat">${log.map(m => `<div class="msg ${m.who}"><b>${m.who === "stu" ? sc.name : "SSA"}</b>${esc(m.t)}</div>`).join("")}</div>`;
+  const draw = () => {
+    if (step >= sc.steps.length) {
+      const pct = score / max;
+      const verdict = pct >= .85 ? "Excellent. That's a conversation the student will remember." : pct >= .5 ? "Solid. A couple of moments to sharpen." : "Plenty to learn from. Let's try the best path.";
+      el.innerHTML = chat() + `<div class="sc-fb"><div class="score">Room score: ${score} / ${max}</div><div>${verdict}</div><div class="muted" style="margin-top:.4em">${esc(sc.debrief)}</div></div><button class="btn">Restart scenario</button>`;
+      $("button.btn", el).onclick = reset;
+      return;
+    }
+    const st = sc.steps[step];
+    el.innerHTML = chat() + `<div class="muted small">Step ${step + 1} of ${sc.steps.length} · What does the SSA say next?</div>` +
+      st.choices.map((c, i) => `<button class="choice" data-i="${i}"><span class="letter">${"ABC"[i]}</span>${esc(c.t)}</button>`).join("") +
+      `<div class="sc-slot"></div><div class="muted small">Score so far: <span class="score">${score}</span></div>`;
+    $$(".choice", el).forEach(b => b.onclick = () => {
+      const c = st.choices[+b.dataset.i];
+      const best = Math.max(...st.choices.map(x => x.pts));
+      $$(".choice", el).forEach((x, i) => { x.disabled = true; if (st.choices[i].pts === best) x.classList.add("best"); });
+      b.classList.add("picked");
+      score += c.pts;
+      $(".sc-slot", el).innerHTML = `<div class="sc-fb"><span class="score">+${c.pts}</span> ${esc(c.fb)}</div><button class="btn primary">Continue</button>`;
+      $(".sc-slot .btn", el).onclick = () => { log.push({ who: "ssa", t: c.t }, { who: "stu", t: c.reply }); step++; draw(); };
+    });
+  };
+  reset();
+}
+
+function makeTimer(el, secs) {
+  let left = secs, iv = null;
+  el.innerHTML = `<span class="t">${fmt(left)}</span><button class="btn primary">Start</button><button class="btn">Reset</button>`;
+  const [t, start, rst] = [$(".t", el), ...$$("button", el)];
+  const show = () => { t.textContent = fmt(left); el.classList.toggle("done", left <= 0); };
+  const stop = () => { clearInterval(iv); iv = null; start.textContent = "Start"; };
+  start.onclick = () => {
+    if (iv) { stop(); return; }
+    if (left <= 0) left = secs;
+    start.textContent = "Pause";
+    iv = setInterval(() => { left--; show(); if (left <= 0) stop(); }, 1000);
+  };
+  const reset = () => { stop(); left = secs; show(); };
+  rst.onclick = reset;
+  return { reset };
+}
+
+function buildRoleplay() {
+  const tm = makeTimer($("#rpTimer"), CONFIG.roleplaySeconds);
+  let round = 0, last = -1;
+  const boxes = $$(".check input");
+  const score = () => { $("#checkScore").textContent = boxes.filter(b => b.checked).length + " of " + boxes.length + " spotted"; $("#checkScore").className = "fb good"; };
+  boxes.forEach(b => b.onchange = score);
+  $("#dealBtn").onclick = () => {
+    let i;
+    do { i = Math.floor(Math.random() * OBJECTIONS.length); } while (i === last && OBJECTIONS.length > 1);
+    last = i; round++;
+    $("#dealText").textContent = '"' + OBJECTIONS[i].text + '"';
+    $("#roundLbl").textContent = "Round " + round + " · " + OBJECTIONS[i].cat;
+    boxes.forEach(b => b.checked = false);
+    $("#checkScore").textContent = "";
+    tm.reset();
+  };
+}
+
+function buildLightning() {
+  const el = $("#lightning");
+  let i, score, left, iv;
+  const stop = () => { clearInterval(iv); iv = null; };
+  const intro = () => {
+    stop();
+    el.innerHTML = `<div class="lq">${LIGHTNING.length} statements. ${fmt(CONFIG.lightningSeconds)} on the clock. Ready?</div><button class="btn primary">Start the lightning round</button>`;
+    $("button", el).onclick = start;
+  };
+  const start = () => { i = 0; score = 0; left = CONFIG.lightningSeconds; iv = setInterval(() => { left--; const t = $(".lt", el); if (t) t.textContent = fmt(left); if (left <= 0) end(); }, 1000); q(); };
+  const head = () => `<div class="row" style="justify-content:space-between"><span class="muted">Question ${i + 1} of ${LIGHTNING.length}</span><span class="score">Score ${score} · <span class="lt">${fmt(left)}</span></span></div>`;
+  const q = () => {
+    if (i >= LIGHTNING.length) return end();
+    const it = LIGHTNING[i];
+    el.innerHTML = head() + `<div class="lq">${esc(it.q)}</div><div class="tf"><button class="btn" data-v="1">True</button><button class="btn" data-v="0">False</button></div><div class="fb"></div>`;
+    $$(".tf .btn", el).forEach(b => b.onclick = () => {
+      const ok = (b.dataset.v === "1") === it.a;
+      if (ok) score++;
+      $$(".tf .btn", el).forEach(x => x.disabled = true);
+      if (ok) b.classList.add("primary");
+      const fb = $(".fb", el);
+      fb.className = "fb " + (ok ? "good" : "bad");
+      fb.innerHTML = (ok ? "Correct! " : "It's " + (it.a ? "true" : "false") + ". ") + esc(it.why) + ` <button class="btn primary" style="margin-left:.6em">Next</button>`;
+      $(".fb .btn", el).onclick = () => { i++; q(); };
+    });
+  };
+  const end = () => {
+    stop();
+    el.innerHTML = `<div class="lq">Room score: <span class="score">${score} / ${LIGHTNING.length}</span></div><div class="muted">${score >= 7 ? "Outstanding. You're ready for the phones." : score >= 5 ? "Great work. Review the ones we missed in the library." : "Good start. Revisit the slides after the session."}</div><button class="btn" style="margin-top:1em">Play again</button>`;
+    $("button", el).onclick = intro;
+  };
+  intro();
+}
+
+function init() {
+  $$(".hA").forEach(e => e.textContent = CONFIG.hostA);
+  $$(".hB").forEach(e => e.textContent = CONFIG.hostB);
+  $("#podName").textContent = CONFIG.pod;
+  $("#podName2").textContent = CONFIG.pod;
+  $("#sessDate").textContent = CONFIG.date;
+  document.title = "Objection Handling · " + CONFIG.pod;
+  buildAgenda();
+  setupPolls();
+  setupQuizzes();
+  buildMatch();
+  buildFFF();
+  buildLibrary();
+  $$(".scenario").forEach(runScenario);
+  $$(".timer[data-secs]").forEach(t => makeTimer(t, +t.dataset.secs));
+  buildRoleplay();
+  buildLightning();
+  const h = parseInt(location.hash.slice(1), 10);
+  const start = h >= 1 && h <= slides.length ? h - 1 : 0;
+  slides[0].classList.add("active");
+  curSec = secOf(start).id;
+  go(start);
+}
+init();
+</script>
+</body>
+</html>
