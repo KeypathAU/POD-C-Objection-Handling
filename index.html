@@ -68,7 +68,7 @@ main.stage{flex:1;position:relative;overflow:hidden}
 .keys{margin-top:2em;font-size:.7em;color:var(--muted)}
 .quote{font-size:1.25em;font-weight:700;border-left:6px solid var(--accent);padding:.3em 0 .3em .8em;margin:1em 0 0}
 .opt,.q-opt{position:relative;display:flex;justify-content:space-between;align-items:center;gap:1em;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:.5em .9em;margin:.4em 0;overflow:hidden}
-.opt:hover,.q-opt:hover{border-color:var(--accent)}
+.q-opt:hover{border-color:var(--accent)}
 .opt .bar{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#33569a,#2a467f);transition:width .35s;z-index:0}
 .opt .lbl,.opt .cnt{position:relative;z-index:1}
 .opt .cnt{font-weight:800;font-variant-numeric:tabular-nums}
@@ -98,6 +98,7 @@ main.stage{flex:1;position:relative;overflow:hidden}
 .tag{flex:none;min-width:2.2em;text-align:center;font-weight:800;border-radius:8px;padding:.05em .45em;background:var(--c);color:#0b1220}
 .who{font-weight:800;color:var(--muted);flex:none;width:5.2em}
 .steps-ctrl{margin-top:.8em}
+.line.ask{background:#2a2140;border:1px dashed #7a5cc4;border-radius:10px;padding:.3em .6em;color:#eadcff;font-style:italic}
 .match-row{display:grid;grid-template-columns:1fr auto;gap:.8em;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:.45em .9em;margin:.35em 0}
 .match-row .q-opt{width:2.4em;justify-content:center;margin:0 .15em;padding:.3em 0;font-weight:800;display:inline-flex}
 .match-row.done{border-color:var(--c)}
@@ -195,18 +196,21 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="kicker">POD C Skills Session</div>
   <h1 class="mega">From <span class="hl">"Not now"</span><br>to <span class="hl2">"Here's how"</span></h1>
   <p class="lead">Handling student objections with confidence: a simple backbone and a toolkit you can use on your next call.</p>
-  <div class="hosts">Hosted by <b class="hA"></b> and <b class="hB"></b> · <span id="sessDate"></span></div>
+  <div class="hosts">Hosted by <b class="hA"></b> and <b class="hB"></b></div>
+  <div class="row" style="margin-top:1.4em"><button class="btn primary" id="startSession" style="font-size:1.1em;padding:.6em 1.6em">Start session</button></div>
   <div class="keys">Use the arrow keys or the buttons below to move through the session.</div>
   <div class="notes">
     <p><b>Goal of the session:</b> everyone leaves with the LAER backbone, a toolkit (GROW, Feel Felt Found, Labelling, Isolate and clarify, Reframe) and has practised them at least once.</p>
     <ul><li>Welcome everyone and introduce both hosts.</li><li>Set the tone: chat will be busy, there are no wrong answers, cameras on if you can.</li><li>Ask everyone to open the chat now. We will use it for every activity.</li></ul>
-    <p><b>Before you start:</b> press <b>T</b> (or Start run sheet) so the section countdown and on-time indicator work. Press <b>R</b> any time to see the full run sheet.</p>
+    <p><b>Before the meeting:</b> in the Teams meeting, open <b>Polls</b> and create three polls: "Which objection do you dread the most?" (A to E), "How confident are you right now?" (1 to 5), and the same confidence question for the end. Save them as drafts so you can launch each with one click.</p>
+    <p><b>To begin:</b> click <b>Start session</b> together. That starts the run sheet and moves to the agenda. From then on each section's countdown starts by itself as you move into it. <b>T</b> pauses or resumes, <b>R</b> shows the full run sheet.</p>
   </div>
 </section>
 
 <section class="slide" data-section="welcome" data-mins="1">
   <div class="kicker">The plan</div>
   <h2>Today's session</h2>
+  <div class="card" style="margin-bottom:.8em;border-color:#7a5cc4"><b style="color:#eadcff">How to join in:</b> keep the Teams chat open. Whenever you see a purple <b>YOUR TURN</b> box, it tells you exactly what to do: type in the chat, answer a Teams poll, or unmute to have a go.</div>
   <div id="agendaSlide"></div>
   <div class="notes">
     <p>Walk through the agenda quickly and point out who leads each part. Rows are clickable if you need to jump.</p>
@@ -216,28 +220,28 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="welcome" data-mins="2">
   <div class="kicker">Warm-up</div>
   <h2>Two quick polls</h2>
-  <div class="task"><b>YOUR TURN</b> Type your letter and your number in the chat</div>
+  <div class="task"><b>YOUR TURN</b> Open the poll that has popped up in Teams and tap your answers</div>
   <div class="grid g2">
     <div class="card poll">
       <h3>Which objection do you dread the most?</h3>
-      <button class="opt">A. "I'm too busy, I'll skip next term"</button>
-      <button class="opt">B. "It's too expensive"</button>
-      <button class="opt">C. "I failed, maybe this isn't for me"</button>
-      <button class="opt">D. "I'll just enrol later"</button>
-      <button class="opt">E. "I don't need a call from you"</button>
+      <div class="opt">A. "I'm too busy, I'll skip next term"</div>
+      <div class="opt">B. "It's too expensive"</div>
+      <div class="opt">C. "I failed, maybe this isn't for me"</div>
+      <div class="opt">D. "I'll just enrol later"</div>
+      <div class="opt">E. "I don't need a call from you"</div>
     </div>
-    <div class="card poll" data-poll-id="conf">
+    <div class="card poll">
       <h3>How confident are you handling objections right now?</h3>
-      <button class="opt" data-value="1">1. Not at all</button>
-      <button class="opt" data-value="2">2. A little</button>
-      <button class="opt" data-value="3">3. Getting there</button>
-      <button class="opt" data-value="4">4. Fairly confident</button>
-      <button class="opt" data-value="5">5. Bring it on</button>
+      <div class="opt">1. Not at all</div>
+      <div class="opt">2. A little</div>
+      <div class="opt">3. Getting there</div>
+      <div class="opt">4. Fairly confident</div>
+      <div class="opt">5. Bring it on</div>
     </div>
   </div>
   <div class="notes">
-    <p><b>Co-host move:</b> <span class="hB"></span> reads the chat aloud, <span class="hA"></span> clicks to tally.</p>
-    <ul><li>Click an option to add a vote. Shift-click or right-click removes one.</li><li>Call out the most dreaded objection: "Good news, we will practise that one today."</li><li>Note the confidence average out loud. We repeat this poll at the end to see the shift.</li></ul>
+    <p><b>Co-host move:</b> <span class="hA"></span> launches both Teams polls, <span class="hB"></span> reads the results aloud as they come in.</p>
+    <ul><li>Give it about 30 seconds, then share the Teams results.</li><li>Call out the most dreaded objection: "Good news, we will practise that one today."</li><li>Say the confidence result out loud. We repeat this poll at the end to see the shift.</li></ul>
     <div class="handoff">Hand-off to <span class="hB"></span> for the mindset section</div>
   </div>
 </section>
@@ -245,22 +249,25 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="mindset" data-mins="1.5">
   <div class="kicker">Objection mindset</div>
   <h2>An objection is not a "no"</h2>
-  <div class="task"><b>YOUR TURN</b> Before each reveal: what do you think it means?</div>
+  <div class="task"><b>YOUR TURN</b> Before each reveal, type in the Teams chat what you think it means</div>
   <div class="grid g3">
     <div class="card tap" tabindex="0"><h3>It's a signal</h3><div class="hint">Click to reveal</div><div class="ans">The student cares enough to tell you what's in the way. Silence is worse than an objection.</div></div>
     <div class="card tap" tabindex="0"><h3>It's a question in disguise</h3><div class="hint">Click to reveal</div><div class="ans">"It's too expensive" often means "Help me see it's worth it" or "Help me work out how to pay."</div></div>
     <div class="card tap" tabindex="0"><h3>It's an invitation</h3><div class="hint">Click to reveal</div><div class="ans">To understand their reality and help them find their own way forward.</div></div>
+    <div class="card tap" tabindex="0"><h3>It's a sign of trust</h3><div class="hint">Click to reveal</div><div class="ans">Students only share real concerns with people they feel safe with. It means the relationship is working.</div></div>
+    <div class="card tap" tabindex="0"><h3>It's often not the real reason</h3><div class="hint">Click to reveal</div><div class="ans">The first objection is usually the easiest one to say. The real concern often comes second.</div></div>
+    <div class="card tap" tabindex="0"><h3>It's timing, not a verdict</h3><div class="hint">Click to reveal</div><div class="ans">"Not now" often means "not like this". Change the plan and the answer often changes too.</div></div>
   </div>
   <p class="quote">Our job is not to win the argument. It's to help the student make a well-informed decision they feel good about.</p>
   <div class="notes">
-    <ul><li>Ask the room what each heading means before clicking. Take one or two chat answers each.</li><li>Land the key message in the quote: we are not pressuring anyone. If a student makes an informed decision to pause, that's still a good call.</li></ul>
+    <ul><li>Six cards in 90 seconds, so keep it moving. Read the heading, take one chat answer, click.</li><li>If short on time, reveal the first three and the last one.</li><li>Land the key message in the quote: we are not pressuring anyone. If a student makes an informed decision to pause, that's still a good call.</li></ul>
   </div>
 </section>
 
 <section class="slide" data-section="mindset" data-mins="1.5">
   <div class="kicker">Objection mindset</div>
   <h2>What they say vs what they might mean</h2>
-  <div class="task"><b>YOUR TURN</b> Type what you think is really underneath</div>
+  <div class="task"><b>YOUR TURN</b> In the Teams chat, type what you think the student really means. We reveal after a few answers</div>
   <div class="card tap say-mean" tabindex="0"><div class="say">"I'm too busy right now."</div><div><div class="hint">Click to reveal</div><div class="ans">"I can't see how study fits into my week, and I'm scared of falling behind."</div></div></div>
   <div class="card tap say-mean" tabindex="0" style="margin-top:.6em"><div class="say">"It's too expensive."</div><div><div class="hint">Click to reveal</div><div class="ans">"I'm not sure it's worth it" or "The timing of the payment is hard."</div></div></div>
   <div class="card tap say-mean" tabindex="0" style="margin-top:.6em"><div class="say">"Maybe this isn't for me."</div><div><div class="hint">Click to reveal</div><div class="ans">"One bad result has shaken my confidence."</div></div></div>
@@ -274,62 +281,88 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="laer" data-mins="3">
   <div class="kicker">The backbone</div>
   <h2>LAER: the shape of every objection</h2>
+  <p class="lead" style="max-width:none">LAER stands for <b style="color:#7bdff2">Listen</b>, <b style="color:var(--feel)">Acknowledge</b>, <b style="color:var(--r)">Explore</b>, <b style="color:var(--o)">Respond</b>. It's a simple four-step model used widely in sales and service. The point: <b style="color:var(--text)">don't answer an objection until you understand it.</b></p>
   <div class="grid g4">
     <div class="card stage-card" data-s="L"><div class="big">L</div><h3>Listen</h3><div>Let them finish. Don't plan your answer while they talk.</div><div class="ex">Pause. Note their exact words.</div></div>
     <div class="card stage-card" data-s="Ack"><div class="big">A</div><h3>Acknowledge</h3><div>Show you heard the concern before you respond to it.</div><div class="ex">"That makes sense, it's a lot to juggle."</div></div>
     <div class="card stage-card" data-s="E"><div class="big">E</div><h3>Explore</h3><div>Ask questions to find the real concern underneath.</div><div class="ex">"What's making this term feel so full?"</div></div>
     <div class="card stage-card" data-s="Res"><div class="big">R</div><h3>Respond</h3><div>Only now, answer what you found and agree a next step.</div><div class="ex">"Let's map week one to your weekends."</div></div>
   </div>
+  <div class="card steps" style="margin-top:1em">
+    <h3>LAER in 30 seconds: "It's just too expensive."</h3>
+    <div class="line step"><span class="tag" data-s="L">L</span><span class="who">SSA</span><span><i>(lets them finish, stays quiet for a moment)</i></span></div>
+    <div class="line step"><span class="tag" data-s="Ack">A</span><span class="who">SSA</span><span>"That's fair. It's a big investment, and it makes sense to think it through."</span></div>
+    <div class="line step"><span class="tag" data-s="E">E</span><span class="who">SSA</span><span>"Can I ask, is it the overall cost, or the timing of the payment that's hard right now?"</span></div>
+    <div class="line step"><span class="tag" data-s="E" style="visibility:hidden">E</span><span class="who">Student</span><span>"Honestly, it's the timing. Things are tight until March."</span></div>
+    <div class="line step"><span class="tag" data-s="Res">R</span><span class="who">SSA</span><span>"That helps. Let's look at the payment options together, and I'll send you the details today."</span></div>
+    <div class="row steps-ctrl"><button class="btn primary" data-steps="next">Reveal next line</button><button class="btn" data-steps="reset">Reset</button></div>
+  </div>
   <div class="card tap" tabindex="0" style="margin-top:1em"><h3>Where do the other tools fit?</h3><div class="hint">Click to reveal</div><div class="ans"><b style="color:var(--feel)">Acknowledge:</b> Labelling, Feel and Felt. <b style="color:var(--r)">Explore:</b> Isolate and clarify, GROW Goal and Reality. <b style="color:var(--o)">Respond:</b> Found, Reframe, GROW Options and Way forward.</div></div>
   <div class="notes">
-    <ul><li>LAER is the order. Every other tool today plugs into one of these four steps.</li><li>Ask: "Which step do we rush?" Usually we jump from Listen straight to Respond.</li><li>Click the bottom card to show where the rest of the session fits.</li></ul>
+    <ul><li><b>What it is:</b> LAER (Listen, Acknowledge, Explore, Respond) is a long-standing objection-handling model from sales and customer service. It's popular because it's easy to remember on a live call.</li><li>LAER is the order. Every other tool today plugs into one of these four steps.</li><li>Press the right arrow to reveal the example line by line. <span class="hA"></span> can read the student line. Point out that the real concern (timing, not cost) only came out at Explore.</li><li>Ask: "Which step do we rush?" Usually we jump from Listen straight to Respond.</li><li>Click the bottom card to show where the rest of the session fits.</li></ul>
     <div class="handoff">Hand-off to <span class="hA"></span> for GROW</div>
   </div>
 </section>
 
-<section class="slide" data-section="grow" data-mins="2">
+<section class="slide" data-section="grow" data-mins="1.5">
   <div class="kicker">Explore and Respond tool: GROW</div>
   <h2>GROW, applied to objections</h2>
+  <p class="lead" style="max-width:none">GROW stands for <b style="color:var(--g)">Goal</b>, <b style="color:var(--r)">Reality</b>, <b style="color:var(--o)">Options</b>, <b style="color:var(--w)">Way forward</b>. It's one of the best-known coaching models. Instead of telling, you ask questions that help the student think it through and reach their own decision.</p>
   <div class="grid g4">
-    <div class="card stage-card" data-s="G"><div class="big">G</div><h3>Goal</h3><div>Reconnect the student to why they started and what they want.</div><div class="ex">"What made you start the program?"</div></div>
-    <div class="card stage-card" data-s="R"><div class="big">R</div><h3>Reality</h3><div>Get the facts behind the objection. Listen more than you talk.</div><div class="ex">"What's making this term feel so full?"</div></div>
-    <div class="card stage-card" data-s="O"><div class="big">O</div><h3>Options</h3><div>Let the student generate possible paths before you suggest any.</div><div class="ex">"What could make this more manageable?"</div></div>
-    <div class="card stage-card" data-s="W"><div class="big">W</div><h3>Way forward</h3><div>Agree one clear next step the student owns, with a check-in.</div><div class="ex">"What's your first step, and when shall we touch base?"</div></div>
+    <div class="card stage-card" data-s="G"><div class="big">G</div><h3>Goal</h3><div>Reconnect the student to why they started and what they want.</div><div class="ex">"What made you start the program?"</div><div class="ex">"Where do you want to be by the end of the year?"</div></div>
+    <div class="card stage-card" data-s="R"><div class="big">R</div><h3>Reality</h3><div>Get the facts behind the objection. Listen more than you talk.</div><div class="ex">"What's making this term feel so full?"</div><div class="ex">"What have you tried so far?"</div></div>
+    <div class="card stage-card" data-s="O"><div class="big">O</div><h3>Options</h3><div>Let the student generate possible paths before you suggest any.</div><div class="ex">"What could make this more manageable?"</div><div class="ex">"What else could you try?"</div></div>
+    <div class="card stage-card" data-s="W"><div class="big">W</div><h3>Way forward</h3><div>Agree one clear next step the student owns, with a check-in.</div><div class="ex">"What's your first step, and when?"</div><div class="ex">"When shall we touch base?"</div></div>
   </div>
-  <p class="quote">GROW turns an objection into a conversation. The student does most of the thinking.</p>
+  <div class="grid g3" style="margin-top:1em">
+    <div class="card"><h3 style="color:var(--g)">The student owns it</h3><div class="muted">A plan they came up with sticks far better than one we hand them.</div></div>
+    <div class="card"><h3 style="color:var(--r)">It finds the real concern</h3><div class="muted">Reality questions get past the first thing they say to what's actually in the way.</div></div>
+    <div class="card"><h3 style="color:var(--w)">It ends with a commitment</h3><div class="muted">Every GROW conversation finishes with a specific next step and a check-in.</div></div>
+  </div>
+  <p class="quote">It's a guide, not a script. You might start at Reality and loop back to the Goal, and that's fine.</p>
   <div class="notes">
-    <ul><li>Many of you know GROW from coaching. Today we use it on the phone with students.</li><li>Key shift: we ask, the student answers. Questions do the persuading, not us.</li><li>Ask: "Which stage do we usually skip?" (Answer is usually Reality: we jump straight to Options.)</li></ul>
+    <ul><li><b>What it is:</b> GROW was developed in the UK in the 1980s by coaches including Sir John Whitmore. TLs use it in our own coaching sessions, so many of you will recognise it.</li><li>Today we use it on the phone with students: in LAER terms, Goal and Reality are how we Explore, and Options and Way forward are how we Respond.</li><li>Key shift: we ask, the student answers. Questions do the persuading, not us.</li><li>Ask: "Which stage do we usually skip?" (Answer is usually Reality: we jump straight to Options.)</li></ul>
   </div>
 </section>
 
-<section class="slide" data-section="grow" data-mins="1.5">
+<section class="slide" data-section="grow" data-mins="2.5">
   <div class="kicker">GROW in action</div>
   <h2>"I think I'll skip next term."</h2>
+  <div class="task"><b>YOUR TURN</b> At each purple pause, type in the Teams chat what you'd ask. Then we reveal what our SSA said</div>
   <div class="card steps">
+    <div class="line step ask"><span class="tag" data-s="G">G</span><span>Your turn: what would you ask to find the student's <b>Goal</b>?</span></div>
     <div class="line step"><span class="tag" data-s="G">G</span><span class="who">SSA</span><span>Before we decide anything, can I ask when you were hoping to finish the program?</span></div>
     <div class="line step"><span class="tag" data-s="G" style="visibility:hidden">G</span><span class="who">Student</span><span>End of next year, ideally.</span></div>
+    <div class="line step ask"><span class="tag" data-s="R">R</span><span>Your turn: what would you ask to understand their <b>Reality</b>?</span></div>
     <div class="line step"><span class="tag" data-s="R">R</span><span class="who">SSA</span><span>And what does your week look like at the moment?</span></div>
     <div class="line step"><span class="tag" data-s="R" style="visibility:hidden">R</span><span class="who">Student</span><span>Full-time work and two kids. Weekends are my only time.</span></div>
+    <div class="line step ask"><span class="tag" data-s="O">O</span><span>Your turn: how would you get the student to come up with <b>Options</b>?</span></div>
     <div class="line step"><span class="tag" data-s="O">O</span><span class="who">SSA</span><span>That's a lot. What are a few ways next term could fit around that?</span></div>
     <div class="line step"><span class="tag" data-s="O" style="visibility:hidden">O</span><span class="who">Student</span><span>Maybe just one unit? Or starting the readings early?</span></div>
+    <div class="line step ask"><span class="tag" data-s="W">W</span><span>Your turn: how would you lock in a <b>Way forward</b>?</span></div>
     <div class="line step"><span class="tag" data-s="W">W</span><span class="who">SSA</span><span>Love that. Let's keep you in one unit, and I'll check in after week two. Sound fair?</span></div>
     <div class="line step"><span class="tag" data-s="W" style="visibility:hidden">W</span><span class="who">Student</span><span>Yeah, that works.</span></div>
     <div class="row steps-ctrl"><button class="btn primary" data-steps="next">Reveal next line</button><button class="btn" data-steps="reset">Reset</button></div>
   </div>
   <div class="notes">
     <p><b>Co-host move:</b> <span class="hA"></span> reads the SSA lines, <span class="hB"></span> reads the student lines.</p>
-    <ul><li>Press the right arrow (or Reveal) to show each line. Arrows move to the next slide only once all lines are shown.</li><li>After the last line ask: "Who decided on one unit?" The student did. That's why it sticks.</li></ul>
+    <ul><li>Press the right arrow (or Reveal) to show each line. Arrows move to the next slide only once all lines are shown.</li><li>At each purple "Your turn" line, stop. Give the chat about 15 seconds, read out two answers, then reveal the SSA line and compare.</li><li>After the last line ask: "Who decided on one unit?" The student did. That's why it sticks.</li></ul>
   </div>
 </section>
 
-<section class="slide" data-section="grow" data-mins="2.5">
-  <div class="kicker">Practice round</div>
+<section class="slide" data-section="grow" data-mins="2">
+  <div class="kicker">Practice round · Play on your own screen</div>
   <h2>Which stage is this question?</h2>
-  <div class="task"><b>YOUR TURN</b> Type G, R, O or W in the chat</div>
+  <div class="task"><b>YOUR TURN</b> Open the link below in your own browser and click G, R, O or W for each question. Only you can see your answers and your score</div>
+  <div class="row" style="margin-bottom:.8em">
+    <div class="card" style="padding:.5em 1em"><span class="muted small">Your link:</span> <b id="playLink" style="color:var(--accent);word-break:break-all"></b></div>
+    <div class="timer" data-secs="90"></div>
+    <button class="btn" id="matchReveal">Reveal all answers</button>
+  </div>
   <div id="matchGame"></div>
   <div class="fb" id="matchScore"></div>
   <div class="notes">
-    <ul><li>Read each question aloud, give the chat five seconds, then click the most popular answer.</li><li>If the room is split, ask one person from each side to explain. Some questions could sit in two stages, and that's fine: what matters is the order.</li></ul>
+    <ul><li>Paste the link into the Teams chat as you land on this slide (it opens straight to this round): <b class="playLinkN"></b></li><li>Start the 90-second timer. Everyone plays privately, so nobody is put on the spot and wrong answers stay private.</li><li>When the timer ends, click <b>Reveal all answers</b> on the shared screen. Ask: "Which one surprised you?" rather than "Who got it wrong?"</li><li>Some questions could sit in two stages, and that's fine: what matters is the order.</li><li>Ask everyone to come back to the shared screen before you move on.</li></ul>
     <div class="handoff">Hand-off to <span class="hB"></span> for Feel, Felt, Found</div>
   </div>
 </section>
@@ -380,7 +413,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="fff" data-mins="1">
   <div class="kicker">Quick check</div>
   <h2>Which response lands best?</h2>
-  <div class="task"><b>YOUR TURN</b> Vote A, B or C in the chat</div>
+  <div class="task"><b>YOUR TURN</b> For each question, type A, B or C in the Teams chat</div>
   <div class="grid g2">
     <div class="card quiz">
       <h3>Student: "I'm so behind, I don't see the point."</h3>
@@ -403,7 +436,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="fff" data-mins="2.5">
   <div class="kicker">Build your own</div>
   <h2>Write a Feel, Felt, Found</h2>
-  <div class="task"><b>YOUR TURN</b> Two minutes: write all three lines and paste them in the chat</div>
+  <div class="task"><b>YOUR TURN</b> You have two minutes: write your Feel, Felt and Found lines and post them in the Teams chat</div>
   <div class="grid g2">
     <div class="card">
       <label class="fl" style="--c:var(--accent)" for="fffSelect">Pick an objection</label>
@@ -441,7 +474,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="tools" data-mins="1.5">
   <div class="kicker">Quick check</div>
   <h2>Which tool would you reach for?</h2>
-  <div class="task"><b>YOUR TURN</b> Vote A, B or C in the chat</div>
+  <div class="task"><b>YOUR TURN</b> For each question, type A, B or C in the Teams chat</div>
   <div class="grid g3">
     <div class="card quiz">
       <h3>The student sighs: "Honestly... I'm just exhausted."</h3>
@@ -487,7 +520,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="library" data-mins="3">
   <div class="kicker">Objection library</div>
   <h2>Common objections, ready to adapt</h2>
-  <div class="task"><b>YOUR TURN</b> Pick a card for us to open</div>
+  <div class="task"><b>YOUR TURN</b> Type the card you want us to open in the Teams chat, for example "Cost"</div>
   <div class="chips" id="libChips"></div>
   <div class="grid g4" id="libGrid"></div>
   <div class="notes">
@@ -499,7 +532,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="practice" data-mins="3.5">
   <div class="kicker">Practice arena · Scenario 1</div>
   <h2>Priya wants to skip next term</h2>
-  <div class="task"><b>YOUR TURN</b> Vote A, B or C in the chat for each step</div>
+  <div class="task"><b>YOUR TURN</b> At each step, type A, B or C in the Teams chat. We go with the most popular answer</div>
   <div class="card scenario" data-scenario="priya"></div>
   <div class="notes">
     <p><b>Co-host move:</b> <span class="hB"></span> reads Priya's lines in character, <span class="hA"></span> reads the options and clicks the chat's choice.</p>
@@ -510,7 +543,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="practice" data-mins="3.5">
   <div class="kicker">Practice arena · Scenario 2</div>
   <h2>Tom failed his first assessment</h2>
-  <div class="task"><b>YOUR TURN</b> Vote A, B or C in the chat for each step</div>
+  <div class="task"><b>YOUR TURN</b> At each step, type A, B or C in the Teams chat. We go with the most popular answer</div>
   <div class="card scenario" data-scenario="tom"></div>
   <div class="notes">
     <p><b>Co-host move:</b> swap roles. <span class="hA"></span> plays Tom, <span class="hB"></span> runs the vote.</p>
@@ -521,6 +554,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="practice" data-mins="4">
   <div class="kicker">Practice arena · Live role-play</div>
   <h2>Your turn on the phone</h2>
+  <div class="task"><b>YOUR TURN</b> Want to be the SSA? Raise your hand in Teams. Everyone else, tick off what you hear in the chat</div>
   <div class="grid g2">
     <div class="card">
       <h3>The objection</h3>
@@ -550,7 +584,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="lightning" data-mins="2">
   <div class="kicker">Lightning round</div>
   <h2>True or false?</h2>
-  <div class="task"><b>YOUR TURN</b> Type T or F as fast as you can</div>
+  <div class="task"><b>YOUR TURN</b> Type T (true) or F (false) in the Teams chat as fast as you can</div>
   <div class="card" id="lightning"></div>
   <div class="notes"><p>Start the round, read each statement, click the chat's majority answer, read the reason in one sentence and move on. Keep the energy high. Two minutes on the clock.</p>
     <div class="handoff">Hand-off to <span class="hA"></span> to wrap up</div></div>
@@ -569,19 +603,20 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
         <li><b style="color:var(--o)">Found, Reframe and a Way forward</b> to respond</li>
         <li>Every Found is honest. Every next step is agreed.</li>
       </ul>
-      <div class="task" style="margin-top:.6em"><b>YOUR TURN</b> In the chat: one thing you'll try on your next call</div>
+      <div class="task" style="margin-top:.6em"><b>YOUR TURN</b> In the Teams chat, type one thing you'll try on your next call</div>
     </div>
-    <div class="card poll" data-compare="conf">
+    <div class="card poll">
       <h3>How confident are you now?</h3>
-      <button class="opt" data-value="1">1. Not at all</button>
-      <button class="opt" data-value="2">2. A little</button>
-      <button class="opt" data-value="3">3. Getting there</button>
-      <button class="opt" data-value="4">4. Fairly confident</button>
-      <button class="opt" data-value="5">5. Bring it on</button>
+      <div class="opt">1. Not at all</div>
+      <div class="opt">2. A little</div>
+      <div class="opt">3. Getting there</div>
+      <div class="opt">4. Fairly confident</div>
+      <div class="opt">5. Bring it on</div>
+      <div class="task" style="margin:.6em 0 0"><b>YOUR TURN</b> Open the poll in Teams and tap your answer</div>
     </div>
   </div>
   <div class="notes">
-    <ul><li>Re-run the confidence poll. The start-of-session average shows underneath for comparison.</li><li>Ask for one commitment each in the chat and read a few aloud.</li></ul>
+    <ul><li>Launch the end-of-session confidence poll in Teams. Compare it out loud with the start result.</li><li>Ask for one commitment each in the chat and read a few aloud.</li></ul>
   </div>
 </section>
 
@@ -621,7 +656,7 @@ const CONFIG = {
   hostA: "Greg",
   hostB: "Milly",
   pod: "POD C",
-  date: "Session date",
+  liveUrl: "https://keypathau.github.io/POD-C-Objection-Handling/",
   roleplaySeconds: 90,
   lightningSeconds: 120
 };
@@ -789,7 +824,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const slides = $$(".slide");
 let cur = 0, running = false, sessSec = 0, secSec = 0, curSec = null, presenter = null, bannerTimer = null, startWall = null;
-const actual = {};
+const actual = {}, secElapsed = {};
 const TOTAL = SECTIONS.reduce((a, s) => a + s.mins, 0) * 60;
 const clockTime = t => new Date(t).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit" });
 
@@ -809,9 +844,9 @@ function go(n) {
   slides[cur].scrollTop = 0;
   const sec = secOf(cur);
   if (sec.id !== curSec) {
-    if (curSec !== null) banner(sec);
+    if (curSec !== null) { secElapsed[curSec] = secSec; banner(sec); }
     curSec = sec.id;
-    secSec = 0;
+    secSec = secElapsed[sec.id] || 0;
     markStart();
   }
   try { history.replaceState(null, "", "#" + (cur + 1)); } catch (e) {}
@@ -879,6 +914,9 @@ function clocks() {
   $("#npPace").style.color = p.col;
   const btn = running ? "Pause run sheet" : (sessSec ? "Resume run sheet" : "Start run sheet");
   $("#timerBtn").innerHTML = btn + "<kbd>T</kbd>";
+  const sb = $("#startSession");
+  sb.textContent = running ? "Session running" : (startWall ? "Resume session" : "Start session");
+  sb.disabled = running;
   if ($("#runOv").classList.contains("open")) drawRunSheet();
   if (presenter && !presenter.closed) {
     try {
@@ -1012,6 +1050,7 @@ document.addEventListener("keydown", e => {
 });
 
 $("#timerBtn").onclick = toggleTimer;
+$("#startSession").onclick = () => { if (!running) toggleTimer(); if (cur === 0) go(1); };
 $("#nextBtn").onclick = next;
 $("#prevBtn").onclick = prev;
 
@@ -1025,43 +1064,6 @@ function buildAgenda() {
   }).join("");
   $("#agendaSlide").innerHTML = html;
   $$(".agenda-row").forEach(r => r.onclick = () => go(+r.dataset.go));
-}
-
-function setupPolls() {
-  $$(".poll").forEach(p => {
-    $$(".opt", p).forEach(o => {
-      o.dataset.n = 0;
-      o.innerHTML = `<span class="bar"></span><span class="lbl">${o.innerHTML}</span><span class="cnt">0</span>`;
-      o.addEventListener("click", e => vote(o, e.shiftKey ? -1 : 1));
-      o.addEventListener("contextmenu", e => { e.preventDefault(); vote(o, -1); });
-    });
-    const m = document.createElement("div");
-    m.className = "poll-meta";
-    m.innerHTML = `<span class="pm"></span><button type="button">Reset poll</button>`;
-    $("button", m).onclick = () => { $$(".opt", p).forEach(o => o.dataset.n = 0); drawPolls(); };
-    p.appendChild(m);
-  });
-  drawPolls();
-}
-function vote(o, d) { o.dataset.n = Math.max(0, +o.dataset.n + d); drawPolls(); }
-function pollStats(p) {
-  const opts = $$(".opt", p), total = opts.reduce((a, o) => a + +o.dataset.n, 0);
-  const valued = opts.some(o => o.dataset.value);
-  const avg = valued && total ? opts.reduce((a, o) => a + +o.dataset.n * +(o.dataset.value || 0), 0) / total : null;
-  return { opts, total, avg };
-}
-function drawPolls() {
-  $$(".poll").forEach(p => {
-    const { opts, total, avg } = pollStats(p);
-    const max = Math.max(1, ...opts.map(o => +o.dataset.n));
-    opts.forEach(o => { $(".bar", o).style.width = (+o.dataset.n / max * 100) + "%"; $(".cnt", o).textContent = o.dataset.n; });
-    let txt = total + (total === 1 ? " vote" : " votes") + (avg !== null ? " · average " + avg.toFixed(1) : "");
-    if (p.dataset.compare) {
-      const src = $(`.poll[data-poll-id="${p.dataset.compare}"]`), s = src ? pollStats(src) : null;
-      if (s && s.avg !== null) txt += " · start of session " + s.avg.toFixed(1);
-    }
-    $(".pm", p).textContent = txt;
-  });
 }
 
 function setupQuizzes() {
@@ -1079,27 +1081,37 @@ function buildMatch() {
   const names = { G: "Goal", R: "Reality", O: "Options", W: "Way forward" };
   const box = $("#matchGame");
   let firstTry = 0, done = 0;
+  const reveals = [];
+  const slideNo = slides.indexOf(box.closest(".slide")) + 1;
+  const link = CONFIG.liveUrl + "#" + slideNo;
+  $("#playLink").textContent = link;
+  $$(".playLinkN").forEach(e => e.textContent = link);
   MATCH.forEach((m, i) => {
     const row = document.createElement("div");
     row.className = "match-row";
     row.innerHTML = `<div class="q">${i + 1}. ${esc(m.q)}</div><div>${["G", "R", "O", "W"].map(s => `<button class="q-opt" data-s="${s}" title="${names[s]}">${s}</button>`).join("")}</div>`;
     let tries = 0;
+    const finish = b => {
+      b.classList.add("right");
+      row.classList.add("done");
+      row.dataset.s = m.a;
+      $(".q", row).insertAdjacentHTML("beforeend", ` <b>(${names[m.a]})</b>`);
+    };
+    reveals.push(() => { if (!row.classList.contains("done")) finish($(`.q-opt[data-s="${m.a}"]`, row)); });
     $$(".q-opt", row).forEach(b => b.onclick = () => {
       if (row.classList.contains("done")) return;
       tries++;
       if (b.dataset.s === m.a) {
-        b.classList.add("right");
-        row.classList.add("done");
-        row.dataset.s = m.a;
-        $(".q", row).insertAdjacentHTML("beforeend", ` <b>(${names[m.a]})</b>`);
+        finish(b);
         done++;
         if (tries === 1) firstTry++;
-        $("#matchScore").textContent = `${done} of ${MATCH.length} answered · ${firstTry} right first time`;
+        $("#matchScore").textContent = `Your score: ${done} of ${MATCH.length} answered · ${firstTry} right first time`;
         $("#matchScore").className = "fb good";
       } else b.classList.add("wrong");
     });
     box.appendChild(row);
   });
+  $("#matchReveal").onclick = () => reveals.forEach(r => r());
 }
 
 function buildFFF() {
@@ -1251,10 +1263,8 @@ function init() {
   $$(".hB").forEach(e => e.textContent = CONFIG.hostB);
   $("#podName").textContent = CONFIG.pod;
   $("#podName2").textContent = CONFIG.pod;
-  $("#sessDate").textContent = CONFIG.date;
   document.title = "Objection Handling · " + CONFIG.pod;
   buildAgenda();
-  setupPolls();
   setupQuizzes();
   buildMatch();
   buildFFF();
