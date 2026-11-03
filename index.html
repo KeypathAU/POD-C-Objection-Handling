@@ -587,29 +587,35 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   </div>
 </section>
 
-<section class="slide" data-section="practice" data-mins="3.5">
-  <div class="kicker">Practice arena · Scenario 1</div>
-  <h2>Priya wants to skip next term</h2>
-  <div class="task"><b>YOUR TURN</b> At each step, type A, B or C in the Teams chat. We go with the most popular answer</div>
+<section class="slide" data-section="practice" data-mins="6.5">
+  <div class="kicker">Practice arena · In pairs</div>
+  <h2>Pair up: Priya wants to skip next term</h2>
+  <div class="task"><b>YOUR TURN</b> In your breakout pair, open the link below, pick who's Priya and who's the SSA, and play it out loud</div>
+  <div class="row" style="margin-bottom:.8em">
+    <div class="card" style="padding:.5em 1em"><span class="muted small">Your link:</span> <b class="pairlink" data-link-to="priya" style="color:var(--accent);word-break:break-all"></b></div>
+    <div class="timer" data-secs="420"></div>
+  </div>
+  <div class="roles"><span><b>Priya:</b> read her lines out loud, in character</span><span><b>SSA:</b> say your reply in your own words, then click the closest option</span><span><b>Done?</b> Click Next for Tom and swap roles</span></div>
   <div class="card scenario" data-scenario="priya"></div>
   <div class="notes">
-    <p><b>Co-host move:</b> <span class="hB"></span> reads Priya's lines in character, <span class="hA"></span> reads the options and clicks the chat's choice.</p>
-    <ul><li>Read the feedback aloud after each pick. If the room chose poorly, that's a great teaching moment, so lean into it.</li><li>Restart is available at the end if you want to try the best path.</li></ul>
+    <p><b>Before the session:</b> in the Teams meeting, open <b>Breakout rooms</b>, create one room per two people (assign automatically), and set a 7-minute time limit with "move people back automatically" on. Odd number? Make one room of three: the third person watches and gives feedback.</p>
+    <ul><li>Paste the link into the Teams chat first: <b class="pairlink" data-link-to="priya"></b></li><li>Open the rooms and start the 7-minute timer on this slide. Pairs do Priya, then click Next and swap roles for Tom.</li><li><span class="hA"></span> and <span class="hB"></span> drop in on a few rooms each. Listen for the SSA saying the reply in their own words, not reading it.</li><li>When everyone's back, move to the next slide for the debrief.</li></ul>
   </div>
 </section>
 
-<section class="slide" data-section="practice" data-mins="3.5">
-  <div class="kicker">Practice arena · Scenario 2</div>
-  <h2>Tom failed his first assessment</h2>
-  <div class="task"><b>YOUR TURN</b> At each step, type A, B or C in the Teams chat. We go with the most popular answer</div>
+<section class="slide" data-section="practice" data-mins="1.5">
+  <div class="kicker">Practice arena · Swap roles</div>
+  <h2>Swap: Tom failed his first assessment</h2>
+  <div class="task"><b>YOUR TURN</b> Still in your pair: whoever played Priya is now the SSA. Back in the main room? Type your pair's two scores in the Teams chat</div>
+  <div class="roles"><span><b>Tom:</b> read his lines out loud, in character</span><span><b>SSA:</b> say your reply in your own words, then click the closest option</span><span><b>Link:</b> <b class="pairlink" data-link-to="tom" style="color:var(--ink);word-break:break-all"></b></span></div>
   <div class="card scenario" data-scenario="tom"></div>
   <div class="notes">
-    <p><b>Co-host move:</b> swap roles. <span class="hA"></span> plays Tom, <span class="hB"></span> runs the vote.</p>
-    <ul><li>Ask: "Which LAER step and which tool did the best answer use each time?" (Acknowledge with Feel and Felt, Explore with Reality, Respond with Found and a Way forward.)</li></ul>
+    <p><b>Debrief</b> once everyone is back from the breakout rooms.</p>
+    <ul><li>Ask pairs to type their Priya and Tom scores in the chat. Celebrate the high ones.</li><li>Ask: "What was it like being the student?" Usually people say the Acknowledge step made the biggest difference.</li><li>If time allows, click through Tom's best path on screen and ask: "Which LAER step and which tool did each best answer use?" (Acknowledge with Feel and Felt, Explore with Reality, Respond with Found and a Way forward.)</li></ul>
   </div>
 </section>
 
-<section class="slide" data-section="practice" data-mins="4">
+<section class="slide" data-section="practice" data-mins="3">
   <div class="kicker">Practice arena · Live role-play</div>
   <h2>Your turn on the phone</h2>
   <div class="task"><b>YOUR TURN</b> Want to be the SSA? Raise your hand in Teams. Everyone else, tick off what you hear in the chat</div>
@@ -634,7 +640,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
     </div>
   </div>
   <div class="notes">
-    <ul><li>Ask for a volunteer to be the SSA. A host plays the student and should be realistic, not impossible.</li><li>Deal an objection and start the 90-second timer.</li><li>Observers call out in chat what they saw; tick the boxes live.</li><li>Run two rounds with different volunteers. Dealing a new objection resets the checklist and timer.</li><li>If breakout rooms are available, you can instead send groups of three for two rounds.</li></ul>
+    <ul><li>Ask for a volunteer to be the SSA. A host plays the student and should be realistic, not impossible.</li><li>Deal an objection and start the 90-second timer.</li><li>Observers call out in chat what they saw; tick the boxes live.</li><li>Time for one round, two if it's quick. Dealing a new objection resets the checklist and timer.</li><li>Everyone has just practised in pairs, so this is a "show us" moment: pick a volunteer who sounded confident in their breakout room.</li></ul>
     <div class="handoff">Hand-off to <span class="hB"></span> for the lightning round</div>
   </div>
 </section>
@@ -1359,6 +1365,7 @@ function init() {
   buildFFF();
   buildLibrary();
   $$(".scenario").forEach(runScenario);
+  $$(".pairlink").forEach(e => e.textContent = CONFIG.liveUrl + "#" + (slides.indexOf($(`[data-scenario="${e.dataset.linkTo}"]`).closest(".slide")) + 1));
   $$(".timer[data-secs]").forEach(t => makeTimer(t, +t.dataset.secs));
   buildRoleplay();
   buildLightning();
