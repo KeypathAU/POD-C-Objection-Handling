@@ -106,6 +106,15 @@ main.stage{flex:1;position:relative;overflow:hidden}
 .fff-col h3{color:var(--c)}
 .fff-col{border-top:7px solid var(--c)}
 .ex-box{border-left:6px solid var(--c);background:#101a30}
+.roles{display:flex;flex-wrap:wrap;gap:.5em 1.5em;background:#2a2614;border:1px solid #6b5a22;border-radius:10px;padding:.4em .8em;margin-bottom:.8em;font-size:.85em}
+.roles b{color:var(--accent)}
+.kit h3{color:var(--c);display:flex;align-items:center;gap:.4em}
+.kit .big.sm{font-size:1.4em}
+.kit .tool{border-top:1px solid var(--line);padding:.45em 0;font-size:.82em;line-height:1.35}
+.kit .tool b{display:block;color:var(--text)}
+.kit .use{display:block;color:var(--muted);font-size:.9em}
+.kit .use::before{content:"Use when: ";font-weight:700;color:var(--c)}
+.kit .say{display:block;font-style:italic;color:#e8eefb}
 .ex-box h3{color:var(--c);font-size:.95em}
 .starter{display:block;color:var(--muted);font-style:italic;margin-top:.3em}
 .chain{display:flex;flex-wrap:wrap;gap:.6em;align-items:center;margin:1em 0}
@@ -510,15 +519,34 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="tools" data-mins="1">
   <div class="kicker">Putting it together</div>
   <h2>Your toolkit on one page</h2>
-  <div class="grid g4">
-    <div class="card stage-card" data-s="L"><div class="big">L</div><h3>Listen</h3><div>Silence, note their words</div></div>
-    <div class="card stage-card" data-s="Ack"><div class="big">A</div><h3>Acknowledge</h3><div>Labelling<br>Feel and Felt</div></div>
-    <div class="card stage-card" data-s="E"><div class="big">E</div><h3>Explore</h3><div>Isolate and clarify<br>GROW: Goal, Reality</div></div>
-    <div class="card stage-card" data-s="Res"><div class="big">R</div><h3>Respond</h3><div>Found, Reframe<br>GROW: Options, Way forward</div></div>
+  <p class="muted small" style="margin:-.4em 0 .8em">Work left to right. You don't need every tool on every call: pick what the moment needs.</p>
+  <div class="grid g4 kit">
+    <div class="card stage-card" data-s="L"><h3><span class="big sm">L</span> Listen</h3>
+      <div class="tool"><b>Let them finish</b><span class="use">Always, first</span><span class="say">Stay quiet. Don't plan your answer.</span></div>
+      <div class="tool"><b>Note their words</b><span class="use">To play them back later</span><span class="say">"You said work is flat out..."</span></div>
+      <div class="tool"><b>Invite more</b><span class="use">When they stop short</span><span class="say">"Tell me a bit more about that."</span></div>
+    </div>
+    <div class="card stage-card" data-s="Ack"><h3><span class="big sm">A</span> Acknowledge</h3>
+      <div class="tool"><b>Labelling</b><span class="use">You hear a strong emotion</span><span class="say">"It sounds like you're worn out."</span></div>
+      <div class="tool"><b>Feel</b><span class="use">To show you get it</span><span class="say">"That makes complete sense."</span></div>
+      <div class="tool"><b>Felt</b><span class="use">They feel alone in it</span><span class="say">"Lots of students have felt that."</span></div>
+    </div>
+    <div class="card stage-card" data-s="E"><h3><span class="big sm">E</span> Explore</h3>
+      <div class="tool"><b>Isolate and clarify</b><span class="use">Before you answer anything</span><span class="say">"Apart from that, is there anything else?"</span></div>
+      <div class="tool"><b>GROW: Goal</b><span class="use">To reconnect to their why</span><span class="say">"What made you start the program?"</span></div>
+      <div class="tool"><b>GROW: Reality</b><span class="use">To find the real concern</span><span class="say">"What's making it feel hard right now?"</span></div>
+    </div>
+    <div class="card stage-card" data-s="Res"><h3><span class="big sm">R</span> Respond</h3>
+      <div class="tool"><b>Found</b><span class="use">You know what genuinely helped others</span><span class="say">"What others found was..."</span></div>
+      <div class="tool"><b>Reframe</b><span class="use">A belief is holding them back</span><span class="say">"Another way to look at it..."</span></div>
+      <div class="tool"><b>GROW: Options</b><span class="use">Let them suggest first</span><span class="say">"What could make this manageable?"</span></div>
+      <div class="tool"><b>GROW: Way forward</b><span class="use">Always, to finish</span><span class="say">"What's your first step, and when shall we check in?"</span></div>
+    </div>
   </div>
-  <p class="lead" style="margin-top:1em">You don't need every tool on every call. Pick what the moment needs, in the LAER order.</p>
+  <div class="card" style="margin-top:.8em;border-color:var(--bad)"><b style="color:var(--bad)">Never:</b> argue with a feeling, invent a Found, make a promise, or push past a clear "please stop calling".</div>
   <div class="notes">
-    <p>Quick bridge slide. This is the one to screenshot. Ask everyone to grab it now.</p>
+    <p>This is the one to screenshot. Ask everyone to take a screenshot now (Windows key + Shift + S) and keep it next to their phone.</p>
+    <p>Walk across it left to right in one sentence per column. Don't re-teach: everything here was covered earlier.</p>
     <div class="handoff">Hand-off: both hosts run the library together</div>
   </div>
 </section>
@@ -530,8 +558,8 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="chips" id="libChips"></div>
   <div class="grid g4" id="libGrid"></div>
   <div class="notes">
-    <p><b>Co-host move:</b> one host reads the objection as the student, the other gives the response from the card. Swap each card.</p>
-    <ul><li>Ask the room to pick two cards. Each card shows every tool for that objection.</li><li>For each card ask: "Which tool would you use first, and how would you say it in your own words?"</li><li>These cards are the take-away. Remind people the link will be shared.</li></ul>
+    <p><b>Co-host move:</b> each card tells you who plays the student and who plays the SSA, and swaps automatically for the next card. The first card has <span class="hB"></span> as the student and <span class="hA"></span> as the SSA.</p>
+    <ul><li>The student reads the objection in character. The SSA picks a tab (Quick tools, Feel Felt Found or GROW) and answers in their own words, then shows the tab so the room can compare.</li><li>Ask the room to pick two cards.</li><li>For each card ask: "Which tool would you use first, and how would you say it in your own words?"</li><li>These cards are the take-away. Remind people the link will be shared.</li></ul>
   </div>
 </section>
 
@@ -1146,20 +1174,26 @@ function buildLibrary() {
   };
   draw();
 }
+let libTurn = 0;
 function openObjection(i) {
   const o = OBJECTIONS[i], L = ["G", "R", "O", "W"], N = ["Goal", "Reality", "Options", "Way forward"];
+  const line = (s, n, t) => `<div class="detail-line" data-s="${s}"><b>${n}:</b> ${esc(t)}</div>`;
+  const tabs = [
+    ["Underneath", `<p class="lead" style="max-width:none">${esc(o.under)}</p>`],
+    ["Quick tools", line("Label", "Label", o.label) + line("Iso", "Isolate", o.isolate) + line("Ref", "Reframe", o.reframe)],
+    ["Feel, Felt, Found", line("Feel", "Feel", o.feel) + line("Felt", "Felt", o.felt) + line("Found", "Found", o.found)],
+    ["GROW", o.grow.map((q, k) => line(L[k], N[k], q)).join("")]
+  ];
+  const stu = libTurn % 2 ? CONFIG.hostA : CONFIG.hostB, ssa = libTurn % 2 ? CONFIG.hostB : CONFIG.hostA;
+  libTurn++;
   $("#objTitle").textContent = '"' + o.text + '"';
-  $("#objBody").innerHTML = `<p class="muted"><b style="color:var(--accent)">Often underneath:</b> ${esc(o.under)}</p>
-    <h3>Quick tools</h3>
-    <div class="detail-line" data-s="Label"><b>Label:</b> ${esc(o.label)}</div>
-    <div class="detail-line" data-s="Iso"><b>Isolate:</b> ${esc(o.isolate)}</div>
-    <div class="detail-line" data-s="Ref"><b>Reframe:</b> ${esc(o.reframe)}</div>
-    <h3 style="margin-top:1em">Feel, Felt, Found</h3>
-    <div class="detail-line" data-s="Feel"><b>Feel:</b> ${esc(o.feel)}</div>
-    <div class="detail-line" data-s="Felt"><b>Felt:</b> ${esc(o.felt)}</div>
-    <div class="detail-line" data-s="Found"><b>Found:</b> ${esc(o.found)}</div>
-    <h3 style="margin-top:1em">GROW questions</h3>
-    ${o.grow.map((q, k) => `<div class="detail-line" data-s="${L[k]}"><b>${N[k]}:</b> ${esc(q)}</div>`).join("")}`;
+  $("#objBody").innerHTML = `<div class="roles"><span><b>Student:</b> ${esc(stu)} reads the objection</span><span><b>SSA:</b> ${esc(ssa)} answers using the tabs</span></div>
+    <div class="chips">${tabs.map((t, k) => `<button class="chip${k ? "" : " on"}" data-tab="${k}">${t[0]}</button>`).join("")}</div>
+    <div id="objTab">${tabs[0][1]}</div>`;
+  $$("[data-tab]", $("#objBody")).forEach(b => b.onclick = () => {
+    $$("[data-tab]", $("#objBody")).forEach(x => x.classList.toggle("on", x === b));
+    $("#objTab").innerHTML = tabs[+b.dataset.tab][1];
+  });
   $("#objOv").classList.add("open");
 }
 
