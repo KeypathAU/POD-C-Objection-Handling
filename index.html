@@ -105,6 +105,8 @@ main.stage{flex:1;position:relative;overflow:hidden}
 .match-row.done .q{color:var(--c)}
 .fff-col h3{color:var(--c)}
 .fff-col{border-top:7px solid var(--c)}
+.ex-box{border-left:6px solid var(--c);background:#101a30}
+.ex-box h3{color:var(--c);font-size:.95em}
 .starter{display:block;color:var(--muted);font-style:italic;margin-top:.3em}
 .chain{display:flex;flex-wrap:wrap;gap:.6em;align-items:center;margin:1em 0}
 .chain .node{background:var(--panel);border:2px solid var(--c,var(--line));border-radius:14px;padding:.6em .9em;font-weight:700;text-align:center}
@@ -448,12 +450,11 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
       <label class="fl" data-s="Feel" for="fff1">Feel</label><textarea id="fff1" placeholder="Acknowledge the emotion..."></textarea>
       <label class="fl" data-s="Felt" for="fff2">Felt</label><textarea id="fff2" placeholder="Others have felt..."></textarea>
       <label class="fl" data-s="Found" for="fff3">Found</label><textarea id="fff3" placeholder="What they found was..."></textarea>
-      <div class="row" style="margin-top:.7em"><button class="btn" id="fffShow">Show a model answer</button></div>
-      <div id="fffModel" style="display:none;margin-top:.6em"></div>
+      <div class="row" style="margin-top:.7em"><button class="btn" id="fffShow">Show a model answer</button><button class="btn" id="fffClear">Clear the boxes</button></div>
     </div>
   </div>
   <div class="notes">
-    <ul><li>Pick the objection the room dreaded most in the opening poll.</li><li>Start the two-minute timer. Everyone writes in the chat.</li><li>Read two or three responses aloud. Optionally type the best one into the boxes to show it on screen, then reveal the model to compare.</li></ul>
+    <ul><li>Pick the objection the room dreaded most in the opening poll.</li><li>Start the two-minute timer. Everyone writes in the chat.</li><li>Read two or three responses aloud. Optionally type the best one into the boxes to show it on screen, then click <b>Show a model answer</b> to fill the boxes with ours and compare.</li></ul>
     <div class="handoff">Hand-off to <span class="hA"></span> for the quick tools</div>
   </div>
 </section>
@@ -462,12 +463,17 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="kicker">Quick tools</div>
   <h2>Three more tools for your belt</h2>
   <div class="grid g3">
-    <div class="card fff-col tap" data-s="Label" tabindex="0"><h3>Labelling</h3><div>Name the emotion you hear, then pause and let them talk.</div><span class="starter">"It sounds like..."</span><span class="starter">"It seems like..."</span><div class="hint">Click for an example</div><div class="ans"><b>Student:</b> "I just don't know if I can keep doing this."<br><b>SSA:</b> "It sounds like you're feeling pretty worn out right now." <i>(pause)</i></div></div>
-    <div class="card fff-col tap" data-s="Iso" tabindex="0"><h3>Isolate and clarify</h3><div>Check it's the real, and only, concern before you answer it.</div><span class="starter">"Apart from that, is there anything else?"</span><span class="starter">"If we could sort that out, would you feel okay to continue?"</span><div class="hint">Click for an example</div><div class="ans"><b>Student:</b> "It's the cost."<br><b>SSA:</b> "Apart from the cost, is there anything else making you hesitate?"</div></div>
-    <div class="card fff-col tap" data-s="Ref" tabindex="0"><h3>Reframe</h3><div>Offer a new way to see the concern, without arguing with it.</div><span class="starter">"Another way to look at it..."</span><span class="starter">"What if..."</span><div class="hint">Click for an example</div><div class="ans"><b>Student:</b> "I'm too busy to study."<br><b>SSA:</b> "That's exactly when one unit can work: it keeps your progress moving while life is busy, so you're not starting from scratch later."</div></div>
+    <div class="card fff-col" data-s="Label"><h3>Labelling</h3><div>Name the emotion you hear, then pause and let them talk.</div><span class="starter">"It sounds like..."</span><span class="starter">"It seems like..."</span></div>
+    <div class="card fff-col" data-s="Iso"><h3>Isolate and clarify</h3><div>Check it's the real, and only, concern before you answer it.</div><span class="starter">"Apart from that, is there anything else?"</span><span class="starter">"If we could sort that out, would you feel okay to continue?"</span></div>
+    <div class="card fff-col" data-s="Ref"><h3>Reframe</h3><div>Offer a new way to see the concern, without arguing with it.</div><span class="starter">"Another way to look at it..."</span><span class="starter">"What if..."</span></div>
+  </div>
+  <div class="grid g3" style="margin-top:1em">
+    <div class="card tap ex-box" data-s="Label" tabindex="0"><h3>Labelling example</h3><div class="hint">Click to reveal</div><div class="ans"><b>Student:</b> "I just don't know if I can keep doing this."<br><b>SSA:</b> "It sounds like you're feeling pretty worn out right now." <i>(pause)</i></div></div>
+    <div class="card tap ex-box" data-s="Iso" tabindex="0"><h3>Isolate example</h3><div class="hint">Click to reveal</div><div class="ans"><b>Student:</b> "It's the cost."<br><b>SSA:</b> "Apart from the cost, is there anything else making you hesitate?"</div></div>
+    <div class="card tap ex-box" data-s="Ref" tabindex="0"><h3>Reframe example</h3><div class="hint">Click to reveal</div><div class="ans"><b>Student:</b> "I'm too busy to study."<br><b>SSA:</b> "That's exactly when one unit can work: it keeps your progress moving while life is busy, so you're not starting from scratch later."</div></div>
   </div>
   <div class="notes">
-    <ul><li>Read each tool, then click for the example. <span class="hB"></span> can read the student lines.</li><li>Labelling: the pause matters more than the words. Count to three in your head.</li><li>Isolating stops us answering the first objection when the real one is the second.</li><li>A reframe only works after Acknowledge. Too early, it sounds like arguing.</li></ul>
+    <ul><li>Read each tool card, then click the matching example box underneath to reveal it. <span class="hB"></span> can read the student lines.</li><li>Labelling: the pause matters more than the words. Count to three in your head.</li><li>Isolating stops us answering the first objection when the real one is the second.</li><li>A reframe only works after Acknowledge. Too early, it sounds like arguing.</li></ul>
   </div>
 </section>
 
@@ -1117,15 +1123,14 @@ function buildMatch() {
 function buildFFF() {
   const sel = $("#fffSelect");
   sel.innerHTML = OBJECTIONS.map((o, i) => `<option value="${i}">${esc(o.cat)}: ${esc(o.text)}</option>`).join("");
-  const upd = () => {
-    const o = OBJECTIONS[+sel.value];
-    $("#fffQuote").textContent = '"' + o.text + '"';
-    ["#fff1", "#fff2", "#fff3"].forEach(id => $(id).value = "");
-    $("#fffModel").style.display = "none";
-    $("#fffModel").innerHTML = `<div class="detail-line" data-s="Feel"><b>Feel:</b> ${esc(o.feel)}</div><div class="detail-line" data-s="Felt"><b>Felt:</b> ${esc(o.felt)}</div><div class="detail-line" data-s="Found"><b>Found:</b> ${esc(o.found)}</div>`;
-  };
+  const boxes = ["#fff1", "#fff2", "#fff3"].map(id => $(id));
+  const fit = b => { b.style.height = "auto"; b.style.height = b.scrollHeight + 4 + "px"; };
+  boxes.forEach(b => b.addEventListener("input", () => fit(b)));
+  const clear = () => boxes.forEach(b => { b.value = ""; b.style.height = ""; });
+  const upd = () => { $("#fffQuote").textContent = '"' + OBJECTIONS[+sel.value].text + '"'; clear(); };
   sel.onchange = upd;
-  $("#fffShow").onclick = () => { const m = $("#fffModel"); m.style.display = m.style.display === "none" ? "block" : "none"; };
+  $("#fffShow").onclick = () => { const o = OBJECTIONS[+sel.value]; [o.feel, o.felt, o.found].forEach((t, i) => { boxes[i].value = t; fit(boxes[i]); }); };
+  $("#fffClear").onclick = clear;
   upd();
 }
 
