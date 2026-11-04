@@ -533,7 +533,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="tools" data-mins="1.5">
   <div class="kicker">Quick check</div>
   <h2>Which tool would you reach for?</h2>
-  <div class="task"><b>YOUR TURN</b> For each question, type A, B or C in the Teams chat</div>
+  <div class="row" style="justify-content:space-between;align-items:flex-start"><div class="task"><b>YOUR TURN</b> For each question, type A, B or C in the Teams chat</div><button class="btn" data-quiz-reveal>Reveal the answers</button></div>
   <div class="grid g3">
     <div class="card quiz">
       <h3>The student sighs: "Honestly... I'm just exhausted."</h3>
@@ -557,7 +557,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
       <div class="fb"></div>
     </div>
   </div>
-  <div class="notes"><p>Take the chat majority for each, click it and read the feedback. Some could work with more than one tool. Ask anyone who disagrees to say why.</p></div>
+  <div class="notes"><p>Give the chat about 20 seconds, then click <b>Reveal the answers</b> to show all three at once. Or click the chat's majority answer on each to go one at a time. Some could work with more than one tool. Ask anyone who disagrees to say why.</p></div>
 </section>
 
 <section class="slide" data-section="tools" data-mins="1">
@@ -1081,6 +1081,14 @@ function setupQuizzes() {
       const fb = $(".fb", q);
       if (fb) { fb.textContent = (ok ? "Yes! " : "Not quite. ") + (b.dataset.fb || ""); fb.className = "fb " + (ok ? "good" : "bad"); }
     }));
+  });
+  $$("[data-quiz-reveal]").forEach(btn => btn.onclick = () => {
+    $$(".quiz", btn.closest(".slide")).forEach(q => {
+      const b = $('.q-opt[data-ok="1"]', q), fb = $(".fb", q);
+      b.classList.add("right");
+      if (fb) { fb.textContent = b.textContent.replace(/^[A-C]\.\s*/, "") + ". " + (b.dataset.fb || ""); fb.className = "fb good"; }
+    });
+    confetti(btn, 40);
   });
 }
 
