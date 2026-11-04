@@ -148,7 +148,9 @@ main.stage::after{width:38vw;height:38vw;right:-10vw;bottom:-14vw;background:rad
 .fstep:nth-child(3n)::after{content:none}
 .fstep i{width:2.1em;height:2.1em;font-size:1.05em}
 }
-.fam-chip{align-self:flex-start;display:inline-block;background:var(--c);color:#fff;border-radius:999px;padding:0 .6em;font-size:.75em;font-weight:800;margin-top:.15em}.pcard{border-top:12px solid var(--c);display:flex;flex-direction:column;gap:.35em}
+.fam-chip{align-self:flex-start;display:inline-block;background:var(--c);color:#fff;border-radius:999px;padding:0 .6em;font-size:.75em;font-weight:800;margin-top:.15em}.pcard{border-top:12px solid var(--c);display:flex;flex-direction:column;gap:.3em;font-size:.85em;padding:.7em 1em}
+.pcard h3{margin:0}
+.pcard .room{align-self:flex-start;font-family:var(--head);font-weight:700;background:var(--c);color:#fff;border:2px solid var(--ink);border-radius:10px;padding:0 .6em;rotate:-2deg;box-shadow:2px 2px 0 var(--ink)}
 .pcard .pname{font-size:1.2em;color:var(--c)}
 .pcard .pcat{font-family:"Nunito",sans-serif;font-size:.6em;font-weight:800;background:var(--ink);color:#fff;border-radius:999px;padding:.05em .7em;vertical-align:middle}
 .pcard .psays{font-family:var(--head);font-weight:600;font-size:1.1em;background:color-mix(in srgb,var(--c) 10%,#fff);border-radius:12px;padding:.3em .6em}
@@ -613,15 +615,17 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 </section>
 
 <section class="slide" data-section="practice" data-mins="13">
-  <div class="kicker">Practice arena · In pairs</div>
-  <h2>Pair up and practise</h2>
-  <div class="task"><b>YOUR TURN</b> In your breakout room, one of you plays the student and one plays the SSA. About 4 minutes each, then swap and pick a new student</div>
-  <div class="grid g2" id="pairCards"></div>
-  <div class="card" style="margin-top:1em;padding:.6em 1em"><b>Student, after each round:</b> tell your SSA which of these they did. <span class="laer-strip"><span data-s="L">Listened</span><span data-s="Ack">Acknowledged</span><span data-s="E">Explored</span><span data-s="Res">Responded</span><span data-s="W">Agreed a next step</span></span></div>
-  <div class="row" style="margin-top:.8em"><button class="btn" id="copyBriefs">Copy briefs for the breakout rooms</button><span class="muted small" id="copyMsg"></span></div>
+  <div class="kicker">Practice arena · Breakout rooms</div>
+  <h2>Practise in your room</h2>
+  <div class="task"><b>YOUR TURN</b> Find your room. One person plays the student, one plays the SSA, everyone else listens. Swap the SSA every few minutes</div>
+  <div class="grid g3" id="pairCards"></div>
+  <div class="row" style="margin-top:.9em;align-items:stretch;flex-wrap:nowrap">
+    <div class="card" style="padding:.5em 1em;flex:1;font-size:.9em"><b>After each go:</b> the student and listeners tell the SSA which of these they did. <span class="laer-strip"><span data-s="L">Listened</span><span data-s="Ack">Acknowledged</span><span data-s="E">Explored</span><span data-s="Res">Responded</span><span data-s="W">Agreed a next step</span></span></div>
+    <div style="display:flex;flex-direction:column;justify-content:center;gap:.2em"><button class="btn" id="copyBriefs" style="font-size:.8em">Copy briefs for the rooms</button><span class="muted small" id="copyMsg"></span></div>
+  </div>
   <div class="notes">
-    <p><b>Before the session:</b> in the Teams meeting, open <b>Breakout rooms</b>, create one room per two people (assign automatically) and set a 10-minute time limit with "move people back automatically" on. Odd number? Make one room of three: the third person watches and gives feedback.</p>
-    <ul><li><b>1 minute:</b> walk through the four students. Round 1, the student picks Priya or Tom. Round 2, swap roles and pick Sam or Jordan.</li><li>Click <b>Copy briefs for the breakout rooms</b>, then open the rooms and paste the briefs as a breakout room <b>announcement</b> so every room has them in its chat.</li><li><b>10 minutes</b> in rooms. <span class="hA"></span> and <span class="hB"></span> drop in on a few rooms each. Listen for the SSA saying replies in their own words.</li><li><b>2 minutes</b> back in the main room: "What was it like being the student?" and "Which step made the biggest difference?" Usually it's Acknowledge.</li></ul>
+    <p><b>Before the session:</b> in the Teams meeting, open <b>Breakout rooms</b>, create <b>3 rooms</b> (assign automatically) and set a 10-minute time limit with "move people back automatically" on.</p>
+    <ul><li><b>1 minute:</b> show which room gets which student: Room 1 Priya, Room 2 Tom, Room 3 Sam.</li><li>Click <b>Copy briefs for the breakout rooms</b>, then open the rooms and paste the briefs as a breakout room <b>announcement</b> so every room has them in its chat.</li><li><b>10 minutes</b> in rooms. In each room one person plays the student, one plays the SSA and the rest listen. Swap the SSA every few minutes so as many people as possible get a go.</li><li><span class="hA"></span> and <span class="hB"></span> drop in on the rooms. Listen for the SSA saying replies in their own words.</li><li><b>2 minutes</b> back in the main room: one person from each room shares what worked. Ask "Which step made the biggest difference?" Usually it's Acknowledge.</li></ul>
     <div class="handoff">Hand-off to <span class="hB"></span> for the lightning round</div>
   </div>
 </section>
@@ -811,10 +815,7 @@ const PRACTICE = [
     tip: "You feel embarrassed. The feedback was mostly referencing and structure. Only open up once the SSA acknowledges how you feel." },
   { name: "Sam", cat: "Cost", who: "Halfway through the program. Money is tight until March.",
     says: "Honestly, it's a lot of money and I'm not sure I can justify it right now.",
-    tip: "You still want the qualification. It's the timing, not the value. Only mention March if the SSA asks whether it's the cost or the timing." },
-  { name: "Jordan", cat: "Value", who: "Halfway through. Finding the current core unit dry and unrelated to their job.",
-    says: "The course isn't really what I expected.",
-    tip: "It's really this one unit, not the whole program. If the SSA asks which part, admit the later units look interesting." }
+    tip: "You still want the qualification. It's the timing, not the value. Only mention March if the SSA asks whether it's the cost or the timing." }
 ];
 const LIGHTNING = [
   { q: "Feel, Felt, Found should be read word for word as a script.", a: false, why: "Use the structure, not the exact words. Scripted lines sound fake." },
@@ -1148,16 +1149,48 @@ function buildFFF() {
   upd();
 }
 
+const CONFETTI = ["#d6246e", "#ffd23f", "#4cc9f0", "#0a8f4e", "#7b2cbf", "#e2550d"];
+function confetti(el, n = 26) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0 };
+  const x = r.left + r.width / 2, y = r.top + r.height / 2;
+  for (let k = 0; k < n; k++) {
+    const p = document.createElement("span"), a = Math.random() * Math.PI * 2, d = 80 + Math.random() * 170;
+    p.className = "confetti";
+    p.style.cssText = `left:${x}px;top:${y}px;background:${CONFETTI[k % CONFETTI.length]};--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d + 140}px;--rot:${Math.random() * 720 - 360}deg`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1200);
+  }
+}
+
+function makeTimer(el, secs) {
+  let left = secs, iv = null;
+  el.innerHTML = `<span class="t">${fmt(left)}</span><button class="btn primary">Start</button><button class="btn">Reset</button>`;
+  const [t, start, rst] = [$(".t", el), ...$$("button", el)];
+  const show = () => { t.textContent = fmt(left); el.classList.toggle("done", left <= 0); };
+  const stop = () => { clearInterval(iv); iv = null; start.textContent = "Start"; };
+  start.onclick = () => {
+    if (iv) { stop(); return; }
+    if (left <= 0) left = secs;
+    start.textContent = "Pause";
+    iv = setInterval(() => { left--; show(); if (left <= 0) stop(); }, 1000);
+  };
+  const reset = () => { stop(); left = secs; show(); };
+  rst.onclick = reset;
+  return { reset };
+}
+
 function buildPairs() {
-  $("#pairCards").innerHTML = PRACTICE.map((p, i) => `<div class="card pcard" data-s="${["W", "G", "Ref", "Ack"][i]}">
+  $("#pairCards").innerHTML = PRACTICE.map((p, i) => `<div class="card pcard" data-s="${["W", "G", "Ref"][i]}">
+    <span class="room">Room ${i + 1}</span>
     <h3><span class="pname">${esc(p.name)}</span> <span class="pcat">${esc(p.cat)}</span></h3>
     <div class="muted small">${esc(p.who)}</div>
     <div class="psays">"${esc(p.says)}"</div>
     <div class="small"><b>Playing ${esc(p.name)}?</b> ${esc(p.tip)}</div></div>`).join("");
   $("#copyBriefs").onclick = () => {
-    const txt = "Pair practice. Round 1: student picks Priya or Tom. Round 2: swap roles, student picks Sam or Jordan. About 4 minutes each.\n\n" +
-      PRACTICE.map(p => `${p.name.toUpperCase()} (${p.cat}): ${p.who}\nOpens with: "${p.says}"\nIf you're playing ${p.name}: ${p.tip}`).join("\n\n") +
-      "\n\nStudent, after each round tell your SSA which they did: Listened, Acknowledged, Explored, Responded, Agreed a next step.";
+    const txt = "Breakout practice. One person plays the student, one plays the SSA, everyone else listens. Swap the SSA every few minutes.\n\n" +
+      PRACTICE.map((p, i) => `ROOM ${i + 1}: ${p.name.toUpperCase()} (${p.cat}): ${p.who}\nOpens with: "${p.says}"\nIf you're playing ${p.name}: ${p.tip}`).join("\n\n") +
+      "\n\nAfter each go, tell the SSA which they did: Listened, Acknowledged, Explored, Responded, Agreed a next step.";
     const done = () => { $("#copyMsg").textContent = "Copied. Paste it as a breakout room announcement."; confetti($("#copyBriefs"), 20); };
     if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, () => $("#copyMsg").textContent = "Couldn't copy automatically. Try again.");
   };
