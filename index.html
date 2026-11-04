@@ -22,6 +22,9 @@ header.bar{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;padding:.5re
 .brand span{background:var(--accent);color:#fff;border-radius:8px;padding:0 .4em;margin-right:.3em;display:inline-block;transform:rotate(-3deg)}
 .pill{background:var(--sun);border:2px solid var(--ink);border-radius:999px;padding:.15em .8em;font-weight:800}
 .spacer{flex:1}
+.presenter{display:flex;align-items:center;gap:.4em;background:var(--purple);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:.15em .8em .15em .3em;font-weight:800}
+.presenter span{background:#fff;color:var(--purple);border-radius:999px;padding:0 .5em;font-size:.85em}
+.presenter b.swap{animation:boing .5s}
 .runclock{display:flex;align-items:center;gap:.6em;font-variant-numeric:tabular-nums;font-weight:800;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:.3em .8em;box-shadow:3px 3px 0 var(--ink)}
 .runclock:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
 .runclock .of{color:var(--muted);font-weight:700}
@@ -120,6 +123,12 @@ main.stage::after{width:38vw;height:38vw;right:-10vw;bottom:-14vw;background:rad
 .fff-col{border-top:12px solid var(--c)}
 .ex-box{border-left:12px solid var(--c);background:color-mix(in srgb,var(--c) 8%,#fff)}
 .ex-box h3{color:var(--c);font-size:.95em}
+.pcard{border-top:12px solid var(--c);display:flex;flex-direction:column;gap:.35em}
+.pcard .pname{font-size:1.2em;color:var(--c)}
+.pcard .pcat{font-family:"Nunito",sans-serif;font-size:.6em;font-weight:800;background:var(--ink);color:#fff;border-radius:999px;padding:.05em .7em;vertical-align:middle}
+.pcard .psays{font-family:var(--head);font-weight:600;font-size:1.1em;background:color-mix(in srgb,var(--c) 10%,#fff);border-radius:12px;padding:.3em .6em}
+.laer-strip{display:inline-flex;flex-wrap:wrap;gap:.4em;margin-left:.4em;vertical-align:middle}
+.laer-strip span{background:var(--c);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:0 .7em;font-size:.85em;font-weight:800}
 .roles{display:flex;flex-wrap:wrap;gap:.5em 1.5em;background:#fff4c2;border:2px solid var(--ink);border-radius:12px;padding:.4em .8em;margin-bottom:.8em;font-size:.85em}
 .roles b{color:var(--accent)}
 .kit h3{color:var(--c);display:flex;align-items:center;gap:.4em}
@@ -216,6 +225,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <header class="bar">
   <div class="brand"><span id="podName">POD C</span> Objection Handling</div>
   <div class="pill" id="secPill">Welcome</div>
+  <div class="presenter"><span>Presenting</span> <b id="presName"></b></div>
   <div class="spacer"></div>
   <button class="ghost" id="timerBtn">Start run sheet<kbd>T</kbd></button>
   <button class="runclock" data-act="runsheet" title="Open the run sheet (R)"><span class="of">Section</span><span id="rcLeft">04:00 left</span><span id="rcPace" class="rc-pace">Not started</span></button>
@@ -237,7 +247,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="notes">
     <p><b>Goal of the session:</b> everyone leaves with the LAER backbone, a toolkit (GROW, Feel Felt Found, Labelling, Isolate and clarify, Reframe) and has practised them at least once.</p>
     <ul><li>Welcome everyone and introduce both hosts.</li><li>Set the tone: chat will be busy, there are no wrong answers, cameras on if you can.</li><li>Ask everyone to open the chat now. We will use it for every activity.</li></ul>
-    <p><b>Before the meeting:</b> in the Teams meeting, open <b>Polls</b> and create three polls: "Which objection do you dread the most?" (A to E), "How confident are you right now?" (1 to 5), and the same confidence question for the end. Save them as drafts so you can launch each with one click.</p>
+    <p><b>Before the meeting:</b> in the Teams meeting, open <b>Polls</b> and create three polls: "Which objection do you dread the most?" (A to E, plus F "Something else"), "How confident are you right now?" (1 to 5), and the same confidence question for the end. Save them as drafts so you can launch each with one click.</p>
     <p><b>To begin:</b> click <b>Start session</b> together. That starts the run sheet and moves to the agenda. From then on each section's countdown starts by itself as you move into it. <b>T</b> pauses or resumes, <b>R</b> shows the full run sheet.</p>
   </div>
 </section>
@@ -264,6 +274,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
       <div class="opt">C. "I failed, maybe this isn't for me"</div>
       <div class="opt">D. "I'll just enrol later"</div>
       <div class="opt">E. "I don't need a call from you"</div>
+      <div class="opt" style="border-style:dashed;background:#fff4c2">F. Something else? Pick F and type yours in the Teams chat (optional)</div>
     </div>
     <div class="card poll">
       <h3>How confident are you handling objections right now?</h3>
@@ -276,7 +287,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   </div>
   <div class="notes">
     <p><b>Co-host move:</b> <span class="hA"></span> launches both Teams polls, <span class="hB"></span> reads the results aloud as they come in.</p>
-    <ul><li>Give it about 30 seconds, then share the Teams results.</li><li>Call out the most dreaded objection: "Good news, we will practise that one today."</li><li>Say the confidence result out loud. We repeat this poll at the end to see the shift.</li></ul>
+    <ul><li>Give it about 30 seconds, then share the Teams results.</li><li>Call out the most dreaded objection: "Good news, we will practise that one today."</li><li>If anyone picked F, read a couple of their own objections from the chat.</li><li>Say the confidence result out loud. We repeat this poll at the end to see the shift.</li></ul>
     <div class="handoff">Hand-off to <span class="hB"></span> for the mindset section</div>
   </div>
 </section>
@@ -339,7 +350,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   </div>
 </section>
 
-<section class="slide" data-section="grow" data-mins="1.5">
+<section class="slide" data-section="grow" data-mins="2">
   <div class="kicker">Explore and Respond tool: GROW</div>
   <h2>GROW, applied to objections</h2>
   <p class="lead" style="max-width:none">GROW stands for <b style="color:var(--g)">Goal</b>, <b style="color:var(--r)">Reality</b>, <b style="color:var(--o)">Options</b>, <b style="color:var(--w)">Way forward</b>. It's one of the best-known coaching models. Instead of telling, you ask questions that help the student think it through and reach their own decision.</p>
@@ -385,19 +396,15 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   </div>
 </section>
 
-<section class="slide" data-section="grow" data-mins="2">
-  <div class="kicker">Practice round · Play on your own screen</div>
+<section class="slide" data-section="grow" data-mins="1.5">
+  <div class="kicker">Practice round · Just for you</div>
   <h2>Which stage is this question?</h2>
-  <div class="task"><b>YOUR TURN</b> Open the link below in your own browser and click G, R, O or W for each question. Only you can see your answers and your score</div>
-  <div class="row" style="margin-bottom:.8em">
-    <div class="card" style="padding:.5em 1em"><span class="muted small">Your link:</span> <b id="playLink" style="color:var(--accent);word-break:break-all"></b></div>
-    <div class="timer" data-secs="90"></div>
-    <button class="btn" id="matchReveal">Reveal all answers</button>
-  </div>
+  <div class="task"><b>YOUR TURN</b> Grab a pen or open a notepad and jot G, R, O or W for each question. Keep it to yourself, then mark your own when we reveal</div>
+  <div class="row" style="margin-bottom:.8em"><button class="btn" id="matchReveal">Reveal all answers</button></div>
   <div id="matchGame"></div>
   <div class="fb" id="matchScore"></div>
   <div class="notes">
-    <ul><li>Paste the link into the Teams chat as you land on this slide (it opens straight to this round): <b class="playLinkN"></b></li><li>Start the 90-second timer. Everyone plays privately, so nobody is put on the spot and wrong answers stay private.</li><li>When the timer ends, click <b>Reveal all answers</b> on the shared screen. Ask: "Which one surprised you?" rather than "Who got it wrong?"</li><li>Some questions could sit in two stages, and that's fine: what matters is the order.</li><li>Ask everyone to come back to the shared screen before you move on.</li></ul>
+    <ul><li>Give everyone about 90 seconds to jot their answers privately. Keep an eye on the run-sheet clock rather than announcing a timer.</li><li>Click <b>Reveal all answers</b> and let people mark their own. Ask: "Which one surprised you?" rather than "Who got it wrong?"</li><li>Some questions could sit in two stages, and that's fine: what matters is the order.</li></ul>
     <div class="handoff">Hand-off to <span class="hB"></span> for Feel, Felt, Found</div>
   </div>
 </section>
@@ -447,25 +454,21 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 
 <section class="slide" data-section="fff" data-mins="1">
   <div class="kicker">Quick check</div>
-  <h2>Which response lands best?</h2>
-  <div class="task"><b>YOUR TURN</b> For each question, type A, B or C in the Teams chat</div>
+  <h2>Over to you</h2>
+  <div class="task"><b>YOUR TURN</b> Type your answer to each question in the Teams chat. Then we reveal ours</div>
   <div class="grid g2">
-    <div class="card quiz">
-      <h3>Student: "I'm so behind, I don't see the point."</h3>
-      <button class="q-opt" data-ok="1" data-fb="Real Feel, honest Felt, specific Found.">A. "Being behind feels heavy. Lots of students feel that mid-term, and what they found was that a plan for just the next assessment made it doable."</button>
-      <button class="q-opt" data-fb="'I know exactly how you feel' sounds dismissive, and 'push through' isn't a Found.">B. "I know exactly how you feel. Everyone feels like that. Just push through."</button>
-      <button class="q-opt" data-fb="It argues with the feeling, so the student stops listening.">C. "Honestly, you're not that far behind."</button>
-      <div class="fb"></div>
+    <div class="card tap" tabindex="0">
+      <h3>Student: "I'm so behind, I don't see the point." How would you reply?</h3>
+      <div class="hint">Click to reveal one way to say it</div>
+      <div class="ans"><div class="detail-line" data-s="Found">"Being behind feels heavy. Lots of students feel that mid-term, and what they found was that a plan for just the next assessment made it doable."</div><div class="muted small">Avoid "I know exactly how you feel" or "Just push through". They sound dismissive.</div></div>
     </div>
-    <div class="card quiz">
-      <h3>When is Feel, Felt, Found <u>not</u> the best tool?</h3>
-      <button class="q-opt" data-fb="This is exactly when it helps most.">A. The student is upset about a result</button>
-      <button class="q-opt" data-ok="1" data-fb="Just answer the question. FFF here sounds evasive.">B. The student asks for the census date</button>
-      <button class="q-opt" data-fb="A great fit: there's usually a worry underneath.">C. The student is unsure about enrolling next term</button>
-      <div class="fb"></div>
+    <div class="card tap" tabindex="0">
+      <h3>When would you <u>not</u> use Feel, Felt, Found?</h3>
+      <div class="hint">Click to reveal</div>
+      <div class="ans"><div class="detail-line" data-s="Res">When the student asks a straight question, like "When is census?" Just answer it. FFF there sounds like you're dodging.</div><div class="muted small">Also skip it if they've made an informed decision, or you'd have to make up a Found.</div></div>
     </div>
   </div>
-  <div class="notes"><p>Take the chat majority, click it, read the feedback aloud. If the room picks a wrong answer, click the right one too and discuss.</p></div>
+  <div class="notes"><p>Give the chat 20 to 30 seconds per question. Read out two or three answers you like, then click to reveal ours and compare. Praise anything that acknowledges the feeling first.</p></div>
 </section>
 
 <section class="slide" data-section="fff" data-mins="2.5">
@@ -474,9 +477,9 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="task"><b>YOUR TURN</b> You have two minutes: write your Feel, Felt and Found lines and post them in the Teams chat</div>
   <div class="grid g2">
     <div class="card">
-      <label class="fl" style="--c:var(--accent)" for="fffSelect">Pick an objection</label>
-      <select id="fffSelect"></select>
-      <p class="quote" id="fffQuote" style="font-size:1.05em"></p>
+      <h3>The objection</h3>
+      <p class="quote" id="fffQuote" style="font-size:1.05em;margin:0 0 .8em"></p>
+      <div class="chips" id="fffList" style="margin:0"></div>
       <div class="row" style="margin-top:1em"><div class="timer" data-secs="120"></div></div>
     </div>
     <div class="card">
@@ -487,7 +490,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
     </div>
   </div>
   <div class="notes">
-    <ul><li>Pick the objection the room dreaded most in the opening poll.</li><li>Start the two-minute timer. Everyone writes in the chat.</li><li>Read two or three responses aloud. Optionally type the best one into the boxes to show it on screen, then click <b>Show a model answer</b> to fill the boxes with ours and compare.</li></ul>
+    <ul><li>Click the objection the room dreaded most in the opening poll. The full objection shows in the box at the top for everyone to see.</li><li>Start the two-minute timer. Everyone writes in the chat.</li><li>Read two or three responses aloud. Optionally type the best one into the boxes to show it on screen, then click <b>Show a model answer</b> to fill the boxes with ours and compare.</li></ul>
     <div class="handoff">Hand-off to <span class="hA"></span> for the quick tools</div>
   </div>
 </section>
@@ -530,10 +533,10 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
       <div class="fb"></div>
     </div>
     <div class="card quiz">
-      <h3>"If I take a break now, I'll have more time to study later."</h3>
-      <button class="q-opt" data-fb="There's no strong emotion to name here. It's a belief to gently test.">A. Labelling</button>
+      <h3>"I'm just not an academic person. I'm better at hands-on stuff."</h3>
+      <button class="q-opt" data-fb="There's a feeling in there, but what's really holding them back is a belief about themselves.">A. Labelling</button>
       <button class="q-opt" data-fb="It's already one clear concern.">B. Isolate and clarify</button>
-      <button class="q-opt" data-ok="1" data-fb="Offer another view: 'A break often makes restarting harder. One unit keeps the door open.'">C. Reframe</button>
+      <button class="q-opt" data-ok="1" data-fb="Offer another view: 'You're already juggling work and study, and that's a real skill. Plenty of hands-on people do really well here.'">C. Reframe</button>
       <div class="fb"></div>
     </div>
   </div>
@@ -583,64 +586,20 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="grid g4" id="libGrid"></div>
   <div class="notes">
     <p><b>Co-host move:</b> each card tells you who plays the student and who plays the SSA, and swaps automatically for the next card. The first card has <span class="hB"></span> as the student and <span class="hA"></span> as the SSA.</p>
-    <ul><li>The student reads the objection in character. The SSA picks a tab (Quick tools, Feel Felt Found or GROW) and answers in their own words, then shows the tab so the room can compare.</li><li>Ask the room to pick two cards.</li><li>For each card ask: "Which tool would you use first, and how would you say it in your own words?"</li><li>These cards are the take-away. Remind people the link will be shared.</li></ul>
+    <ul><li>The student reads the objection in character. The SSA picks a tab (Quick tools, Feel Felt Found or GROW) and answers in their own words, then shows the tab so the room can compare.</li><li>Ask the room to pick two cards.</li><li>For each card ask: "Which tool would you use first, and how would you say it in your own words?"</li><li>These cards are a good team reference. Mention they can ask you for the full list after the session.</li></ul>
   </div>
 </section>
 
-<section class="slide" data-section="practice" data-mins="6.5">
+<section class="slide" data-section="practice" data-mins="11">
   <div class="kicker">Practice arena · In pairs</div>
-  <h2>Pair up: Priya wants to skip next term</h2>
-  <div class="task"><b>YOUR TURN</b> In your breakout pair, open the link below, pick who's Priya and who's the SSA, and play it out loud</div>
-  <div class="row" style="margin-bottom:.8em">
-    <div class="card" style="padding:.5em 1em"><span class="muted small">Your link:</span> <b class="pairlink" data-link-to="priya" style="color:var(--accent);word-break:break-all"></b></div>
-    <div class="timer" data-secs="420"></div>
-  </div>
-  <div class="roles"><span><b>Priya:</b> read her lines out loud, in character</span><span><b>SSA:</b> say your reply in your own words, then click the closest option</span><span><b>Done?</b> Click Next for Tom and swap roles</span></div>
-  <div class="card scenario" data-scenario="priya"></div>
+  <h2>Pair up and practise</h2>
+  <div class="task"><b>YOUR TURN</b> In your breakout room, one of you plays the student and one plays the SSA. About 3 minutes each, then swap and pick a new student</div>
+  <div class="grid g2" id="pairCards"></div>
+  <div class="card" style="margin-top:1em;padding:.6em 1em"><b>Student, after each round:</b> tell your SSA which of these they did. <span class="laer-strip"><span data-s="L">Listened</span><span data-s="Ack">Acknowledged</span><span data-s="E">Explored</span><span data-s="Res">Responded</span><span data-s="W">Agreed a next step</span></span></div>
+  <div class="row" style="margin-top:.8em"><button class="btn" id="copyBriefs">Copy briefs for the breakout rooms</button><span class="muted small" id="copyMsg"></span></div>
   <div class="notes">
-    <p><b>Before the session:</b> in the Teams meeting, open <b>Breakout rooms</b>, create one room per two people (assign automatically), and set a 7-minute time limit with "move people back automatically" on. Odd number? Make one room of three: the third person watches and gives feedback.</p>
-    <ul><li>Paste the link into the Teams chat first: <b class="pairlink" data-link-to="priya"></b></li><li>Open the rooms and start the 7-minute timer on this slide. Pairs do Priya, then click Next and swap roles for Tom.</li><li><span class="hA"></span> and <span class="hB"></span> drop in on a few rooms each. Listen for the SSA saying the reply in their own words, not reading it.</li><li>When everyone's back, move to the next slide for the debrief.</li></ul>
-  </div>
-</section>
-
-<section class="slide" data-section="practice" data-mins="1.5">
-  <div class="kicker">Practice arena · Swap roles</div>
-  <h2>Swap: Tom failed his first assessment</h2>
-  <div class="task"><b>YOUR TURN</b> Still in your pair: whoever played Priya is now the SSA. Back in the main room? Type your pair's two scores in the Teams chat</div>
-  <div class="roles"><span><b>Tom:</b> read his lines out loud, in character</span><span><b>SSA:</b> say your reply in your own words, then click the closest option</span><span><b>Link:</b> <b class="pairlink" data-link-to="tom" style="color:var(--ink);word-break:break-all"></b></span></div>
-  <div class="card scenario" data-scenario="tom"></div>
-  <div class="notes">
-    <p><b>Debrief</b> once everyone is back from the breakout rooms.</p>
-    <ul><li>Ask pairs to type their Priya and Tom scores in the chat. Celebrate the high ones.</li><li>Ask: "What was it like being the student?" Usually people say the Acknowledge step made the biggest difference.</li><li>If time allows, click through Tom's best path on screen and ask: "Which LAER step and which tool did each best answer use?" (Acknowledge with Feel and Felt, Explore with Reality, Respond with Found and a Way forward.)</li></ul>
-  </div>
-</section>
-
-<section class="slide" data-section="practice" data-mins="3">
-  <div class="kicker">Practice arena · Live role-play</div>
-  <h2>Your turn on the phone</h2>
-  <div class="task"><b>YOUR TURN</b> Want to be the SSA? Raise your hand in Teams. Everyone else, tick off what you hear in the chat</div>
-  <div class="grid g2">
-    <div class="card">
-      <h3>The objection</h3>
-      <div class="deal" id="dealText">Click "Deal an objection" to start.</div>
-      <div class="row"><button class="btn primary" id="dealBtn">Deal an objection</button><span class="muted small" id="roundLbl">Round 0</span></div>
-      <div class="row" style="margin-top:1em"><div class="timer" id="rpTimer"></div></div>
-      <p class="muted small">Roles: one SSA (volunteer), one student (host), everyone else observes.</p>
-    </div>
-    <div class="card check">
-      <h3>Observer checklist</h3>
-      <label><input type="checkbox"> Listened without interrupting</label>
-      <label><input type="checkbox"> Acknowledged the feeling (Labelling or Feel, Felt)</label>
-      <label><input type="checkbox"> Isolated the real concern</label>
-      <label><input type="checkbox"> Explored with questions (Goal, Reality)</label>
-      <label><input type="checkbox"> Let the student suggest options</label>
-      <label><input type="checkbox"> Responded with an honest Found or a Reframe</label>
-      <label><input type="checkbox"> Agreed a clear next step</label>
-      <div class="fb" id="checkScore"></div>
-    </div>
-  </div>
-  <div class="notes">
-    <ul><li>Ask for a volunteer to be the SSA. A host plays the student and should be realistic, not impossible.</li><li>Deal an objection and start the 90-second timer.</li><li>Observers call out in chat what they saw; tick the boxes live.</li><li>Time for one round, two if it's quick. Dealing a new objection resets the checklist and timer.</li><li>Everyone has just practised in pairs, so this is a "show us" moment: pick a volunteer who sounded confident in their breakout room.</li></ul>
+    <p><b>Before the session:</b> in the Teams meeting, open <b>Breakout rooms</b>, create one room per two people (assign automatically) and set an 8-minute time limit with "move people back automatically" on. Odd number? Make one room of three: the third person watches and gives feedback.</p>
+    <ul><li><b>1 minute:</b> walk through the four students. Round 1, the student picks Priya or Tom. Round 2, swap roles and pick Sam or Jordan.</li><li>Click <b>Copy briefs for the breakout rooms</b>, then open the rooms and paste the briefs as a breakout room <b>announcement</b> so every room has them in its chat.</li><li><b>8 minutes</b> in rooms. <span class="hA"></span> and <span class="hB"></span> drop in on a few rooms each. Listen for the SSA saying replies in their own words.</li><li><b>2 minutes</b> back in the main room: "What was it like being the student?" and "Which step made the biggest difference?" Usually it's Acknowledge.</li></ul>
     <div class="handoff">Hand-off to <span class="hB"></span> for the lightning round</div>
   </div>
 </section>
@@ -651,6 +610,8 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="task"><b>YOUR TURN</b> Type T (true) or F (false) in the Teams chat as fast as you can</div>
   <div class="card" id="lightning"></div>
   <div class="notes"><p>Start the round, read each statement, click the chat's majority answer, read the reason in one sentence and move on. Keep the energy high. Two minutes on the clock.</p>
+    <p><b>Answers:</b></p>
+    <ol><li>FFF should be read word for word as a script. <b>False</b>: use the structure, not the exact words.</li><li>In LAER, you Respond before you Explore. <b>False</b>: explore first.</li><li>Isolating means asking "Apart from that, is there anything else?" before you respond. <b>True</b></li><li>Reframing means telling the student their concern is wrong. <b>False</b>: it adds a new view, never argues.</li><li>A Found should only include outcomes you can genuinely stand behind. <b>True</b></li><li>Way forward means the SSA decides the next step. <b>False</b>: agree it together.</li><li>When labelling, you name the emotion and then pause. <b>True</b></li><li>If a student says "please stop calling", keep pushing with FFF. <b>False</b>: respect the boundary.</li></ol>
     <div class="handoff">Hand-off to <span class="hA"></span> to wrap up</div></div>
 </section>
 
@@ -687,9 +648,9 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide center" data-section="wrap" data-mins="0.5">
   <div class="kicker">Thank you</div>
   <h1 class="mega">Questions?</h1>
-  <p class="lead">This session and the objection library stay available after today. Pick one objection this week and try a new tool on it.</p>
+  <p class="lead">Keep your toolkit screenshot next to your phone. Pick one objection this week and try a new tool on it.</p>
   <div class="hosts"><b class="hA"></b> and <b class="hB"></b> · <span id="podName2">POD C</span></div>
-  <div class="notes"><p>Thank everyone. Share the link in the chat. Note any questions you couldn't answer and follow up with the POD.</p></div>
+  <div class="notes"><p>Thank everyone. Remind them to keep their toolkit screenshot handy. Note any questions you couldn't answer and follow up with the POD.</p></div>
 </section>
 
 </main>
@@ -721,7 +682,6 @@ const CONFIG = {
   hostB: "Milly",
   pod: "POD C",
   liveUrl: "https://keypathau.github.io/POD-C-Objection-Handling/",
-  roleplaySeconds: 90,
   lightningSeconds: 120
 };
 
@@ -799,16 +759,6 @@ const OBJECTIONS = [
     felt: "Some students have felt that way at this stage, particularly in the core units.",
     found: "What they found was that later units connected much more directly to their career goals once they could see the full pathway.",
     grow: ["What were you hoping to get out of the program when you started?", "Which parts have and haven't matched that so far?", "Which upcoming units connect best to your goal?", "Can I send you the unit list for the rest of your program?"] },
-  { cat: "Third party",
-    label: "It sounds like this is a decision you want to make together.",
-    isolate: "Apart from talking it over with them, is there anything you're unsure about yourself?",
-    reframe: "Bringing them a clear plan can make that conversation much easier.",
-    text: "I need to talk to my partner first.",
-    under: "A genuine joint decision, or a polite way to end the call. Check which, kindly.",
-    feel: "Of course. It makes sense to involve them in a decision like this.",
-    felt: "Lots of students have felt it's important to have their family on board.",
-    found: "What they found useful was having the key details in writing, so that conversation was easy.",
-    grow: ["What do you think your partner will want to know?", "How do you feel about it yourself?", "What information would make that conversation easier?", "I'll email a summary now. When's a good time to touch base after you've talked?"] },
   { cat: "Contact",
     label: "It sounds like you've got things under control.",
     isolate: "Is it the phone call itself, or would you rather not hear from us at all?",
@@ -832,47 +782,20 @@ const MATCH = [
   { q: "When shall we check in to see how it's going?", a: "W" }
 ];
 
-const SCENARIOS = {
-  priya: {
-    name: "Priya",
-    opening: "Hi. Look, work has been crazy. I'm thinking I'll just skip next term.",
-    steps: [
-      { choices: [
-        { t: "That's completely understandable, work can take over. Can I ask what's making this term feel so full?", pts: 3, fb: "Acknowledge first, then Explore with a Reality question. Priya feels heard and opens up.", reply: "We're short staffed and I'm doing extra shifts. I just can't see when I'd fit study in." },
-        { t: "If you skip a term you'll fall behind and it'll take longer to graduate.", pts: 1, fb: "True, but it leads with consequences before acknowledging the feeling. It feels like pressure.", reply: "Yeah, I know. But we're short staffed and I'm doing extra shifts. I can't see when I'd fit study in." },
-        { t: "No problem, I'll update your record. Let us know when you're ready to come back.", pts: 0, fb: "Accepts the objection at face value. The real concern never comes out, and Priya may not return.", reply: "Okay... it's just that we're short staffed and I can't see when I'd fit study in." } ] },
-      { choices: [
-        { t: "If we planned it realistically, how many hours a week do you think you could give study?", pts: 3, fb: "A Reality question. Gets concrete facts to build a plan from.", reply: "Hmm. Realistically, maybe six or seven hours, mostly on weekends." },
-        { t: "Lots of students work full time and still manage it. You'll be fine!", pts: 1, fb: "Well meant, but a Found without a Feel lands as 'just try harder'.", reply: "I don't know about that. I guess I'd have six or seven hours on weekends, but that's it." },
-        { t: "Have you thought about just studying at night?", pts: 1, fb: "Jumps to a solution before understanding her reality. Let her generate the options.", reply: "Nights are when I sleep! Weekends maybe, six or seven hours tops." } ] },
-      { choices: [
-        { t: "Six or seven hours is a solid base. Shall we map week one of the unit to your weekends now, and I'll check in after your first assessment?", pts: 3, fb: "A clear Way forward: a specific action, an agreed check-in, and Priya keeps ownership.", reply: "Yeah, that actually sounds doable. Let's do it." },
-        { t: "Great, so you'll enrol then?", pts: 1, fb: "Closes too hard. With no plan, the original worry is still there.", reply: "Um... I guess? I'm still not sure how I'll fit it in." },
-        { t: "Okay, have a think about it and let me know.", pts: 0, fb: "No commitment. The decision is left floating and momentum is lost.", reply: "Sure, I'll think about it." } ] }
-    ],
-    debrief: "Best path follows LAER: Acknowledge, Explore the real concern with Reality questions, then Respond with a plan Priya helped build."
-  },
-  tom: {
-    name: "Tom",
-    opening: "I got 38 on my first assignment. Honestly, I'm thinking of dropping the unit before census.",
-    steps: [
-      { choices: [
-        { t: "I'm sorry, that's a really disappointing result, especially after the effort you put in. A lot of students have felt that way after a first assessment.", pts: 3, fb: "Feel and Felt done naturally. Tom feels heard and less alone.", reply: "Yeah, it really knocked me. I just don't think I'm cut out for this." },
-        { t: "38 isn't great, but you've still got time to pass.", pts: 1, fb: "Accurate but cold. It skips the emotion, so he can't hear the logic yet.", reply: "I guess. I just don't think I'm cut out for this." },
-        { t: "If you drop before census you won't pay for it, so that might be smart.", pts: 0, fb: "Hands him the exit before understanding the situation. Drop decisions should be informed, not encouraged.", reply: "Maybe. I just don't think I'm cut out for this, to be honest." } ] },
-      { choices: [
-        { t: "What did the feedback on the assignment say?", pts: 3, fb: "A Reality question. It moves Tom from a story ('I'm not cut out for this') to facts.", reply: "Mostly my referencing and structure. And it's only worth 20 percent." },
-        { t: "Of course you are! Don't be so hard on yourself.", pts: 1, fb: "Kind, but it argues with his feeling instead of exploring it.", reply: "Thanks, but... the feedback was mostly about referencing and structure. It's only 20 percent." },
-        { t: "Would you rather switch to a different program?", pts: 0, fb: "Jumps to a big option with no information. It may confirm his fear.", reply: "I don't know. The feedback was mostly referencing and structure. It was only worth 20 percent." } ] },
-      { choices: [
-        { t: "That's really useful. Students who've gone through their feedback with study support have found the next assessment much easier. Want me to book that in before your next one?", pts: 3, fb: "An honest Found plus a specific, supported, time-bound Way forward.", reply: "Yeah, okay. That would actually help." },
-        { t: "Okay, so you'll be fine then.", pts: 1, fb: "Minimises the problem. With no plan to fix referencing, the same result could happen again.", reply: "I suppose. I still don't know how to fix the referencing though." },
-        { t: "Up to you. Let me know what you decide before census.", pts: 0, fb: "Leaves him alone with the decision at his lowest point.", reply: "Okay. I'll probably just drop it then." } ] }
-    ],
-    debrief: "Best path follows LAER: Acknowledge with Feel and Felt, Explore with a Reality question, then Respond with an honest Found and an agreed next step."
-  }
-};
-
+const PRACTICE = [
+  { name: "Priya", cat: "Time", who: "Works full time in hospitality and has just picked up extra shifts.",
+    says: "Work's been crazy. I think I'll just skip next term.",
+    tip: "You're scared of falling behind. If the SSA asks what's making it hard, tell them about the shifts. A realistic plan for one unit would keep you in." },
+  { name: "Tom", cat: "Confidence", who: "First unit. Got 38% on the first assignment, which was worth 20%.",
+    says: "I failed my first assignment. I'm thinking of dropping before census.",
+    tip: "You feel embarrassed. The feedback was mostly referencing and structure. Only open up once the SSA acknowledges how you feel." },
+  { name: "Sam", cat: "Cost", who: "Halfway through the program. Money is tight until March.",
+    says: "Honestly, it's a lot of money and I'm not sure I can justify it right now.",
+    tip: "You still want the qualification. It's the timing, not the value. Only mention March if the SSA asks whether it's the cost or the timing." },
+  { name: "Jordan", cat: "Value", who: "Halfway through. Finding the current core unit dry and unrelated to their job.",
+    says: "The course isn't really what I expected.",
+    tip: "It's really this one unit, not the whole program. If the SSA asks which part, admit the later units look interesting." }
+];
 const LIGHTNING = [
   { q: "Feel, Felt, Found should be read word for word as a script.", a: false, why: "Use the structure, not the exact words. Scripted lines sound fake." },
   { q: "In LAER, you Respond before you Explore.", a: false, why: "Explore first. Responding too early answers the wrong concern." },
@@ -951,6 +874,8 @@ function pace() {
 function render() {
   const sec = secOf(cur);
   $("#secPill").textContent = sec.name;
+  const pn = $("#presName"), who = leadName(sec.lead);
+  if (pn.textContent !== who) { pn.textContent = who; pn.classList.remove("swap"); void pn.offsetWidth; pn.classList.add("swap"); }
   $("#counter").textContent = (cur + 1) + " / " + slides.length;
   $("#progFill").style.width = ((cur + 1) / slides.length * 100) + "%";
   $("#prevBtn").disabled = cur === 0;
@@ -1147,10 +1072,6 @@ function buildMatch() {
   const box = $("#matchGame");
   let firstTry = 0, done = 0;
   const reveals = [];
-  const slideNo = slides.indexOf(box.closest(".slide")) + 1;
-  const link = CONFIG.liveUrl + "#" + slideNo;
-  $("#playLink").textContent = link;
-  $$(".playLinkN").forEach(e => e.textContent = link);
   MATCH.forEach((m, i) => {
     const row = document.createElement("div");
     row.className = "match-row";
@@ -1177,19 +1098,24 @@ function buildMatch() {
     });
     box.appendChild(row);
   });
-  $("#matchReveal").onclick = () => reveals.forEach(r => r());
+  $("#matchReveal").onclick = () => { reveals.forEach(r => r()); confetti($("#matchReveal"), 40); };
 }
 
 function buildFFF() {
-  const sel = $("#fffSelect");
-  sel.innerHTML = OBJECTIONS.map((o, i) => `<option value="${i}">${esc(o.cat)}: ${esc(o.text)}</option>`).join("");
+  let pick = 0;
+  const list = $("#fffList");
+  list.innerHTML = OBJECTIONS.map((o, i) => `<button class="chip" data-i="${i}" title="${esc(o.text)}">${esc(o.cat)}</button>`).join("");
   const boxes = ["#fff1", "#fff2", "#fff3"].map(id => $(id));
   const fit = b => { b.style.height = "auto"; b.style.height = b.scrollHeight + 4 + "px"; };
   boxes.forEach(b => b.addEventListener("input", () => fit(b)));
   const clear = () => boxes.forEach(b => { b.value = ""; b.style.height = ""; });
-  const upd = () => { $("#fffQuote").textContent = '"' + OBJECTIONS[+sel.value].text + '"'; clear(); };
-  sel.onchange = upd;
-  $("#fffShow").onclick = () => { const o = OBJECTIONS[+sel.value]; [o.feel, o.felt, o.found].forEach((t, i) => { boxes[i].value = t; fit(boxes[i]); }); };
+  const upd = () => {
+    $("#fffQuote").textContent = '"' + OBJECTIONS[pick].text + '"';
+    $$(".chip", list).forEach(c => c.classList.toggle("on", +c.dataset.i === pick));
+    clear();
+  };
+  $$(".chip", list).forEach(c => c.onclick = () => { pick = +c.dataset.i; upd(); });
+  $("#fffShow").onclick = () => { const o = OBJECTIONS[pick]; [o.feel, o.felt, o.found].forEach((t, i) => { boxes[i].value = t; fit(boxes[i]); }); };
   $("#fffClear").onclick = clear;
   upd();
 }
@@ -1229,38 +1155,6 @@ function openObjection(i) {
   $("#objOv").classList.add("open");
 }
 
-function runScenario(el) {
-  const sc = SCENARIOS[el.dataset.scenario];
-  let step, score, log;
-  const max = sc.steps.length * 3;
-  const reset = () => { step = 0; score = 0; log = [{ who: "stu", t: sc.opening }]; draw(); };
-  const chat = () => `<div class="chat">${log.map(m => `<div class="msg ${m.who}"><b>${m.who === "stu" ? sc.name : "SSA"}</b>${esc(m.t)}</div>`).join("")}</div>`;
-  const draw = () => {
-    if (step >= sc.steps.length) {
-      const pct = score / max;
-      const verdict = pct >= .85 ? "Excellent. That's a conversation the student will remember." : pct >= .5 ? "Solid. A couple of moments to sharpen." : "Plenty to learn from. Let's try the best path.";
-      el.innerHTML = chat() + `<div class="sc-fb"><div class="score">Room score: ${score} / ${max}</div><div>${verdict}</div><div class="muted" style="margin-top:.4em">${esc(sc.debrief)}</div></div><button class="btn">Restart scenario</button>`;
-      $("button.btn", el).onclick = reset;
-      return;
-    }
-    const st = sc.steps[step];
-    el.innerHTML = chat() + `<div class="muted small">Step ${step + 1} of ${sc.steps.length} · What does the SSA say next?</div>` +
-      st.choices.map((c, i) => `<button class="choice" data-i="${i}"><span class="letter">${"ABC"[i]}</span>${esc(c.t)}</button>`).join("") +
-      `<div class="sc-slot"></div><div class="muted small">Score so far: <span class="score">${score}</span></div>`;
-    $$(".choice", el).forEach(b => b.onclick = () => {
-      const c = st.choices[+b.dataset.i];
-      const best = Math.max(...st.choices.map(x => x.pts));
-      $$(".choice", el).forEach((x, i) => { x.disabled = true; if (st.choices[i].pts === best) x.classList.add("best"); });
-      b.classList.add("picked");
-      if (c.pts === best) confetti(b);
-      score += c.pts;
-      $(".sc-slot", el).innerHTML = `<div class="sc-fb"><span class="score">+${c.pts}</span> ${esc(c.fb)}</div><button class="btn primary">Continue</button>`;
-      $(".sc-slot .btn", el).onclick = () => { log.push({ who: "ssa", t: c.t }, { who: "stu", t: c.reply }); step++; draw(); };
-    });
-  };
-  reset();
-}
-
 const CONFETTI = ["#d6246e", "#ffd23f", "#4cc9f0", "#0a8f4e", "#7b2cbf", "#e2550d"];
 function confetti(el, n = 26) {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -1292,31 +1186,20 @@ function makeTimer(el, secs) {
   return { reset };
 }
 
-function buildRoleplay() {
-  const tm = makeTimer($("#rpTimer"), CONFIG.roleplaySeconds);
-  let round = 0, last = -1;
-  const boxes = $$(".check input");
-  const score = () => {
-    const n = boxes.filter(b => b.checked).length;
-    $("#checkScore").textContent = n + " of " + boxes.length + " spotted" + (n === boxes.length ? ". Full house!" : "");
-    $("#checkScore").className = "fb good";
-    if (n === boxes.length) confetti($("#checkScore"), 50);
-  };
-  boxes.forEach(b => b.onchange = score);
-  $("#dealBtn").onclick = () => {
-    let i;
-    do { i = Math.floor(Math.random() * OBJECTIONS.length); } while (i === last && OBJECTIONS.length > 1);
-    last = i; round++;
-    const dt = $("#dealText");
-    dt.textContent = '"' + OBJECTIONS[i].text + '"';
-    dt.classList.remove("flip"); void dt.offsetWidth; dt.classList.add("flip");
-    $("#roundLbl").textContent = "Round " + round + " · " + OBJECTIONS[i].cat;
-    boxes.forEach(b => b.checked = false);
-    $("#checkScore").textContent = "";
-    tm.reset();
+function buildPairs() {
+  $("#pairCards").innerHTML = PRACTICE.map((p, i) => `<div class="card pcard" data-s="${["W", "G", "Ref", "Ack"][i]}">
+    <h3><span class="pname">${esc(p.name)}</span> <span class="pcat">${esc(p.cat)}</span></h3>
+    <div class="muted small">${esc(p.who)}</div>
+    <div class="psays">"${esc(p.says)}"</div>
+    <div class="small"><b>Playing ${esc(p.name)}?</b> ${esc(p.tip)}</div></div>`).join("");
+  $("#copyBriefs").onclick = () => {
+    const txt = "Pair practice. Round 1: student picks Priya or Tom. Round 2: swap roles, student picks Sam or Jordan. About 3 minutes each.\n\n" +
+      PRACTICE.map(p => `${p.name.toUpperCase()} (${p.cat}): ${p.who}\nOpens with: "${p.says}"\nIf you're playing ${p.name}: ${p.tip}`).join("\n\n") +
+      "\n\nStudent, after each round tell your SSA which they did: Listened, Acknowledged, Explored, Responded, Agreed a next step.";
+    const done = () => { $("#copyMsg").textContent = "Copied. Paste it as a breakout room announcement."; confetti($("#copyBriefs"), 20); };
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, () => $("#copyMsg").textContent = "Couldn't copy automatically. Try again.");
   };
 }
-
 function buildLightning() {
   const el = $("#lightning");
   let i, score, left, iv;
@@ -1358,17 +1241,15 @@ function init() {
   $("#podName").textContent = CONFIG.pod;
   $("#podName2").textContent = CONFIG.pod;
   document.title = "Objection Handling · " + CONFIG.pod;
-  $$(".grid").forEach(g => [...g.children].forEach((c, k) => c.style.setProperty("--i", k)));
   buildAgenda();
   setupQuizzes();
   buildMatch();
   buildFFF();
   buildLibrary();
-  $$(".scenario").forEach(runScenario);
-  $$(".pairlink").forEach(e => e.textContent = CONFIG.liveUrl + "#" + (slides.indexOf($(`[data-scenario="${e.dataset.linkTo}"]`).closest(".slide")) + 1));
   $$(".timer[data-secs]").forEach(t => makeTimer(t, +t.dataset.secs));
-  buildRoleplay();
+  buildPairs();
   buildLightning();
+  $$(".grid").forEach(g => [...g.children].forEach((c, k) => c.style.setProperty("--i", k)));
   const h = parseInt(location.hash.slice(1), 10);
   const start = h >= 1 && h <= slides.length ? h - 1 : 0;
   slides[0].classList.add("active");
