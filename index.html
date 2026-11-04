@@ -123,7 +123,19 @@ main.stage::after{width:38vw;height:38vw;right:-10vw;bottom:-14vw;background:rad
 .fff-col{border-top:12px solid var(--c)}
 .ex-box{border-left:12px solid var(--c);background:color-mix(in srgb,var(--c) 8%,#fff)}
 .ex-box h3{color:var(--c);font-size:.95em}
-.pcard{border-top:12px solid var(--c);display:flex;flex-direction:column;gap:.35em}
+.fam .card{display:flex;flex-direction:column;gap:.1em;padding:.5em .9em;border-top:10px solid var(--c);font-size:.85em}
+.fam b{font-family:var(--head);font-weight:600;color:var(--c);font-size:1.15em}
+.fam span{color:var(--muted)}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:.9rem 1.4rem;margin-top:1.1em;counter-reset:f}
+.fstep{position:relative;background:#fff;border:3px solid var(--ink);border-top:10px solid var(--c);border-radius:16px;padding:.5em .7em .6em;box-shadow:4px 4px 0 var(--ink);display:flex;flex-direction:column;gap:.15em;font-size:.8em;line-height:1.3}
+.slide.active .fstep{animation:pop .5s cubic-bezier(.2,1.5,.45,1) backwards}
+.slide.active .fstep:nth-child(2){animation-delay:.08s}.slide.active .fstep:nth-child(3){animation-delay:.16s}.slide.active .fstep:nth-child(4){animation-delay:.24s}.slide.active .fstep:nth-child(5){animation-delay:.32s}.slide.active .fstep:nth-child(6){animation-delay:.4s}.slide.active .fstep:nth-child(7){animation-delay:.48s}.slide.active .fstep:nth-child(8){animation-delay:.56s}.slide.active .fstep:nth-child(9){animation-delay:.64s}
+.fstep:not(:last-child)::after{content:"\2192";position:absolute;right:-1.15em;top:50%;transform:translateY(-50%);font-weight:900;font-size:1.3em;color:var(--ink)}
+.fstep i{position:absolute;top:-.9em;left:-.6em;width:1.8em;height:1.8em;border-radius:50%;background:var(--sun);border:2px solid var(--ink);font-style:normal;font-family:var(--head);font-weight:700;display:flex;align-items:center;justify-content:center}
+.fstep small{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:.72em;color:var(--muted);margin-left:1.2em}
+.fstep b{font-family:var(--head);font-weight:600;font-size:1.15em;color:var(--c)}
+.fstep em{color:var(--text)}
+.fam-chip{align-self:flex-start;display:inline-block;background:var(--c);color:#fff;border-radius:999px;padding:0 .6em;font-size:.75em;font-weight:800;margin-top:.15em}.pcard{border-top:12px solid var(--c);display:flex;flex-direction:column;gap:.35em}
 .pcard .pname{font-size:1.2em;color:var(--c)}
 .pcard .pcat{font-family:"Nunito",sans-serif;font-size:.6em;font-weight:800;background:var(--ink);color:#fff;border-radius:999px;padding:.05em .7em;vertical-align:middle}
 .pcard .psays{font-family:var(--head);font-weight:600;font-size:1.1em;background:color-mix(in srgb,var(--c) 10%,#fff);border-radius:12px;padding:.3em .6em}
@@ -563,34 +575,27 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="tools" data-mins="1">
   <div class="kicker">Putting it together</div>
   <h2>Your toolkit on one page</h2>
-  <p class="muted small" style="margin:-.4em 0 .8em">Work left to right. You don't need every tool on every call: pick what the moment needs.</p>
-  <div class="grid g4 kit">
-    <div class="card stage-card" data-s="L"><h3><span class="big sm">L</span> Listen</h3>
-      <div class="tool"><b>Let them finish</b><span class="use">Always, first</span><span class="say">Stay quiet. Don't plan your answer.</span></div>
-      <div class="tool"><b>Note their words</b><span class="use">To play them back later</span><span class="say">"You said work is flat out..."</span></div>
-      <div class="tool"><b>Invite more</b><span class="use">When they stop short</span><span class="say">"Tell me a bit more about that."</span></div>
-    </div>
-    <div class="card stage-card" data-s="Ack"><h3><span class="big sm">A</span> Acknowledge</h3>
-      <div class="tool"><b>Labelling</b><span class="use">You hear a strong emotion</span><span class="say">"It sounds like you're worn out."</span></div>
-      <div class="tool"><b>Feel</b><span class="use">To show you get it</span><span class="say">"That makes complete sense."</span></div>
-      <div class="tool"><b>Felt</b><span class="use">They feel alone in it</span><span class="say">"Lots of students have felt that."</span></div>
-    </div>
-    <div class="card stage-card" data-s="E"><h3><span class="big sm">E</span> Explore</h3>
-      <div class="tool"><b>Isolate and clarify</b><span class="use">Before you answer anything</span><span class="say">"Apart from that, is there anything else?"</span></div>
-      <div class="tool"><b>GROW: Goal</b><span class="use">To reconnect to their why</span><span class="say">"What made you start the program?"</span></div>
-      <div class="tool"><b>GROW: Reality</b><span class="use">To find the real concern</span><span class="say">"What's making it feel hard right now?"</span></div>
-    </div>
-    <div class="card stage-card" data-s="Res"><h3><span class="big sm">R</span> Respond</h3>
-      <div class="tool"><b>Found</b><span class="use">You know what genuinely helped others</span><span class="say">"What others found was..."</span></div>
-      <div class="tool"><b>Reframe</b><span class="use">A belief is holding them back</span><span class="say">"Another way to look at it..."</span></div>
-      <div class="tool"><b>GROW: Options</b><span class="use">Let them suggest first</span><span class="say">"What could make this manageable?"</span></div>
-      <div class="tool"><b>GROW: Way forward</b><span class="use">Always, to finish</span><span class="say">"What's your first step, and when shall we check in?"</span></div>
-    </div>
+  <div class="grid g4 fam">
+    <div class="card" data-s="L"><b>LAER</b><span>The order of the call</span></div>
+    <div class="card" data-s="Ref"><b>Quick tools</b><span>Label, Isolate, Reframe: sharp, one-line moves</span></div>
+    <div class="card" data-s="Feel"><b>Feel, Felt, Found</b><span>The empathy: split across the call</span></div>
+    <div class="card" data-s="G"><b>GROW</b><span>The questions that get the student to their own plan</span></div>
   </div>
-  <div class="card" style="margin-top:.8em;border-color:var(--bad)"><b style="color:var(--bad)">Never:</b> argue with a feeling, invent a Found, make a promise, or push past a clear "please stop calling".</div>
+  <div class="flow">
+    <div class="fstep" data-s="L"><i>1</i><small>Listen</small><b>Let them finish</b><em>Stay quiet. Note their words.</em><span class="fam-chip" data-s="L">LAER</span></div>
+    <div class="fstep" data-s="Ref"><i>2</i><small>Acknowledge</small><b>Label it</b><em>"It sounds like..."</em><span class="fam-chip" data-s="Ref">Quick tool</span></div>
+    <div class="fstep" data-s="Feel"><i>3</i><small>Acknowledge</small><b>Feel and Felt</b><em>"That makes sense. Lots of students feel that."</em><span class="fam-chip" data-s="Feel">FFF</span></div>
+    <div class="fstep" data-s="Ref"><i>4</i><small>Explore</small><b>Isolate</b><em>"Apart from that, anything else?"</em><span class="fam-chip" data-s="Ref">Quick tool</span></div>
+    <div class="fstep" data-s="G"><i>5</i><small>Explore</small><b>Goal</b><em>"When were you hoping to finish?"</em><span class="fam-chip" data-s="G">GROW</span></div>
+    <div class="fstep" data-s="G"><i>6</i><small>Explore</small><b>Reality</b><em>"What does a break do to that goal?"</em><span class="fam-chip" data-s="G">GROW</span></div>
+    <div class="fstep" data-s="Feel"><i>7</i><small>Respond</small><b>Found or Reframe</b><em>"What others found was..." or "Another way to see it..."</em><span class="fam-chip" data-s="Feel">FFF</span><span class="fam-chip" data-s="Ref">Quick tool</span></div>
+    <div class="fstep" data-s="G"><i>8</i><small>Respond</small><b>Options</b><em>"What could make it work?"</em><span class="fam-chip" data-s="G">GROW</span></div>
+    <div class="fstep" data-s="G"><i>9</i><small>Respond</small><b>Way forward</b><em>"First step, and when shall we check in?"</em><span class="fam-chip" data-s="G">GROW</span></div>
+  </div>
+  <div class="card" style="margin-top:.8em;padding:.5em 1em;border-color:var(--bad)"><b style="color:var(--bad)">Never:</b> argue with a feeling, invent a Found, make a promise, or push past a clear "please stop calling".</div>
   <div class="notes">
     <p>This is the one to screenshot. Ask everyone to take a screenshot now (Windows key + Shift + S) and keep it next to their phone.</p>
-    <p>Walk across it left to right in one sentence per column. Don't re-teach: everything here was covered earlier.</p>
+    <ul><li>Top row: four families of tools. LAER is the order, the others are what you use at each step.</li><li>Walk the numbers 1 to 9 as one call: listen, label it, feel and felt, isolate, goal, reality, found or reframe, options, way forward.</li><li>Point out that Feel, Felt, Found splits across the call: Feel and Felt early, Found later once you know what they need.</li><li>You won't need all nine every time. A quick question might only need 1, 2 and 9.</li></ul>
     <div class="handoff">Hand-off: both hosts run the library together</div>
   </div>
 </section>
