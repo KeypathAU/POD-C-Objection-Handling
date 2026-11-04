@@ -135,6 +135,19 @@ main.stage::after{width:38vw;height:38vw;right:-10vw;bottom:-14vw;background:rad
 .fstep small{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:.72em;color:var(--muted);margin-left:1.2em}
 .fstep b{font-family:var(--head);font-weight:600;font-size:1.15em;color:var(--c)}
 .fstep em{color:var(--text)}
+@media (min-width:900px){
+.fam{font-size:.85em}
+.fam .card{flex-direction:row;align-items:baseline;gap:.5em;padding:.3em .8em;border-top-width:8px}
+.fam span{font-size:.9em}
+.flow{grid-template-columns:repeat(3,1fr);gap:.7rem 2.2rem;flex:1;align-content:space-evenly;margin-top:1em}
+.fstep{font-size:.92em;padding:.4em 1em .5em;flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:.6em;row-gap:.1em}
+.fstep small{flex-basis:100%;margin-left:1.4em}
+.fstep b{font-size:1.25em}
+.fstep .fam-chip{margin-top:0}
+.fstep em{flex-basis:100%;font-size:.95em;order:5}
+.fstep:nth-child(3n)::after{content:none}
+.fstep i{width:2.1em;height:2.1em;font-size:1.05em}
+}
 .fam-chip{align-self:flex-start;display:inline-block;background:var(--c);color:#fff;border-radius:999px;padding:0 .6em;font-size:.75em;font-weight:800;margin-top:.15em}.pcard{border-top:12px solid var(--c);display:flex;flex-direction:column;gap:.35em}
 .pcard .pname{font-size:1.2em;color:var(--c)}
 .pcard .pcat{font-family:"Nunito",sans-serif;font-size:.6em;font-weight:800;background:var(--ink);color:#fff;border-radius:999px;padding:.05em .7em;vertical-align:middle}
@@ -572,7 +585,7 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="notes"><p>Give the chat about 20 seconds, then click <b>Reveal the answers</b> to show all three at once. Or click the chat's majority answer on each to go one at a time. Some could work with more than one tool. Ask anyone who disagrees to say why.</p></div>
 </section>
 
-<section class="slide" data-section="tools" data-mins="1">
+<section class="slide" data-section="tools" data-mins="2">
   <div class="kicker">Putting it together</div>
   <h2>Your toolkit on one page</h2>
   <div class="grid g4 fam">
@@ -592,36 +605,23 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
     <div class="fstep" data-s="G"><i>8</i><small>Respond</small><b>Options</b><em>"What could make it work?"</em><span class="fam-chip" data-s="G">GROW</span></div>
     <div class="fstep" data-s="G"><i>9</i><small>Respond</small><b>Way forward</b><em>"First step, and when shall we check in?"</em><span class="fam-chip" data-s="G">GROW</span></div>
   </div>
-  <div class="card" style="margin-top:.8em;padding:.5em 1em;border-color:var(--bad)"><b style="color:var(--bad)">Never:</b> argue with a feeling, invent a Found, make a promise, or push past a clear "please stop calling".</div>
   <div class="notes">
     <p>This is the one to screenshot. Ask everyone to take a screenshot now (Windows key + Shift + S) and keep it next to their phone.</p>
     <ul><li>Top row: four families of tools. LAER is the order, the others are what you use at each step.</li><li>Walk the numbers 1 to 9 as one call: listen, label it, feel and felt, isolate, goal, reality, found or reframe, options, way forward.</li><li>Point out that Feel, Felt, Found splits across the call: Feel and Felt early, Found later once you know what they need.</li><li>You won't need all nine every time. A quick question might only need 1, 2 and 9.</li></ul>
-    <div class="handoff">Hand-off: both hosts run the library together</div>
+    <div class="handoff">Hand-off: both hosts run the pair practice</div>
   </div>
 </section>
 
-<section class="slide" data-section="library" data-mins="3">
-  <div class="kicker">Objection library</div>
-  <h2>Common objections, ready to adapt</h2>
-  <div class="task"><b>YOUR TURN</b> Type the card you want us to open in the Teams chat, for example "Cost"</div>
-  <div class="chips" id="libChips"></div>
-  <div class="grid g4" id="libGrid"></div>
-  <div class="notes">
-    <p><b>Co-host move:</b> each card tells you who plays the student and who plays the SSA, and swaps automatically for the next card. The first card has <span class="hB"></span> as the student and <span class="hA"></span> as the SSA.</p>
-    <ul><li>The student reads the objection in character. The SSA picks a tab (Quick tools, Feel Felt Found or GROW) and answers in their own words, then shows the tab so the room can compare.</li><li>Ask the room to pick two cards.</li><li>For each card ask: "Which tool would you use first, and how would you say it in your own words?"</li><li>These cards are a good team reference. Mention they can ask you for the full list after the session.</li></ul>
-  </div>
-</section>
-
-<section class="slide" data-section="practice" data-mins="11">
+<section class="slide" data-section="practice" data-mins="13">
   <div class="kicker">Practice arena · In pairs</div>
   <h2>Pair up and practise</h2>
-  <div class="task"><b>YOUR TURN</b> In your breakout room, one of you plays the student and one plays the SSA. About 3 minutes each, then swap and pick a new student</div>
+  <div class="task"><b>YOUR TURN</b> In your breakout room, one of you plays the student and one plays the SSA. About 4 minutes each, then swap and pick a new student</div>
   <div class="grid g2" id="pairCards"></div>
   <div class="card" style="margin-top:1em;padding:.6em 1em"><b>Student, after each round:</b> tell your SSA which of these they did. <span class="laer-strip"><span data-s="L">Listened</span><span data-s="Ack">Acknowledged</span><span data-s="E">Explored</span><span data-s="Res">Responded</span><span data-s="W">Agreed a next step</span></span></div>
   <div class="row" style="margin-top:.8em"><button class="btn" id="copyBriefs">Copy briefs for the breakout rooms</button><span class="muted small" id="copyMsg"></span></div>
   <div class="notes">
-    <p><b>Before the session:</b> in the Teams meeting, open <b>Breakout rooms</b>, create one room per two people (assign automatically) and set an 8-minute time limit with "move people back automatically" on. Odd number? Make one room of three: the third person watches and gives feedback.</p>
-    <ul><li><b>1 minute:</b> walk through the four students. Round 1, the student picks Priya or Tom. Round 2, swap roles and pick Sam or Jordan.</li><li>Click <b>Copy briefs for the breakout rooms</b>, then open the rooms and paste the briefs as a breakout room <b>announcement</b> so every room has them in its chat.</li><li><b>8 minutes</b> in rooms. <span class="hA"></span> and <span class="hB"></span> drop in on a few rooms each. Listen for the SSA saying replies in their own words.</li><li><b>2 minutes</b> back in the main room: "What was it like being the student?" and "Which step made the biggest difference?" Usually it's Acknowledge.</li></ul>
+    <p><b>Before the session:</b> in the Teams meeting, open <b>Breakout rooms</b>, create one room per two people (assign automatically) and set a 10-minute time limit with "move people back automatically" on. Odd number? Make one room of three: the third person watches and gives feedback.</p>
+    <ul><li><b>1 minute:</b> walk through the four students. Round 1, the student picks Priya or Tom. Round 2, swap roles and pick Sam or Jordan.</li><li>Click <b>Copy briefs for the breakout rooms</b>, then open the rooms and paste the briefs as a breakout room <b>announcement</b> so every room has them in its chat.</li><li><b>10 minutes</b> in rooms. <span class="hA"></span> and <span class="hB"></span> drop in on a few rooms each. Listen for the SSA saying replies in their own words.</li><li><b>2 minutes</b> back in the main room: "What was it like being the student?" and "Which step made the biggest difference?" Usually it's Acknowledge.</li></ul>
     <div class="handoff">Hand-off to <span class="hB"></span> for the lightning round</div>
   </div>
 </section>
@@ -695,7 +695,6 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 </aside>
 
 <div class="overlay" id="runOv"><div class="ov-card"><div class="ov-head"><h2>Run sheet</h2><button class="btn" data-act="runsheet">Close</button></div><p class="muted small" id="rsInfo"></p><div id="runList"></div></div></div>
-<div class="overlay" id="objOv"><div class="ov-card"><div class="ov-head"><h2 id="objTitle"></h2><button class="btn" data-close>Close</button></div><div id="objBody"></div></div></div>
 <div class="sec-banner" id="secBanner"></div>
 
 <script>
@@ -713,9 +712,8 @@ const SECTIONS = [
   { id: "laer", name: "LAER: the backbone", mins: 3, lead: "B" },
   { id: "grow", name: "GROW for objections", mins: 5.5, lead: "A" },
   { id: "fff", name: "Feel, Felt, Found", mins: 6, lead: "B" },
-  { id: "tools", name: "Quick tools", mins: 5, lead: "A" },
-  { id: "library", name: "Objection library", mins: 3, lead: "AB" },
-  { id: "practice", name: "Practice arena", mins: 11, lead: "AB" },
+  { id: "tools", name: "Quick tools", mins: 6, lead: "A" },
+ { id: "practice", name: "Practice arena", mins: 13, lead: "AB" },
   { id: "lightning", name: "Lightning round", mins: 2, lead: "B" },
   { id: "wrap", name: "Wrap up", mins: 2, lead: "A" }
 ];
@@ -1150,72 +1148,6 @@ function buildFFF() {
   upd();
 }
 
-function buildLibrary() {
-  const cats = ["All", ...new Set(OBJECTIONS.map(o => o.cat))];
-  let active = "All";
-  const chips = $("#libChips"), grid = $("#libGrid");
-  const draw = () => {
-    chips.innerHTML = cats.map(c => `<button class="chip${c === active ? " on" : ""}">${esc(c)}</button>`).join("");
-    $$(".chip", chips).forEach(b => b.onclick = () => { active = b.textContent; draw(); });
-    grid.innerHTML = OBJECTIONS.map((o, i) => (active === "All" || o.cat === active) ? `<button class="card obj-card" data-i="${i}"><span class="cat">${esc(o.cat)}</span><span class="txt">"${esc(o.text)}"</span><span class="hint">Open card</span></button>` : "").join("");
-    $$(".obj-card", grid).forEach(c => c.onclick = () => openObjection(+c.dataset.i));
-  };
-  draw();
-}
-let libTurn = 0;
-function openObjection(i) {
-  const o = OBJECTIONS[i], L = ["G", "R", "O", "W"], N = ["Goal", "Reality", "Options", "Way forward"];
-  const line = (s, n, t) => `<div class="detail-line" data-s="${s}"><b>${n}:</b> ${esc(t)}</div>`;
-  const tabs = [
-    ["Underneath", `<p class="lead" style="max-width:none">${esc(o.under)}</p>`],
-    ["Quick tools", line("Label", "Label", o.label) + line("Iso", "Isolate", o.isolate) + line("Ref", "Reframe", o.reframe)],
-    ["Feel, Felt, Found", line("Feel", "Feel", o.feel) + line("Felt", "Felt", o.felt) + line("Found", "Found", o.found)],
-    ["GROW", o.grow.map((q, k) => line(L[k], N[k], q)).join("")]
-  ];
-  const stu = libTurn % 2 ? CONFIG.hostA : CONFIG.hostB, ssa = libTurn % 2 ? CONFIG.hostB : CONFIG.hostA;
-  libTurn++;
-  $("#objTitle").textContent = '"' + o.text + '"';
-  $("#objBody").innerHTML = `<div class="roles"><span><b>Student:</b> ${esc(stu)} reads the objection</span><span><b>SSA:</b> ${esc(ssa)} answers using the tabs</span></div>
-    <div class="chips">${tabs.map((t, k) => `<button class="chip${k ? "" : " on"}" data-tab="${k}">${t[0]}</button>`).join("")}</div>
-    <div id="objTab">${tabs[0][1]}</div>`;
-  $$("[data-tab]", $("#objBody")).forEach(b => b.onclick = () => {
-    $$("[data-tab]", $("#objBody")).forEach(x => x.classList.toggle("on", x === b));
-    $("#objTab").innerHTML = tabs[+b.dataset.tab][1];
-  });
-  $("#objOv").classList.add("open");
-}
-
-const CONFETTI = ["#d6246e", "#ffd23f", "#4cc9f0", "#0a8f4e", "#7b2cbf", "#e2550d"];
-function confetti(el, n = 26) {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0 };
-  const x = r.left + r.width / 2, y = r.top + r.height / 2;
-  for (let k = 0; k < n; k++) {
-    const p = document.createElement("span"), a = Math.random() * Math.PI * 2, d = 80 + Math.random() * 170;
-    p.className = "confetti";
-    p.style.cssText = `left:${x}px;top:${y}px;background:${CONFETTI[k % CONFETTI.length]};--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d + 140}px;--rot:${Math.random() * 720 - 360}deg`;
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 1200);
-  }
-}
-
-function makeTimer(el, secs) {
-  let left = secs, iv = null;
-  el.innerHTML = `<span class="t">${fmt(left)}</span><button class="btn primary">Start</button><button class="btn">Reset</button>`;
-  const [t, start, rst] = [$(".t", el), ...$$("button", el)];
-  const show = () => { t.textContent = fmt(left); el.classList.toggle("done", left <= 0); };
-  const stop = () => { clearInterval(iv); iv = null; start.textContent = "Start"; };
-  start.onclick = () => {
-    if (iv) { stop(); return; }
-    if (left <= 0) left = secs;
-    start.textContent = "Pause";
-    iv = setInterval(() => { left--; show(); if (left <= 0) stop(); }, 1000);
-  };
-  const reset = () => { stop(); left = secs; show(); };
-  rst.onclick = reset;
-  return { reset };
-}
-
 function buildPairs() {
   $("#pairCards").innerHTML = PRACTICE.map((p, i) => `<div class="card pcard" data-s="${["W", "G", "Ref", "Ack"][i]}">
     <h3><span class="pname">${esc(p.name)}</span> <span class="pcat">${esc(p.cat)}</span></h3>
@@ -1223,7 +1155,7 @@ function buildPairs() {
     <div class="psays">"${esc(p.says)}"</div>
     <div class="small"><b>Playing ${esc(p.name)}?</b> ${esc(p.tip)}</div></div>`).join("");
   $("#copyBriefs").onclick = () => {
-    const txt = "Pair practice. Round 1: student picks Priya or Tom. Round 2: swap roles, student picks Sam or Jordan. About 3 minutes each.\n\n" +
+    const txt = "Pair practice. Round 1: student picks Priya or Tom. Round 2: swap roles, student picks Sam or Jordan. About 4 minutes each.\n\n" +
       PRACTICE.map(p => `${p.name.toUpperCase()} (${p.cat}): ${p.who}\nOpens with: "${p.says}"\nIf you're playing ${p.name}: ${p.tip}`).join("\n\n") +
       "\n\nStudent, after each round tell your SSA which they did: Listened, Acknowledged, Explored, Responded, Agreed a next step.";
     const done = () => { $("#copyMsg").textContent = "Copied. Paste it as a breakout room announcement."; confetti($("#copyBriefs"), 20); };
@@ -1258,7 +1190,7 @@ function buildLightning() {
   };
   const end = () => {
     stop();
-    el.innerHTML = `<div class="lq">Room score: <span class="score">${score} / ${LIGHTNING.length}</span></div><div class="muted">${score >= 7 ? "Outstanding. You're ready for the phones." : score >= 5 ? "Great work. Review the ones we missed in the library." : "Good start. Revisit the slides after the session."}</div><button class="btn" style="margin-top:1em">Play again</button>`;
+    el.innerHTML = `<div class="lq">Room score: <span class="score">${score} / ${LIGHTNING.length}</span></div><div class="muted">${score >= 7 ? "Outstanding. You're ready for the phones." : score >= 5 ? "Great work. Review the ones we missed on the toolkit slide." : "Good start. Revisit the slides after the session."}</div><button class="btn" style="margin-top:1em">Play again</button>`;
     $("button", el).onclick = intro;
     if (score >= 5) confetti($(".lq", el), 70);
   };
@@ -1275,8 +1207,7 @@ function init() {
   setupQuizzes();
   buildMatch();
   buildFFF();
-  buildLibrary();
-  $$(".timer[data-secs]").forEach(t => makeTimer(t, +t.dataset.secs));
+ $$(".timer[data-secs]").forEach(t => makeTimer(t, +t.dataset.secs));
   buildPairs();
   buildLightning();
   $$(".grid").forEach(g => [...g.children].forEach((c, k) => c.style.setProperty("--i", k)));
