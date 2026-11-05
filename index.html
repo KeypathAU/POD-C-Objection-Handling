@@ -126,6 +126,12 @@ main.stage::after{width:38vw;height:38vw;right:-10vw;bottom:-14vw;background:rad
 .laerc .stage-card{padding:.6em 1em .7em}
 .laerc .big{font-size:1.9em}
 .laerc h3{margin:.1em 0 .2em}
+.script{padding:.6em 1em;font-size:.82em}
+@media (min-width:900px){.script{columns:2;column-gap:2em;column-rule:2px dashed var(--soft)}.script .steps-ctrl{column-span:all}}
+.script .line{margin:.18em 0 .35em;align-items:baseline;break-inside:avoid}
+.script .tag{min-width:7.2em;font-size:.85em;font-family:"Nunito",sans-serif;font-weight:800}
+.script .tag.stu{background:#e3f2ff;color:var(--ink)}
+.script .steps-ctrl{margin-top:.4em}
 .why .card{border-left:10px solid var(--c);padding:.5em .9em;display:flex;flex-direction:column;gap:.15em;font-size:.85em}
 .why b{font-family:var(--head);font-weight:600;color:var(--c);font-size:1.15em}
 .mind .card{position:relative;border-top:12px solid var(--c);padding-top:.8em}
@@ -640,21 +646,28 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="tools" data-mins="1">
   <div class="kicker">Putting it to work</div>
   <h2>"I'm fine. I've got it under control."</h2>
-  <p class="lead" style="max-width:none;font-size:1em;margin:-.3em 0 .2em">Use assumptive language: talk about <b style="color:var(--text)">when</b> we next speak, not <b style="color:var(--text)">if</b>.</p>
-  <div class="flow">
-    <div class="fstep" data-s="L"><i>1</i><small>Listen</small><b>Let them finish</b><span class="fam-chip" data-s="L">LAER</span><em>Note what they say they've got covered. Don't defend the call.</em></div>
-    <div class="fstep" data-s="Ref"><i>2</i><small>Acknowledge</small><b>Label it</b><span class="fam-chip" data-s="Ref">Quick tool</span><em>"It sounds like you're really on top of things. That's great."</em></div>
-    <div class="fstep" data-s="Feel"><i>3</i><small>Acknowledge</small><b>Feel and Felt</b><span class="fam-chip" data-s="Feel">FFF</span><em>"Makes sense. Students who are going well often feel the same."</em></div>
-    <div class="fstep" data-s="Ref"><i>4</i><small>Explore</small><b>Isolate</b><span class="fam-chip" data-s="Ref">Quick tool</span><em>"So nothing's wrong, it's more that the check-in feels unnecessary?"</em></div>
-    <div class="fstep" data-s="G"><i>5</i><small>Explore</small><b>Goal</b><span class="fam-chip" data-s="G">GROW</span><em>"What are you aiming for by the end of this term?"</em></div>
-    <div class="fstep" data-s="G"><i>6</i><small>Explore</small><b>Reality</b><span class="fam-chip" data-s="G">GROW</span><em>"When you enrol for next term, which units are you planning on?"</em></div>
-    <div class="fstep" data-s="Feel"><i>7</i><small>Respond</small><b>Found or Reframe</b><span class="fam-chip" data-s="Feel">FFF</span><span class="fam-chip" data-s="Ref">Quick tool</span><em>"Students on top of things find these calls save time: I flag deadlines before they're a problem."</em></div>
-    <div class="fstep" data-s="G"><i>8</i><small>Respond</small><b>Options</b><span class="fam-chip" data-s="G">GROW</span><em>"For our next catch-up, does early or late in the week suit you?"</em></div>
-    <div class="fstep" data-s="G"><i>9</i><small>Respond</small><b>Way forward</b><span class="fam-chip" data-s="G">GROW</span><em>"Great, I'll book a quick 10-minute check-in for week 5 and send the key dates today."</em></div>
+  <p class="lead" style="max-width:none;font-size:1em;margin:-.3em 0 .5em">All the tools in one call, with assumptive language: talk about <b style="color:var(--text)">when</b> we next speak, not <b style="color:var(--text)">if</b>.</p>
+  <div class="card steps script">
+    <div class="line step"><span class="tag stu">Student</span><span>"I'm fine, honestly. I've got it all under control."</span></div>
+    <div class="line step"><span class="tag" data-s="L">Listen</span><span><i>Let them finish, and note the words "under control".</i></span></div>
+    <div class="line step"><span class="tag" data-s="Ref">Label</span><span>"It sounds like you're really on top of it."</span></div>
+    <div class="line step"><span class="tag stu">Student</span><span>"Yeah, I am."</span></div>
+    <div class="line step"><span class="tag" data-s="Feel">Feel, Felt</span><span>"That's great to hear. A lot of students who are going well tell me the same thing."</span></div>
+    <div class="line step"><span class="tag" data-s="Ref">Isolate</span><span>"Is it the call itself, or more the time it takes out of your day?"</span></div>
+    <div class="line step"><span class="tag stu">Student</span><span>"Honestly, it's the time. I'm flat out."</span></div>
+    <div class="line step"><span class="tag" data-s="G">Goal</span><span>"Totally get that. You're aiming to finish by the end of next year, aren't you?"</span></div>
+    <div class="line step"><span class="tag stu">Student</span><span>"Yep."</span></div>
+    <div class="line step"><span class="tag" data-s="G">Reality</span><span>"Perfect. So when enrolment opens in two weeks, you'll be ready to lock in your next units?"</span></div>
+    <div class="line step"><span class="tag stu">Student</span><span>"Oh, I didn't know it opened that soon."</span></div>
+    <div class="line step"><span class="tag" data-s="Feel">Found</span><span>"And that's where I can really help. A lot of busy students have found it handy having someone in their corner who keeps an eye on dates like that and flags any support before they need it, so they can just focus on their study."</span></div>
+    <div class="line step"><span class="tag" data-s="G">Options</span><span>"So what we'll do is book in a quick call in four weeks' time, before your next unit starts, to make sure your enrolment's locked in and you're all set up. Does a morning or an afternoon suit you better?"</span></div>
+    <div class="line step"><span class="tag stu">Student</span><span>"Afternoons are better."</span></div>
+    <div class="line step"><span class="tag" data-s="G">Way forward</span><span>"Perfect. I'll lock in a short call for that afternoon and send you an invite, so it's in your calendar. And if anything comes up before then, you know where I am."</span></div>
+    <div class="row steps-ctrl"><button class="btn primary" data-steps="next">Reveal next line</button><button class="btn" data-steps="reset">Reset</button></div>
   </div>
   <div class="notes">
-    <p>This was the room's most dreaded objection. What students usually mean is "I've got it under control", so the aim is to show the value of our calls without arguing. Walk the nine steps as one call.</p>
-    <ul><li><b>Assumptive language</b> means speaking as if the next step is already happening: "when you enrol", "for our next catch-up", "I'll book". It keeps the conversation moving without asking permission at every turn.</li><li>Step 6 is assumptive on purpose: it assumes they're enrolling, and often surfaces a gap they hadn't thought about.</li><li>Step 8 offers a choice between two times, not "do you want another call?"</li><li>Daljeet's angle fits step 7: they get a real person keeping them informed.</li><li>If a student clearly says "please stop calling", respect it.</li><li>Ask the room: "What's one thing you could say in the first 10 seconds that makes the call worth their time?"</li></ul>
+    <p>This was the room's most dreaded objection. What students usually mean is "I've got it under control", so the aim is to show the value of our calls and book the next one, without arguing.</p>
+    <ul><li>Press the right arrow to reveal each line. <span class="hB"></span> can read the student lines, <span class="hA"></span> the SSA lines.</li><li><b>Isolate</b> is the turning point: it's usually the time, not the call. Everything after that respects their time ("quick call", "short call").</li><li><b>Reality</b> is where they discover the value for themselves: they didn't know enrolment opened so soon.</li><li><b>Found</b> sells the value: someone in their corner, keeping an eye on dates and support. That's Daljeet's point from the session.</li><li><b>Assumptive language:</b> "aren't you", "when enrolment opens", "what we'll do is book in", "morning or afternoon", "I'll lock in". We offer a choice of when, never whether.</li><li>If a student clearly says "please stop calling", respect it.</li></ul>
     <div class="handoff">Hand-off: both hosts run the pair practice</div>
   </div>
 </section>
