@@ -123,6 +123,10 @@ main.stage::after{width:38vw;height:38vw;right:-10vw;bottom:-14vw;background:rad
 .fff-col{border-top:12px solid var(--c)}
 .ex-box{border-left:12px solid var(--c);background:color-mix(in srgb,var(--c) 8%,#fff)}
 .ex-box h3{color:var(--c);font-size:.95em}
+.mind .card{position:relative;border-top:12px solid var(--c);padding-top:.8em}
+.mind h3{color:var(--c)}
+.mind i{position:absolute;top:-.95em;left:-.6em;width:1.9em;height:1.9em;border-radius:50%;background:var(--sun);border:2px solid var(--ink);font-style:normal;font-family:var(--head);font-weight:700;display:flex;align-items:center;justify-content:center}
+.slide.active .mind > .step{animation:none}
 .fam .card{display:flex;flex-direction:column;gap:.1em;padding:.5em .9em;border-top:10px solid var(--c);font-size:.85em}
 .fam b{font-family:var(--head);font-weight:600;color:var(--c);font-size:1.15em}
 .fam span{color:var(--muted)}
@@ -339,18 +343,28 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
 <section class="slide" data-section="mindset" data-mins="1">
   <div class="kicker">Objection mindset</div>
   <h2>An objection is not a "no"</h2>
-  <div class="task"><b>YOUR TURN</b> Before each reveal, type in the Teams chat what you think it means</div>
-  <div class="grid g3">
-    <div class="card tap" tabindex="0"><h3>It's a signal</h3><div class="hint">Click to reveal</div><div class="ans">The student cares enough to tell you what's in the way. Silence is worse than an objection.</div></div>
-    <div class="card tap" tabindex="0"><h3>It's a question in disguise</h3><div class="hint">Click to reveal</div><div class="ans">"It's too expensive" often means "Help me see it's worth it" or "Help me work out how to pay."</div></div>
-    <div class="card tap" tabindex="0"><h3>It's an invitation</h3><div class="hint">Click to reveal</div><div class="ans">To understand their reality and help them find their own way forward.</div></div>
-    <div class="card tap" tabindex="0"><h3>It's a sign of trust</h3><div class="hint">Click to reveal</div><div class="ans">Students only share real concerns with people they feel safe with. It means the relationship is working.</div></div>
-    <div class="card tap" tabindex="0"><h3>It's often not the real reason</h3><div class="hint">Click to reveal</div><div class="ans">The first objection is usually the easiest one to say. The real concern often comes second.</div></div>
-    <div class="card tap" tabindex="0"><h3>It's timing, not a verdict</h3><div class="hint">Click to reveal</div><div class="ans">"Not now" often means "not like this". Change the plan and the answer often changes too.</div></div>
+  <div class="steps">
+    <div class="grid g3 mind">
+      <div class="card step" data-s="W"><i>1</i><h3>It's a signal</h3><div>They care enough to tell you what's in the way. Silence is worse.</div></div>
+      <div class="card step" data-s="G"><i>2</i><h3>It's a question in disguise</h3><div>"Too expensive" often means "help me see it's worth it".</div></div>
+      <div class="card step" data-s="Feel"><i>3</i><h3>It's an invitation</h3><div>To understand their reality and help them find a way forward.</div></div>
+      <div class="card step" data-s="O"><i>4</i><h3>It's a sign of trust</h3><div>Students only share real concerns with people they feel safe with.</div></div>
+      <div class="card step" data-s="R"><i>5</i><h3>It's often not the real reason</h3><div>The first objection is the easiest to say. The real one comes second.</div></div>
+      <div class="card step" data-s="Ref"><i>6</i><h3>It's timing, not a verdict</h3><div>"Not now" often means "not like this". Change the plan, change the answer.</div></div>
+    </div>
+    <p class="quote step" style="margin-top:.7em">Our job isn't to talk the student into anything. It's to help them make a well-informed decision they feel good about.</p>
   </div>
-  <p class="quote">Our job isn't to talk the student into anything. It's to help them make a well-informed decision they feel good about.</p>
   <div class="notes">
-    <ul><li>Six cards in about a minute, so keep it moving. Read the heading, take one chat answer, click.</li><li>If short on time, reveal the first three and the last one.</li><li>Land the key message in the quote: we are not pressuring anyone. If a student makes an informed decision to pause, that's still a good call.</li></ul>
+    <p><b>Presenter slide.</b> Press the right arrow to bring in each point, say a line or two, then move on. The arrow only moves to the next slide once the closing line is showing.</p>
+    <ol>
+      <li><b>Signal:</b> a student who objects is still engaged. The ones who go quiet are the ones we lose.</li>
+      <li><b>Question in disguise:</b> listen for the question underneath. "Too expensive" is often about value or payment timing.</li>
+      <li><b>Invitation:</b> it's our cue to ask, not to answer. This is where LAER and GROW come in.</li>
+      <li><b>Trust:</b> if they're telling you, the relationship is working. Treat it with care.</li>
+      <li><b>Not the real reason:</b> the first thing they say is the easiest to say. Keep exploring gently.</li>
+      <li><b>Timing, not a verdict:</b> "not now" usually means "not like this". Change the plan, for example one unit, and the answer often changes.</li>
+      <li><b>Closing line:</b> we're not pressuring anyone. If a student makes an informed decision to pause, that's still a good outcome.</li>
+    </ol>
   </div>
 </section>
 
