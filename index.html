@@ -618,7 +618,12 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   <div class="kicker">Practice arena · Breakout rooms</div>
   <h2>Practise in your room</h2>
   <div class="task"><b>YOUR TURN</b> Find your room. One person plays the student, one plays the SSA, everyone else listens. Swap the SSA every few minutes</div>
-  <div class="grid g3" id="pairCards"></div>
+  <div class="grid g4" id="pairCards">
+    <div class="card pcard" data-s="W"><span class="room">Room 1</span><h3><span class="pname">Priya</span> <span class="pcat">Time</span></h3><div class="muted small">Works full time in hospitality and has just picked up extra shifts.</div><div class="psays">"Work's been crazy. I think I'll just skip next term."</div><div class="small"><b>Playing Priya?</b> You're scared of falling behind. If the SSA asks what's making it hard, tell them about the shifts. A realistic plan for one unit would keep you in.</div></div>
+    <div class="card pcard" data-s="G"><span class="room">Room 2</span><h3><span class="pname">Tom</span> <span class="pcat">Confidence</span></h3><div class="muted small">First unit. Got 38% on the first assignment, which was worth 20%.</div><div class="psays">"I failed my first assignment. I'm thinking of dropping before census."</div><div class="small"><b>Playing Tom?</b> You feel embarrassed. The feedback was mostly referencing and structure. Only open up once the SSA acknowledges how you feel.</div></div>
+    <div class="card pcard" data-s="Ref"><span class="room">Room 3</span><h3><span class="pname">Sam</span> <span class="pcat">Cost</span></h3><div class="muted small">Halfway through the program. Money is tight until March.</div><div class="psays">"Honestly, it's a lot of money and I'm not sure I can justify it right now."</div><div class="small"><b>Playing Sam?</b> You still want the qualification. It's the timing, not the value. Only mention March if the SSA asks whether it's the cost or the timing.</div></div>
+    <div class="card pcard" data-s="Ack"><span class="room">Spare</span><h3><span class="pname">Dani</span> <span class="pcat">Contact</span></h3><div class="muted small">Second unit, doing fine so far, busy with work.</div><div class="psays">"I'm fine. I don't really need a call from you."</div><div class="small"><b>Playing Dani?</b> You think the call is admin. Warm up only if the SSA asks something useful, like the census date or the next enrolment deadline. If they push without acknowledging you, keep it short.</div></div>
+  </div>
   <div class="row" style="margin-top:.9em;align-items:stretch;flex-wrap:nowrap">
     <div class="card" style="padding:.5em 1em;flex:1;font-size:.9em"><b>After each go:</b> the student and listeners tell the SSA which of these they did. <span class="laer-strip"><span data-s="L">Listened</span><span data-s="Ack">Acknowledged</span><span data-s="E">Explored</span><span data-s="Res">Responded</span><span data-s="W">Agreed a next step</span></span></div>
     <div style="display:flex;flex-direction:column;justify-content:center;gap:.2em"><button class="btn" id="copyBriefs" style="font-size:.8em">Copy briefs for the rooms</button><span class="muted small" id="copyMsg"></span></div>
@@ -815,7 +820,8 @@ const PRACTICE = [
     tip: "You feel embarrassed. The feedback was mostly referencing and structure. Only open up once the SSA acknowledges how you feel." },
   { name: "Sam", cat: "Cost", who: "Halfway through the program. Money is tight until March.",
     says: "Honestly, it's a lot of money and I'm not sure I can justify it right now.",
-    tip: "You still want the qualification. It's the timing, not the value. Only mention March if the SSA asks whether it's the cost or the timing." }
+    tip: "You still want the qualification. It's the timing, not the value. Only mention March if the SSA asks whether it's the cost or the timing." },
+  { name: "Dani", cat: "Contact", who: "Second unit, doing fine so far, busy with work.", says: "I'm fine. I don't really need a call from you.", tip: "You think the call is admin. Warm up only if the SSA asks something useful, like the census date or the next enrolment deadline. If they push without acknowledging you, keep it short." }
 ];
 const LIGHTNING = [
   { q: "Feel, Felt, Found should be read word for word as a script.", a: false, why: "Use the structure, not the exact words. Scripted lines sound fake." },
@@ -1181,7 +1187,7 @@ function makeTimer(el, secs) {
 }
 
 function buildPairs() {
-  $("#pairCards").innerHTML = PRACTICE.map((p, i) => `<div class="card pcard" data-s="${["W", "G", "Ref"][i]}">
+  if (!$("#pairCards").children.length) $("#pairCards").innerHTML = PRACTICE.map((p, i) => `<div class="card pcard" data-s="${["W", "G", "Ref"][i]}">
     <span class="room">Room ${i + 1}</span>
     <h3><span class="pname">${esc(p.name)}</span> <span class="pcat">${esc(p.cat)}</span></h3>
     <div class="muted small">${esc(p.who)}</div>
@@ -1189,7 +1195,7 @@ function buildPairs() {
     <div class="small"><b>Playing ${esc(p.name)}?</b> ${esc(p.tip)}</div></div>`).join("");
   $("#copyBriefs").onclick = () => {
     const txt = "Breakout practice. One person plays the student, one plays the SSA, everyone else listens. Swap the SSA every few minutes.\n\n" +
-      PRACTICE.map((p, i) => `ROOM ${i + 1}: ${p.name.toUpperCase()} (${p.cat}): ${p.who}\nOpens with: "${p.says}"\nIf you're playing ${p.name}: ${p.tip}`).join("\n\n") +
+      PRACTICE.map((p, i) => `${i < 3 ? "ROOM " + (i + 1) : "SPARE"}: ${p.name.toUpperCase()} (${p.cat}): ${p.who}\nOpens with: "${p.says}"\nIf you're playing ${p.name}: ${p.tip}`).join("\n\n") +
       "\n\nAfter each go, tell the SSA which they did: Listened, Acknowledged, Explored, Responded, Agreed a next step.";
     const done = () => { $("#copyMsg").textContent = "Copied. Paste it as a breakout room announcement."; confetti($("#copyBriefs"), 20); };
     if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, () => $("#copyMsg").textContent = "Couldn't copy automatically. Try again.");
