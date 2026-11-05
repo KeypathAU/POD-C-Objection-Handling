@@ -123,6 +123,11 @@ main.stage::after{width:38vw;height:38vw;right:-10vw;bottom:-14vw;background:rad
 .fff-col{border-top:12px solid var(--c)}
 .ex-box{border-left:12px solid var(--c);background:color-mix(in srgb,var(--c) 8%,#fff)}
 .ex-box h3{color:var(--c);font-size:.95em}
+.laerc .stage-card{padding:.6em 1em .7em}
+.laerc .big{font-size:1.9em}
+.laerc h3{margin:.1em 0 .2em}
+.why .card{border-left:10px solid var(--c);padding:.5em .9em;display:flex;flex-direction:column;gap:.15em;font-size:.85em}
+.why b{font-family:var(--head);font-weight:600;color:var(--c);font-size:1.15em}
 .mind .card{position:relative;border-top:12px solid var(--c);padding-top:.8em}
 .mind h3{color:var(--c)}
 .mind i{position:absolute;top:-.95em;left:-.6em;width:1.9em;height:1.9em;border-radius:50%;background:var(--sun);border:2px solid var(--ink);font-style:normal;font-family:var(--head);font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -382,18 +387,31 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
   </div>
 </section>
 
-<section class="slide" data-section="laer" data-mins="3">
+<section class="slide" data-section="laer" data-mins="1.5">
   <div class="kicker">The backbone</div>
   <h2>LAER: the shape of every objection</h2>
-  <p class="lead" style="max-width:none">LAER stands for <b style="color:var(--l)">Listen</b>, <b style="color:var(--feel)">Acknowledge</b>, <b style="color:var(--r)">Explore</b>, <b style="color:var(--o)">Respond</b>. It's a simple four-step model used widely in sales and service. The point: <b style="color:var(--text)">don't answer an objection until you understand it.</b></p>
-  <div class="grid g4">
-    <div class="card stage-card" data-s="L"><div class="big">L</div><h3>Listen</h3><div>Let them finish. Don't plan your answer while they talk.</div><div class="ex">Pause. Note their exact words.</div></div>
-    <div class="card stage-card" data-s="Ack"><div class="big">A</div><h3>Acknowledge</h3><div>Show you heard the concern before you respond to it.</div><div class="ex">"That makes sense, it's a lot to juggle."</div></div>
-    <div class="card stage-card" data-s="E"><div class="big">E</div><h3>Explore</h3><div>Ask questions to find the real concern underneath.</div><div class="ex">"What's making this term feel so full?"</div></div>
-    <div class="card stage-card" data-s="Res"><div class="big">R</div><h3>Respond</h3><div>Only now, answer what you found and agree a next step.</div><div class="ex">"Let's map week one to your weekends."</div></div>
+  <p class="lead" style="max-width:none;font-size:1.05em;margin-bottom:.8em">LAER stands for <b style="color:var(--l)">Listen</b>, <b style="color:var(--feel)">Acknowledge</b>, <b style="color:var(--r)">Explore</b>, <b style="color:var(--o)">Respond</b>. The point: <b style="color:var(--text)">don't answer an objection until you understand it.</b></p>
+  <div class="grid g4 laerc">
+    <div class="card stage-card" data-s="L"><div class="big">L</div><h3>Listen</h3><div>Let them finish. Don't plan your answer while they talk.</div></div>
+    <div class="card stage-card" data-s="Ack"><div class="big">A</div><h3>Acknowledge</h3><div>Show you heard the concern before you respond to it.</div></div>
+    <div class="card stage-card" data-s="E"><div class="big">E</div><h3>Explore</h3><div>Ask questions to find the real concern underneath.</div></div>
+    <div class="card stage-card" data-s="Res"><div class="big">R</div><h3>Respond</h3><div>Only now, answer what you found and agree a next step.</div></div>
   </div>
-  <div class="card steps" style="margin-top:1em">
-    <h3>LAER in 30 seconds: "It's just too expensive."</h3>
+  <h3 style="margin:1em 0 .5em">Why it works</h3>
+  <div class="grid g3 why">
+    <div class="card" data-s="Ack"><b>Lowers resistance</b><span>Reacting too quickly starts a debate. Listening and acknowledging disarms it.</span></div>
+    <div class="card" data-s="E"><b>Uncovers hidden issues</b><span>"It's too expensive" often hides a deeper concern, like unclear value or payment timing.</span></div>
+    <div class="card" data-s="Res"><b>Builds trust</b><span>It turns a high-pressure conversation into working on the problem together.</span></div>
+  </div>
+  <div class="notes">
+    <ul><li><b>What it is:</b> LAER (Listen, Acknowledge, Explore, Respond) is a long-standing objection-handling model from sales and customer service. It's popular because it's easy to remember on a live call.</li><li><b>Why it works:</b> talk through the three cards. Jumping straight to an answer starts a debate; listening and acknowledging takes the heat out, uncovers the real concern and builds trust.</li><li>Ask: "Which step do we rush?" Usually we jump from Listen straight to Respond.</li></ul>
+  </div>
+</section>
+
+<section class="slide" data-section="laer" data-mins="1.5">
+  <div class="kicker">LAER in action</div>
+  <h2>LAER in 30 seconds: "It's just too expensive."</h2>
+  <div class="card steps">
     <div class="line step"><span class="tag" data-s="L">L</span><span class="who">SSA</span><span><i>(lets them finish, stays quiet for a moment)</i></span></div>
     <div class="line step"><span class="tag" data-s="Ack">A</span><span class="who">SSA</span><span>"That's fair. It's a big investment, and it makes sense to think it through."</span></div>
     <div class="line step"><span class="tag" data-s="E">E</span><span class="who">SSA</span><span>"Can I ask, is it the overall cost, or the timing of the payment that's hard right now?"</span></div>
@@ -401,9 +419,8 @@ footer.ctrl .btn{font-size:.85em;min-width:7em}
     <div class="line step"><span class="tag" data-s="Res">R</span><span class="who">SSA</span><span>"That helps. Have you looked at FEE-HELP? If you're eligible, it covers your fees so there's nothing to pay up front, and you repay through the tax system once you earn over the threshold. I'll send you the details today."</span></div>
     <div class="row steps-ctrl"><button class="btn primary" data-steps="next">Reveal next line</button><button class="btn" data-steps="reset">Reset</button></div>
   </div>
-  <div class="card tap" tabindex="0" style="margin-top:1em"><h3>Where do the other tools fit?</h3><div class="hint">Click to reveal</div><div class="ans"><b style="color:var(--feel)">Acknowledge:</b> Labelling, Feel and Felt. <b style="color:var(--r)">Explore:</b> Isolate and clarify, GROW Goal and Reality. <b style="color:var(--o)">Respond:</b> Found, Reframe, GROW Options and Way forward.</div></div>
   <div class="notes">
-    <ul><li><b>What it is:</b> LAER (Listen, Acknowledge, Explore, Respond) is a long-standing objection-handling model from sales and customer service. It's popular because it's easy to remember on a live call.</li><li>LAER is the order. Every other tool today plugs into one of these four steps.</li><li>Press the right arrow to reveal the example line by line. <span class="hA"></span> can read the student line. Point out that the real concern (timing, not cost) only came out at Explore.</li><li>Ask: "Which step do we rush?" Usually we jump from Listen straight to Respond.</li><li>Click the bottom card to show where the rest of the session fits.</li></ul>
+    <ul><li>Press the right arrow to reveal the example line by line. <span class="hA"></span> can read the student line.</li><li>Point out that the real concern (timing, not cost) only came out at Explore. If we'd answered "too expensive" straight away, we'd have answered the wrong question.</li></ul>
     <div class="handoff">Hand-off to <span class="hA"></span> for GROW</div>
   </div>
 </section>
